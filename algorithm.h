@@ -20,7 +20,7 @@ int gcd(int a, int b)
 		return gcd(b, a % b);
 }
 
-int linearSearch(int arr[], int length, int key)
+int linear(int arr[], int length, int key)
 {
 	for (int i = 0; i < length; i++)
 	{
@@ -29,7 +29,7 @@ int linearSearch(int arr[], int length, int key)
 	}
 }
 
-int binarySearchLeft(int arr[], int low, int high, int key)
+int binaryLeft(int arr[], int low, int high, int key)
 {
 	// Calculating the middle value
 	int mid = low + (high - low) / 2;
@@ -41,7 +41,7 @@ int binarySearchLeft(int arr[], int low, int high, int key)
 			return mid;
 		// Checking if any other element in the left is equal to the key
 		else if (arr[mid - 1] == key)
-			return binarySearchLeft(arr, low, mid, key);
+			return binaryLeft(arr, low, mid, key);
 		else
 			return mid;
 	}
@@ -51,12 +51,12 @@ int binarySearchLeft(int arr[], int low, int high, int key)
 		return -1;
 
 	else if (arr[mid] > key)
-		return binarySearchLeft(arr, low, mid, key);
+		return binaryLeft(arr, low, mid, key);
 	else
-		return binarySearchLeft(arr, mid, high, key);
+		return binaryLeft(arr, mid, high, key);
 }
 
-int binarySearchRight(int arr[], int low, int high, int key)
+int binaryRight(int arr[], int low, int high, int key)
 {
 	// Calculating the middle value
 	int mid = low + (high - low) / 2;
@@ -75,7 +75,7 @@ int binarySearchRight(int arr[], int low, int high, int key)
 			// mid = low
 			// To fix this issue, mid + 1 is taken instead of mid
 			// as done in binarySearchLeft
-			return binarySearchRight(arr, mid + 1, high, key);
+			return binaryRight(arr, mid + 1, high, key);
 		else
 			return mid;
 	}
@@ -85,7 +85,32 @@ int binarySearchRight(int arr[], int low, int high, int key)
 		return -1;
 
 	else if (arr[mid] > key)
-		return binarySearchRight(arr, low, mid, key);
+		return binaryRight(arr, low, mid, key);
 	else
-		return binarySearchRight(arr, mid, high, key);
+		return binaryRight(arr, mid, high, key);
+}
+
+void bubble(int arr[], int length)
+{
+	for (int i = 0; i < length; i++)
+	{
+		for (int j = i + 1; j < length; j++)
+		{
+			if (arr[i] > arr[j])
+				swap(&arr[i], &arr[j]);
+		}
+	}
+
+}
+
+void bubbleReverse(int arr[], int length)
+{
+	for (int i = 0; i < length; i++)
+	{
+		for (int j = i + 1; j < length; j++)
+		{
+			if (arr[i] < arr[j])
+				swap(&arr[i], &arr[j]);
+		}
+	}
 }
