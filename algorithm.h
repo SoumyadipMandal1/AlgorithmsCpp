@@ -90,7 +90,7 @@ int binaryRight(int arr[], int low, int high, int key)
 		return binaryRight(arr, mid, high, key);
 }
 
-void bubble(int arr[], int length)
+void bubbleSort(int arr[], int length)
 {
 	for (int i = 0; i < length; i++)
 	{
@@ -103,7 +103,7 @@ void bubble(int arr[], int length)
 
 }
 
-void bubbleReverse(int arr[], int length)
+void bubbleSortReverse(int arr[], int length)
 {
 	for (int i = 0; i < length; i++)
 	{
@@ -112,5 +112,37 @@ void bubbleReverse(int arr[], int length)
 			if (arr[i] < arr[j])
 				swap(&arr[i], &arr[j]);
 		}
+	}
+}
+
+void insertionSort(int arr[], int length)
+{
+	int key, j; // For Loop optimization
+	for (int i = 1; i < length; i++)
+	{
+		key = arr[i];
+		j = i - 1;
+		while (j >= 0 && arr[j] > key)
+		{
+			arr[j + 1] = arr[j];
+			j--;
+		}
+		arr[j + 1] = key;
+	}
+}
+
+void insertionSortReverse(int arr[], int length)
+{
+	int key, j; // For loop optimization
+	for (int i = 1; i < length; i++)
+	{
+		key = arr[i];
+		j = i - 1;
+		while (j >= 0 && arr[j] < key)
+		{
+			arr[j + 1] = arr[j];
+			j--;
+		}
+		arr[j + 1] = key;
 	}
 }
