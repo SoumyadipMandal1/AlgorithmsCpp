@@ -90,6 +90,28 @@ int binaryRight(int arr[], int low, int high, int key)
 		return binaryRight(arr, mid, high, key);
 }
 
+int min(int arr[], int length)
+{
+	int min = arr[0];
+	for (int i = 1; i < length; i++)
+	{
+		if (min > arr[i])
+			min = arr[i];
+	}
+	return min;
+}
+
+int max(int arr[], int length)
+{
+	int max = arr[0];
+	for (int i = 1; i < length; i++)
+	{
+		if (max < arr[i])
+			max = arr[i];
+	}
+	return max;
+}
+
 void bubbleSort(int arr[], int length)
 {
 	for (int i = 0; i < length; i++)
