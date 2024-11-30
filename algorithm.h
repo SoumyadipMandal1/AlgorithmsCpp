@@ -168,3 +168,41 @@ void insertionSortReverse(int arr[], int length)
 		arr[j + 1] = key;
 	}
 }
+
+void selectionSort(int arr[], int length)
+{
+	int min, minpos; // For loop optimization
+	for (int i = 0; i < length - 1; i++)
+	{
+		min = arr[i];
+		minpos = i;
+		for (int j = i + 1; j < length; j++)
+		{
+			if (min > arr[j])
+			{
+				min = arr[j];
+				minpos = j;
+			}
+		}
+		swap(&arr[i], &arr[minpos]);
+	}
+}
+
+void selectionSortReverse(int arr[], int length)
+{
+	int max, maxpos; // For loop optimization
+	for (int i = 0; i < length - 1; i++)
+	{
+		max = arr[i];
+		maxpos = i;
+		for (int j = i + 1; j < length; j++)
+		{
+			if (max > arr[j])
+			{
+				max = arr[j];
+				maxpos = j;
+			}
+		}
+		swap(&arr[i], &arr[maxpos]);
+	}
+}
