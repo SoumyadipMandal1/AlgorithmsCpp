@@ -206,3 +206,149 @@ void selectionSortReverse(int arr[], int length)
 		swap(&arr[i], &arr[maxpos]);
 	}
 }
+
+void merge(int arr[], int left, int mid, int right)
+{
+	// Creating two arrays
+	// One array contains form arr[left] to arr[middle]
+	// Other from arr[middle + 1] to arr[right]
+
+	// Length of first array
+	int leftLength = mid - left + 1;
+
+	// Length of second array
+	// right - (middle + 1) + 1
+	//       = right - middle - 1 + 1
+	//       = right - middle
+	int rightLength = right - mid;
+
+	int leftarr[leftLength];
+	int rightarr[rightLength];
+
+	for (int i = 0; i < leftLength; i++)
+		leftarr[i]  = arr[left + i];
+
+	for (int i = 0; i < rightLength; i++)
+		rightarr[i] = arr[mid + i + 1];
+
+	// Merging
+
+	int leftpos  = 0;    // Keeps track of left array
+	int rightpos = 0;    // Keeps track of right array
+	int mainpos  = left; // Keeps track of main array
+
+	while (leftpos < leftLength || rightpos < rightLength)
+	{
+		if (leftpos == leftLength)
+		{
+			arr[mainpos] = rightarr[rightpos];
+			rightpos++;
+			mainpos++;
+		}
+		else if (rightpos == rightLength)
+		{
+			arr[mainpos] = leftarr[leftpos];
+			leftpos++;
+			mainpos++;
+		}
+		else
+		{
+			if (leftarr[leftpos] < rightarr[rightpos])
+			{
+				arr[mainpos] = leftarr[leftpos];
+				leftpos++;
+				mainpos++;
+			}
+			else
+			{
+				arr[mainpos] = rightarr[rightpos];
+				rightpos++;
+				mainpos++;
+			}
+		}
+	}
+}
+
+void mergeSort(int arr[], int left, int right)
+{
+	if (left < right)
+	{
+		int mid = left + (right - left) / 2;
+		mergeSort(arr, left, mid);
+		mergeSort(arr, mid + 1, right);
+		merge(arr, left, mid, right);
+	}
+}
+
+void mergeReverse(int arr[], int left, int mid, int right)
+{
+	// Creating two arrays
+	// One array contains form arr[left] to arr[middle]
+	// Other from arr[middle + 1] to arr[right]
+
+	// Length of first array
+	int leftLength = mid - left + 1;
+
+	// Length of second array
+	// right - (middle + 1) + 1
+	//       = right - middle - 1 + 1
+	//       = right - middle
+	int rightLength = right - mid;
+
+	int leftarr[leftLength];
+	int rightarr[rightLength];
+
+	for (int i = 0; i < leftLength; i++)
+		leftarr[i]  = arr[left + i];
+
+	for (int i = 0; i < rightLength; i++)
+		rightarr[i] = arr[mid + i + 1];
+
+	// Merging
+
+	int leftpos  = 0;    // Keeps track of left array
+	int rightpos = 0;    // Keeps track of right array
+	int mainpos  = left; // Keeps track of main array
+
+	while (leftpos < leftLength || rightpos < rightLength)
+	{
+		if (leftpos == leftLength)
+		{
+			arr[mainpos] = rightarr[rightpos];
+			rightpos++;
+			mainpos++;
+		}
+		else if (rightpos == rightLength)
+		{
+			arr[mainpos] = leftarr[leftpos];
+			leftpos++;
+			mainpos++;
+		}
+		else
+		{
+			if (leftarr[leftpos] > rightarr[rightpos])
+			{
+				arr[mainpos] = leftarr[leftpos];
+				leftpos++;
+				mainpos++;
+			}
+			else
+			{
+				arr[mainpos] = rightarr[rightpos];
+				rightpos++;
+				mainpos++;
+			}
+		}
+	}
+}
+
+void mergeSortReverse(int arr[], int left, int right)
+{
+	if (left < right)
+	{
+		int mid = left + (right - left) / 2;
+		mergeSortReverse(arr, left, mid);
+		mergeSortReverse(arr, mid + 1, right);
+		mergeReverse(arr, left, mid, right);
+	}
+}
