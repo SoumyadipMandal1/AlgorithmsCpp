@@ -237,15 +237,9 @@ void merge(int arr[], int left, int mid, int right)
 	int rightpos = 0;    // Keeps track of right array
 	int mainpos  = left; // Keeps track of main array
 
-	while (leftpos < leftLength || rightpos < rightLength)
+	while (leftpos < leftLength && rightpos < rightLength)
 	{
-		if (leftpos == leftLength)
-		{
-			arr[mainpos] = rightarr[rightpos];
-			rightpos++;
-			mainpos++;
-		}
-		else if (rightpos == rightLength)
+		if (leftarr[leftpos] < rightarr[rightpos])
 		{
 			arr[mainpos] = leftarr[leftpos];
 			leftpos++;
@@ -253,19 +247,26 @@ void merge(int arr[], int left, int mid, int right)
 		}
 		else
 		{
-			if (leftarr[leftpos] < rightarr[rightpos])
-			{
-				arr[mainpos] = leftarr[leftpos];
-				leftpos++;
-				mainpos++;
-			}
-			else
-			{
-				arr[mainpos] = rightarr[rightpos];
-				rightpos++;
-				mainpos++;
-			}
+			arr[mainpos] = rightarr[rightpos];
+			rightpos++;
+			mainpos++;
 		}
+	}
+
+	// Adding remaining elements
+
+	while (leftpos < leftLength)
+	{
+		arr[mainpos] = leftarr[leftpos];
+		leftpos++;
+		mainpos++;
+	}
+
+	while(rightpos < rightLength)
+	{
+		arr[mainpos] = rightarr[rightpos];
+		rightpos++;
+		mainpos++;
 	}
 }
 
@@ -310,15 +311,9 @@ void mergeReverse(int arr[], int left, int mid, int right)
 	int rightpos = 0;    // Keeps track of right array
 	int mainpos  = left; // Keeps track of main array
 
-	while (leftpos < leftLength || rightpos < rightLength)
+	while (leftpos < leftLength && rightpos < rightLength)
 	{
-		if (leftpos == leftLength)
-		{
-			arr[mainpos] = rightarr[rightpos];
-			rightpos++;
-			mainpos++;
-		}
-		else if (rightpos == rightLength)
+		if (leftarr[leftpos] > rightarr[rightpos])
 		{
 			arr[mainpos] = leftarr[leftpos];
 			leftpos++;
@@ -326,19 +321,26 @@ void mergeReverse(int arr[], int left, int mid, int right)
 		}
 		else
 		{
-			if (leftarr[leftpos] > rightarr[rightpos])
-			{
-				arr[mainpos] = leftarr[leftpos];
-				leftpos++;
-				mainpos++;
-			}
-			else
-			{
-				arr[mainpos] = rightarr[rightpos];
-				rightpos++;
-				mainpos++;
-			}
+			arr[mainpos] = rightarr[rightpos];
+			rightpos++;
+			mainpos++;
 		}
+	}
+
+	// Adding remaining elements
+
+	while (leftpos < leftLength)
+	{
+		arr[mainpos] = leftarr[leftpos];
+		leftpos++;
+		mainpos++;
+	}
+
+	while(rightpos < rightLength)
+	{
+		arr[mainpos] = rightarr[rightpos];
+		rightpos++;
+		mainpos++;
 	}
 }
 
