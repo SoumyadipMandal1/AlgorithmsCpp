@@ -27,6 +27,9 @@ int linear(int arr[], int length, int key)
 		if (arr[i] == key)
 			return i;
 	}
+
+	// If key is not found in the array
+	return -1;
 }
 
 int binaryLeft(int arr[], int low, int high, int key)
@@ -153,6 +156,36 @@ void insertionSort(int arr[], int length)
 	}
 }
 
+void insertionSortRecursive(int arr[], int length)
+{
+	// Has same run time as normal insertion sort
+
+	// Base cases
+	if (length == 1) return;
+	else if (length == 2)
+	{
+		if (arr[0] > arr[1])
+			swap(&arr[0], &arr[1]);
+	}
+
+	else
+	{
+		int key = arr[length - 1];
+		int i = length - 2;
+
+		// Recursively sort the array
+		insertionSortRecursive(arr, length - 1);
+
+		// Then, inserts an element in the array
+		while (i >= 0 && arr[i] > key)
+		{
+			arr[i +  1] = arr[i];
+			i--;
+		}
+		arr[i + 1] = key;
+	}
+}
+
 void insertionSortReverse(int arr[], int length)
 {
 	int key, j; // For loop optimization
@@ -166,6 +199,36 @@ void insertionSortReverse(int arr[], int length)
 			j--;
 		}
 		arr[j + 1] = key;
+	}
+}
+
+void insertionSortReverseRecursive(int arr[], int length)
+{
+	// Has same run time as normal insertion sort
+
+	// Base cases
+	if (length == 1) return;
+	else if (length == 2)
+	{
+		if (arr[0] < arr[1])
+			swap(&arr[0], &arr[1]);
+	}
+
+	else
+	{
+		int key = arr[length - 1];
+		int i = length - 2;
+
+		// Recursively sort the array
+		insertionSortRecursive(arr, length - 1);
+
+		// Then, inserts an element in the array
+		while (i >= 0 && arr[i] < key)
+		{
+			arr[i +  1] = arr[i];
+			i--;
+		}
+		arr[i + 1] = key;
 	}
 }
 
