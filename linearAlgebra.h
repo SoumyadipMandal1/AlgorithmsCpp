@@ -184,6 +184,74 @@ void rowEchelon(int rows, int columns, float matrix[rows][columns])
 	}
 }
 
+void reducedRowEchelon(int rows, int columns, float matrix[rows][columns])
+{
+    // Converts a matrix into row echelon form
+	int row, column;
+    float temp, scalingFactor;
+
+    // Checking for non-zero pivot and interchanging
+    // rows if a non-zero number is spotted below a zero
+
+	// Keeps track of rows and columns
+	row = column = 0;
+
+	// This flag checks whether to increment column only or not
+	int flag;
+
+	while (row < rows && column < columns)
+	{
+		flag = 1;
+		if (matrix[row][column] == 0)
+		{
+			flag = 0;
+			for (int i = row + 1; i < rows; i++)
+			{
+				if (matrix[i][column])
+				{
+					flag = 1;
+					// Swapping the two rows and then, breaking the loop
+					for (int j = column; j < columns; j++)
+					{
+						temp = matrix[row][j];
+						matrix[row][j] = matrix[i][j];
+						matrix[i][j] = temp;
+					}
+					break;
+				}
+			}
+		}
+
+		if (flag)
+		{
+			// scalingFactor is used here
+			for (int i = 0; i < rows; i++)
+			{
+				if (i != row)
+				{
+					// If scalingFactor is zero, then there will be no changes
+					if (matrix[i][column] == 0)
+						continue;
+					scalingFactor = matrix[i][column] / matrix[row][column];
+					matrix[i][column] = 0;
+					for (int j = column + 1; j < columns; j++)
+						matrix[i][j] -= matrix[row][j] * scalingFactor;
+				}
+			}
+
+			// Incrementing row and column if necessary operation is over
+			row++;
+			column++;
+		}
+		else
+		{
+			// Incrementing column if all the numbers below and including pivot is zero
+			column++;
+			continue;
+		}
+	}
+}
+
 int rank(int rows, int columns, float matrix[rows][columns])
 {
 	int flag;
