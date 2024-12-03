@@ -6,8 +6,10 @@ void gaussianElimination(int size, float coefficient[size][size], float augmente
 {
 	// Solve a linear equation using Gaussian Elimination.
 	// Coefficient matrix is of size n x n and augmented vector is of size n
+	float temp, scalingFactor, sum;
 
 	// Converts the matrix to row echelon form
+
 	for (int i = 0; i < size; i++)
 	{
 		// For handling zero divisions
@@ -17,7 +19,7 @@ void gaussianElimination(int size, float coefficient[size][size], float augmente
 			{
 				if (coefficient[j][i])
 				{
-					float temp;
+					// temp is used here
 					for (int k = 0; k < size; k++)
 					{
 						temp = coefficient[i][k];
@@ -34,19 +36,20 @@ void gaussianElimination(int size, float coefficient[size][size], float augmente
 
 		for (int j = i + 1; j < size; j++)
 		{
-			// If multiplyingFactor is zero, then there will be no changes
+			// Multiplying factor is used here
+			// If scalingFactor is zero, then there will be no changes
 			if (coefficient[j][i] == 0)
 				continue;
-			float multiplyingFactor = coefficient[j][i] / coefficient[i][i];
+			scalingFactor = coefficient[j][i] / coefficient[i][i];
 			coefficient[j][i] = 0;
 			for (int k = i + 1; k < size; k++)
-				coefficient[j][k] -= coefficient[i][k] * multiplyingFactor;
-			augmented[j] -= augmented[i] * multiplyingFactor;
+				coefficient[j][k] -= coefficient[i][k] * scalingFactor;
+			augmented[j] -= augmented[i] * scalingFactor;
 		}
 	}
 
 	// Calculating the result by back substitution
-	float sum;
+	// sum is used here
 	for (int i = size - 1; i >= 0; i--)
 	{
 		sum = 0;
@@ -60,6 +63,7 @@ void gaussJordanElimination(int size, float coefficient[size][size], float augme
 {
 	// Solve a linear equation using Gaussian - Jordan Elimination.
 	// Coefficient matrix is of size n x n and augmented vector is of size n
+	float temp, scalingFactor;
 
 	// Converts the matrix to row echelon form
 	for (int i = 0; i < size; i++)
@@ -69,9 +73,9 @@ void gaussJordanElimination(int size, float coefficient[size][size], float augme
 		{
 			for (int j = i + 1; j < size; j++)
 			{
+				// temp is used here
 				if (coefficient[j][i])
 				{
-					float temp;
 					for (int k = 0; k < size; k++)
 					{
 						temp = coefficient[i][k];
@@ -86,25 +90,96 @@ void gaussJordanElimination(int size, float coefficient[size][size], float augme
 			}
 		}
 
-		float dividingFactor = coefficient[i][i];
+		// scalingFactor is used here to convert the pivot to 1 and
+		// the subsequent row so that the system remain equivalent
+		scalingFactor = coefficient[i][i];
 		coefficient[i][i] = 1;
 
 		// Setting the pivot to 1
 		for (int j = i + 1; j < size; j++)
-			coefficient[i][j] /= dividingFactor;
-		augmented[i] /= dividingFactor;
+			coefficient[i][j] /= scalingFactor;
+		augmented[i] /= scalingFactor;
 
 		// Computing the result
-		float multiplyingFactor;
+		// scalingFactor is used here to make all the rows other than
+		// the pivotal row to zero
 		for (int k = 0; k < size; k++)
 		{
 			if (k != i)
 			{
-				multiplyingFactor = coefficient[k][i];
+				scalingFactor = coefficient[k][i];
 				for (int j = i; j < size; j++)
-					coefficient[k][j] -= multiplyingFactor * coefficient[i][j];
-				augmented[k] -= multiplyingFactor * augmented[i];
+					coefficient[k][j] -= scalingFactor * coefficient[i][j];
+				augmented[k] -= scalingFactor * augmented[i];
 			}
+		}
+	}
+}
+
+void rowEchelon(int rows, int columns, float matrix[rows][columns])
+{
+    // Converts a matrix into row echelon form
+	int row, column;
+    float temp, scalingFactor;
+
+    // Checking for non-zero pivot and interchanging
+    // rows if a non-zero number is spotted below a zero
+
+	// Keeps track of rows and columns
+	row = column = 0;
+
+	// This flag checks whether to increment column only or not
+	int flag;
+
+	while (row < rows && column < columns)
+	{
+		flag = 1;
+		if (matrix[row][column] == 0)
+		{
+			flag = 0;
+			for (int i = row + 1; i < rows; i++)
+			{
+				if (matrix[i][column])
+				{
+					flag = 1;
+					// Swapping the two rows and then, breaking the loop
+					for (int j = column; j < columns; j++)
+					{
+						temp = matrix[row][j];
+						matrix[row][j] = matrix[i][j];
+						matrix[i][j] = temp;
+					}
+					break;
+				}
+			}
+		}
+
+		if (flag)
+		{
+			// scalingFactor is used here
+			for (int i = row + 1; i < rows; i++)
+			{
+
+				// If scalingFactor is zero, then there will be no changes
+				if (matrix[i][column] == 0)
+					continue;
+				scalingFactor = matrix[i][column] / matrix[row][column];
+				matrix[i][column] = 0;
+				for (int j = column + 1; j < columns; j++)
+				{
+					matrix[i][j] -= matrix[row][j] * scalingFactor;
+				}
+			}
+
+			// Incrementing row and column if necessary operation is over
+			row++;
+			column++;
+		}
+		else
+		{
+			// Incrementing column if all the numbers below and including pivot is zero
+			column++;
+			continue;
 		}
 	}
 }
