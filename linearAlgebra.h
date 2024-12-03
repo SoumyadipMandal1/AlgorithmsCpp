@@ -183,3 +183,22 @@ void rowEchelon(int rows, int columns, float matrix[rows][columns])
 		}
 	}
 }
+
+int rank(int rows, int columns, float matrix[rows][columns])
+{
+	int flag;
+	int rank = 0;
+	rowEchelon(rows, columns, matrix);
+	for (int i = 0; i < rows; i++)
+	{
+		flag = 0;
+		for (int j = 0; j < columns; j++)
+		{
+			if (matrix[i][j])
+				flag = 1;
+		}
+		if (flag)
+			rank++;
+	}
+	return rank;
+}
