@@ -239,6 +239,12 @@ void reducedRowEchelon(int rows, int columns, float matrix[rows][columns])
 				}
 			}
 
+			// Scaling the pivot to 1
+			scalingFactor = matrix[row][column];
+			matrix[row][column] = 1;
+			for (int i = column + 1; i < columns; i++)
+				matrix[row][i] /= scalingFactor;
+
 			// Incrementing row and column if necessary operation is over
 			row++;
 			column++;
