@@ -1,4 +1,4 @@
-Hello,
+## Algorithms in C
 
 I am trying to make all the algorithms in C in this Github repository.
 I had written some algorithms. But there are problems with these.
