@@ -51,3 +51,8 @@ int permutation(int n, int k)
 {
 	return factorial(n) / factorial(n - k);
 }
+
+int combination(int n, int k)
+{
+	return factorial(n) / (factorial(k) * factorial(n - k));
+}
