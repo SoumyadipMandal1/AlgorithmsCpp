@@ -46,3 +46,8 @@ int factorial(int n)
 
 	return factorial;
 }
+
+int permutation(int n, int k)
+{
+	return factorial(n) / factorial(n - k);
+}
