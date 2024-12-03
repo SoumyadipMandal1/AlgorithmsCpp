@@ -33,3 +33,16 @@ int horner(int arr[], int x, int length)
 
 	return result;
 }
+
+int factorial(int n)
+{
+	int factorial = 1;
+
+	while (n > 1)
+	{
+		factorial *= n;
+		n--;
+	}
+
+	return factorial;
+}
