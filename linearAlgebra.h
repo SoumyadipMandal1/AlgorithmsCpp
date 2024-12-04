@@ -312,3 +312,27 @@ float** transpose(int rows, int columns, float matrix[rows][columns])
 
 	return matrixTranspose;
 }
+
+int isSymmetric(int size, float matrix[size][size])
+{
+	float** matrixTranspose = transpose(size, size, matrix);
+
+	// Stores the condition whether a matrix is symmetric or not
+	int flag = 1;
+
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
+			if (matrix[i][j] != matrixTranspose[i][j])
+			{
+				flag = 0;
+				break;
+			}
+			if (flag == 0)
+				break;
+		}
+	}
+
+	return flag;
+}
