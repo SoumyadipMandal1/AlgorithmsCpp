@@ -2,6 +2,8 @@
 #define LINEARALGEBRA_H
 #endif
 
+#include <stdlib.h>
+
 void gaussianElimination(int size, float coefficient[size][size], float augmented[size])
 {
 	// Solve a linear equation using Gaussian Elimination.
@@ -275,4 +277,21 @@ int rank(int rows, int columns, float matrix[rows][columns])
 			rank++;
 	}
 	return rank;
+}
+
+float** addMatrix(int rows, int columns, float matrix1[rows][columns], float matrix2[rows][columns])
+{
+	// Creating matrix
+	float** matrixSum = (float**)malloc(rows * sizeof(float*));
+	for (int i =0; i < rows; i++)
+		matrixSum[i] = (float*)malloc(columns * sizeof(float));
+
+	// Adding matrix
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < columns; j++)
+			matrixSum[i][j] = matrix1[i][j] + matrix2[i][j];
+	}
+
+	return matrixSum;
 }
