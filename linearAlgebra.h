@@ -295,3 +295,20 @@ float** addMatrix(int rows, int columns, float matrix1[rows][columns], float mat
 
 	return matrixSum;
 }
+
+float** transpose(int rows, int columns, float matrix[rows][columns])
+{
+	// Creating matrix
+	float** matrixTranspose = (float**)malloc(columns * sizeof(float*));
+	for (int i =0; i < columns; i++)
+		matrixTranspose[i] = (float*)malloc(rows * sizeof(float));
+
+	// Transposing matrix
+	for (int i = 0; i < columns; i++)
+	{
+		for (int j = 0; j < rows; j++)
+			matrixTranspose[i][j] = matrix[j][i];
+	}
+
+	return matrixTranspose;
+}
