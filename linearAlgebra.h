@@ -279,21 +279,14 @@ int rank(int rows, int columns, float matrix[rows][columns])
 	return rank;
 }
 
-float** addMatrix(int rows, int columns, float matrix1[rows][columns], float matrix2[rows][columns])
+void addMatrix(int rows, int columns, float matrix1[rows][columns], float matrix2[rows][columns], float matrixSum[rows][columns])
 {
-	// Creating matrix
-	float** matrixSum = (float**)malloc(rows * sizeof(float*));
-	for (int i =0; i < rows; i++)
-		matrixSum[i] = (float*)malloc(columns * sizeof(float));
-
 	// Adding matrix
 	for (int i = 0; i < rows; i++)
 	{
 		for (int j = 0; j < columns; j++)
 			matrixSum[i][j] = matrix1[i][j] + matrix2[i][j];
 	}
-
-	return matrixSum;
 }
 
 void scalarMultiplication(int rows, int columns, float matrix[rows][columns], float scalar)
@@ -305,26 +298,21 @@ void scalarMultiplication(int rows, int columns, float matrix[rows][columns], fl
 	}
 }
 
-float** transpose(int rows, int columns, float matrix[rows][columns])
+void transpose(int rows, int columns, float matrix[rows][columns], float matrixTranspose[columns][rows])
 {
-	// Creating matrix
-	float** matrixTranspose = (float**)malloc(columns * sizeof(float*));
-	for (int i = 0; i < columns; i++)
-		matrixTranspose[i] = (float*)malloc(rows * sizeof(float));
-
 	// Transposing matrix
 	for (int i = 0; i < columns; i++)
 	{
 		for (int j = 0; j < rows; j++)
 			matrixTranspose[i][j] = matrix[j][i];
 	}
-
-	return matrixTranspose;
 }
 
 int isSymmetric(int size, float matrix[size][size])
 {
-	float** matrixTranspose = transpose(size, size, matrix);
+	// Transposing Matrix
+	float matrixTranspose[size][size];
+	transpose(size, size, matrix, matrixTranspose);
 
 	// Stores the condition whether a matrix is symmetric or not
 	int flag = 1;
@@ -346,23 +334,16 @@ int isSymmetric(int size, float matrix[size][size])
 	return flag;
 }
 
-float** multiplyMatrix(int m, int p, int n, float matrix1[m][p], float matrix2[p][n])
+void multiplyMatrix(int m, int p, int n, float matrix1[m][p], float matrix2[p][n], float matrixProduct[m][n])
 {
-	// Creating matrix
-	float** matrixProduct = (float**)malloc(m * sizeof(float*));
-	for (int i = 0; i < m; i++)
-		// Initializing all the values of product matrix to zero
-		matrixProduct[i] = (float*)calloc(n, sizeof(float));
-
 	// Multiplying matrices
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < n; j++)
 		{
+			matrixProduct[i][j] = 0;
 			for (int k = 0; k < p; k++)
 				matrixProduct[i][j] += matrix1[i][k] * matrix2[k][j];
 		}
 	}
-
-	return matrixProduct;
 }
