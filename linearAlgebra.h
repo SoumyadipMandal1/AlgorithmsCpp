@@ -38,7 +38,6 @@ void gaussianElimination(int size, float coefficient[size][size], float augmente
 
 		for (int j = i + 1; j < size; j++)
 		{
-			// Multiplying factor is used here
 			// If scalingFactor is zero, then there will be no changes
 			if (coefficient[j][i] == 0)
 				continue;
@@ -280,7 +279,7 @@ int rank(int rows, int columns, float matrix[rows][columns])
 	return rank;
 }
 
-void addMatrix(int rows, int columns, float matrix1[rows][columns], float matrix2[rows][columns], float matrixSum[rows][columns])
+void matrixAdd(int rows, int columns, float matrix1[rows][columns], float matrix2[rows][columns], float matrixSum[rows][columns])
 {
 	// Adding matrix
 	for (int i = 0; i < rows; i++)
@@ -335,7 +334,7 @@ int isSymmetric(int size, float matrix[size][size])
 	return flag;
 }
 
-void multiplyMatrix(int m, int p, int n, float matrix1[m][p], float matrix2[p][n], float matrixProduct[m][n])
+void matrixMultiply(int m, int p, int n, float matrix1[m][p], float matrix2[p][n], float matrixProduct[m][n])
 {
 	// Multiplying matrices
 	for (int i = 0; i < m; i++)
@@ -345,6 +344,82 @@ void multiplyMatrix(int m, int p, int n, float matrix1[m][p], float matrix2[p][n
 			matrixProduct[i][j] = 0;
 			for (int k = 0; k < p; k++)
 				matrixProduct[i][j] += matrix1[i][k] * matrix2[k][j];
+		}
+	}
+}
+
+void matrixInverse(int size, float matrix[size][size], float identity[size][size])
+{
+	// Inversing a matrix
+	float temp, scalingFactor;
+
+	// Creating Identity Matrix
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+			identity[i][j] = 0;
+		identity[i][i] = 1;
+	}
+
+	// Creating an inverse matrix by converting the matrix into its
+	// reduced row echelon form and applying the same elementary matrix operations
+	// on the identity matrix
+	for (int i = 0; i < size; i++)
+	{
+		// If the pivot is zero
+		if (matrix[i][i] == 0)
+		{
+			for (int j = i + 1; j < size; j++)
+			{
+				// temp is used here
+				if (matrix[i][j])
+				{
+					for (int k = 0; k < size; k++)
+					{
+						// Swapping rows of the matrix
+						temp = matrix[i][k];
+						matrix[i][k] = matrix[j][k];
+						matrix[j][k] = temp;
+
+						// Swapping rows of Identity matrix
+						temp = identity[i][k];
+						identity[i][k] = identity[j][k];
+						identity[j][k] = temp;
+						break;
+					}
+				}
+			}
+		}
+
+		// scalingFactor is used here to convert the pivot to 1
+		scalingFactor = matrix[i][i];
+		matrix[i][i] = 1;
+
+		// Scaling the matrix
+		for (int j = i + 1; j < size; j++)
+			matrix[i][j] /= scalingFactor;
+
+		// Scaling the Identity matrix
+		for (int j = 0; j < size; j++)
+			identity[i][j] /= scalingFactor;
+
+		// Computing the result
+		// scalingFactor is used to convert all the rows other than the pivotal row
+		// to zero and performing the same operations on the Identity matrix
+		for (int j = 0; j < size; j++)
+		{
+			if (j != i)
+			{
+				scalingFactor = matrix[j][i];
+
+				// On matrix
+				for (int k = i; k < size; k++)
+					matrix[j][k] -= scalingFactor * matrix[i][k];
+
+				// On Identity matrix
+				for (int k = 0; k < size; k++)
+					identity[j][k] -= scalingFactor * identity[i][k];
+			}
 		}
 	}
 }
