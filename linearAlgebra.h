@@ -400,7 +400,7 @@ void matrixInverse(int size, float matrix[size][size], float identity[size][size
 			matrix[i][j] /= scalingFactor;
 
 		// Scaling the Identity matrix
-		for (int j = 0; j < size; j++)
+		for (int j = 0; j <= i; j++)
 			identity[i][j] /= scalingFactor;
 
 		// Computing the result
@@ -413,11 +413,12 @@ void matrixInverse(int size, float matrix[size][size], float identity[size][size
 				scalingFactor = matrix[j][i];
 
 				// On matrix
-				for (int k = i; k < size; k++)
+				matrix[j][i] = 0;
+				for (int k = i + 1; k < size; k++)
 					matrix[j][k] -= scalingFactor * matrix[i][k];
 
 				// On Identity matrix
-				for (int k = 0; k < size; k++)
+				for (int k = 0; k <= i; k++)
 					identity[j][k] -= scalingFactor * identity[i][k];
 			}
 		}
