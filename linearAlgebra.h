@@ -424,3 +424,19 @@ void matrixInverse(int size, float matrix[size][size], float identity[size][size
 		}
 	}
 }
+
+void rankNormal(int rows, int columns, float matrix[rows][columns])
+{
+	int rankMatrix = rank(rows, columns, matrix);
+	for (int i = 0; i < rankMatrix; i++)
+	{
+		for (int j = 0; j < columns; j++)
+			matrix[i][j] = 0;
+		matrix[i][i] = 1;
+	}
+	for (int i = rankMatrix; i < rows; i++)
+	{
+		for (int j = 0; j < columns; j++)
+			matrix[i][j] = 0;
+	}
+}
