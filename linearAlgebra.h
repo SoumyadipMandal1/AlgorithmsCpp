@@ -385,8 +385,8 @@ void matrixInverse(int size, float matrix[size][size], float identity[size][size
 						temp = identity[i][k];
 						identity[i][k] = identity[j][k];
 						identity[j][k] = temp;
-						break;
 					}
+					break;
 				}
 			}
 		}
