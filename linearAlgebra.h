@@ -440,3 +440,64 @@ void rankNormal(int rows, int columns, float matrix[rows][columns])
 			matrix[i][j] = 0;
 	}
 }
+
+
+float determinant(int size, float matrix[size][size])
+{
+	int inversion = 0;
+	int flag = 0;
+	float scalingFactor, temp;
+	float determinant = 1;
+
+	for (int i = 0; i < size; i++)
+	{
+		// For handling zero divisions
+		if (matrix[i][i] == 0)
+		{
+			for (int j = i + 1; j < size; j++)
+			{
+				if (matrix[j][i])
+				{
+					// temp is used here
+					for (int k = 0; k < size; k++)
+					{
+						temp = matrix[i][k];
+						matrix[i][k] = matrix[j][k];
+						matrix[j][k] = temp;
+					}
+					inversion += 1;
+					flag = 1;
+				}
+			}
+		}
+
+		if (flag)
+		{
+			return 0;
+			break;
+		}
+
+		else
+		{
+			for (int j = i + 1; j < size; j++)
+			{
+				// If scalingFactor is zero, then there will be no changes
+				if (matrix[j][i] == 0)
+					continue;
+				scalingFactor = matrix[j][i] / matrix[i][i];
+				matrix[j][i] = 0;
+				for (int k = i + 1; k < size; k++)
+					matrix[j][k] -= matrix[i][k] * scalingFactor;
+			}
+		}
+	}
+
+	for (int i = 0; i < size; i++)
+	{
+		determinant *= matrix[i][i];
+	}
+
+	if (inversion % 2) determinant *= -1;
+
+	return determinant;
+}
