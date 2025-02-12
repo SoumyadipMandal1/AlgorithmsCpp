@@ -46,3 +46,54 @@ int searchLinkedList(Node *head, int key)
     }
     return -1;
 }
+
+Node* deleteFirst(Node *head)
+{
+    Node *temp = head;
+    head = head->next;
+    free(temp);
+    return head;
+}
+
+Node* deleteLast(Node *head)
+{
+    Node *temp = head;
+    while (temp->next->next != NULL)
+        temp = temp->next;
+    free(temp->next);
+    temp->next = NULL;
+    return head;
+}
+
+Node* deleteLinkedList(Node *head, int index)
+{
+    if (index == 0)
+        return deleteFirst(head);
+
+    Node *currentNode = head;
+    Node *previousNode;
+    int counter = 0;
+
+    while (currentNode->next != NULL)
+    {
+        // Updating the nodes and counter
+        previousNode = currentNode;
+        currentNode = currentNode->next;
+        counter++;
+
+        if (counter == index)
+        {
+            previousNode->next = currentNode->next;
+            free(currentNode);
+            return head;
+        }
+
+    }
+
+    if (counter + 1 == index)
+    {
+        previousNode->next = NULL;
+        free(currentNode);
+        return head;
+    }
+}

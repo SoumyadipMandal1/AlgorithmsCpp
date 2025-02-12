@@ -15,4 +15,10 @@ Node* createLinkedList(int*, int);
 
 int searchLinkedList(Node*, int);
 
+Node* deleteFirst(Node*);
+
+Node* deleteLast(Node*);
+
+Node* deleteLinkedList(Node*, int);
+
 #endif
