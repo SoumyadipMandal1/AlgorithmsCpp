@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <tuple>
-#include "dataStructures.hpp"
+#include "linkedList.hpp"
 
 Node* createNode(int data)
 {
@@ -30,4 +30,19 @@ Node* createLinkedList(int* arr, int n)
     }
 
     return head;
+}
+
+int searchLinkedList(Node *head, int key)
+{
+    int counter = 0;
+    Node *temp = head;
+
+    while (temp != NULL)
+    {
+        if (temp->data == key)
+            return counter;
+        temp = temp->next;
+        counter++;
+    }
+    return -1;
 }

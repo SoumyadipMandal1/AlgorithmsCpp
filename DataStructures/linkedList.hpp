@@ -1,5 +1,5 @@
-#ifndef DATASTRUCTURES_HPP
-#define DATASTRUCTURES_HPP
+#ifndef LINKEDLIST_HPP
+#define LINKEDLIST_HPP
 
 struct singlyLinkedListNode
 {
@@ -12,5 +12,7 @@ typedef struct singlyLinkedListNode Node;
 Node* createNode(int);
 
 Node* createLinkedList(int*, int);
+
+int searchLinkedList(Node*, int);
 
 #endif
