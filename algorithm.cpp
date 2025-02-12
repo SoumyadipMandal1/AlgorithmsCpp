@@ -1,7 +1,3 @@
-#ifndef ALGORITHM_H
-#define ALGORITHM_H
-#endif
-
 void swap(int* a, int* b)
 {
 	int temp = *a;
