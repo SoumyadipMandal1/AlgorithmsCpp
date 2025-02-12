@@ -21,4 +21,10 @@ Node* deleteLast(Node*);
 
 Node* deleteLinkedList(Node*, int);
 
+Node* insertFirst(Node*, int);
+
+Node* insertLast(Node*, int);
+
+Node* insertLinkedList(Node*, int, int);
+
 #endif

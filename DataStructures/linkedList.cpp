@@ -97,3 +97,47 @@ Node* deleteLinkedList(Node *head, int index)
         return head;
     }
 }
+
+Node* insertFirst(Node *head, int data)
+{
+    Node *newnode = createNode(data);
+    newnode->next = head;
+    return newnode;
+}
+
+Node* insertLast(Node *head, int data)
+{
+    Node *newnode = createNode(data);
+    Node *temp = head;
+    while (temp->next != NULL)
+        temp = temp->next;
+    temp->next = newnode;
+    return head;
+}
+
+Node* insertLinkedList(Node *head, int data, int index)
+{
+    // If index is more than length, then data is inserted at the end of the linked list
+
+    if (index == 0)
+        return insertFirst(head, data);
+
+    Node *newnode = createNode(data);
+    Node *temp = head;
+    int counter = 1;
+    while (temp->next != NULL)
+    {
+        if (counter == index)
+        {
+            newnode->next = temp->next;
+            temp->next = newnode;
+            return head;
+        }
+        temp = temp->next;
+        counter++;
+    }
+
+    // Inserting at the end of linked list
+    temp->next = newnode;
+    return head;
+}
