@@ -29,4 +29,6 @@ Node* insertLinkedList(Node*, int, int);
 
 Node* reverseLinkedList(Node*);
 
+Node* createCirculatLinkedList(int*, int);
+
 #endif

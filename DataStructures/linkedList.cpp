@@ -176,3 +176,25 @@ Node* reverseLinkedList(Node *head)
     temp3->next = temp2;
     return temp3;
 }
+
+Node* createCircularLinkedList(int* arr, int n)
+{
+    Node *head, *newnode;
+
+    if (n == 0)
+        return NULL;
+
+    head = createNode(arr[0]);
+    newnode = head;
+
+    for (int i = 1; i < n; i++)
+    {
+        newnode->next = createNode(arr[i]);
+        newnode = newnode->next;
+    }
+
+    // Joining the last node to head
+    newnode->next = head;
+
+    return head;
+}
