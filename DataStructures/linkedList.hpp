@@ -40,4 +40,8 @@ struct doublyLinkedListNode
 
 typedef struct doublyLinkedListNode doubleNode;
 
+doubleNode* createDoubleNode(int);
+
+doubleNode* createDoublyLinkedList(int*, int)
+
 #endif
