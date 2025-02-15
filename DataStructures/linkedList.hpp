@@ -27,4 +27,6 @@ Node* insertLast(Node*, int);
 
 Node* insertLinkedList(Node*, int, int);
 
+Node* reverseLinkedList(Node*);
+
 #endif

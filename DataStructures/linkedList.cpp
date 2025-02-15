@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <tuple>
 #include "linkedList.hpp"
 
 Node* createNode(int data)
@@ -140,4 +139,40 @@ Node* insertLinkedList(Node *head, int data, int index)
     // Inserting at the end of linked list
     temp->next = newnode;
     return head;
+}
+
+Node* reverseLinkedList(Node *head)
+{
+    Node *temp1, *temp2, *temp3;
+
+    if (head == NULL)
+        return NULL;
+
+    else if (head->next == NULL)
+        return head;
+
+    else if (head->next->next == NULL)
+    {
+        temp1 = head;
+        temp2 = head->next;
+        temp2->next = temp1;
+        temp1->next = NULL;
+        return temp2;
+    }
+    temp1 = head;
+    temp2 = head->next;
+    temp3 = head->next->next;
+    temp2->next = temp1;
+    temp1->next = NULL;
+
+    while (temp3->next != NULL)
+    {
+        temp1 = temp2;
+        temp2 = temp3;
+        temp3 = temp3->next;
+        temp2->next = temp1;
+    }
+
+    temp3->next = temp2;
+    return temp3;
 }
