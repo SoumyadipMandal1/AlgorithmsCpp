@@ -198,3 +198,38 @@ Node* createCircularLinkedList(int* arr, int n)
 
     return head;
 }
+
+doubleNode* createDoubleNode(int data)
+{
+    // This function creates a node having data stored in it
+    doubleNode* node;
+    node = (doubleNode*)malloc(sizeof(doubleNode));
+    node->data = data;
+    node->next = NULL;
+    node->prev = NULL;
+    return node;
+}
+
+doubleNode* createDoublyLinkedList(int* arr, int n)
+{
+    doubleNode *head, *newnode;
+
+    if (n == 0)
+        return NULL;
+
+    head = createDoubleNode(arr[0]);
+    newnode = head;
+
+    for (int i = 1; i < n; i++)
+    {
+        newnode->next = createDoubleNode(arr[i]);
+        newnode = newnode->next;
+        newnode->next->prev = newnode;
+    }
+
+    // Making the Doubly Linked List circular
+    newnode->next = head;
+    head->prev    = newnode;
+
+    return head;
+}

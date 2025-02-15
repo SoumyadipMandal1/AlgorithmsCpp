@@ -31,4 +31,13 @@ Node* reverseLinkedList(Node*);
 
 Node* createCirculatLinkedList(int*, int);
 
+struct doublyLinkedListNode
+{
+    int data;
+    struct doublyLinkedListNode* next;
+    struct doublyLinkedListNode* prev;
+};
+
+typedef struct doublyLinkedListNode doubleNode;
+
 #endif
