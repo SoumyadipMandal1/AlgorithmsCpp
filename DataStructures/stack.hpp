@@ -2,7 +2,6 @@
 #define STACK_HPP
 
 #include "linkedList.hpp"
-#include "stack.hpp"
 
 struct Stack
 {
@@ -11,7 +10,7 @@ struct Stack
 
 typedef struct Stack Stack;
 
-void createStack(Stack*);
+void initializeStack(Stack*);
 
 void push(Stack*, int);
 
