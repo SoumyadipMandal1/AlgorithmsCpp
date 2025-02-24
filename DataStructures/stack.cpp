@@ -1,31 +1,30 @@
+#include <stdlib.h>
 #include "linkedList.hpp"
 #include "stack.hpp"
 
-Stack::Stack(int data)
+void createStack(Stack *stack)
 {
-    this->top = new Node();
-    this->top->data = data;
-    this->top->next = nullptr;
+    stack->top = NULL;
 }
 
-int Stack::pop()
+void push(Stack *stack, int data)
 {
-    int data = this->top->data;
-    Node *temp = this->top;
-    top = top->next;
-    delete temp;
+    Node *newnode =(Node*)malloc(sizeof(Node*));
+    newnode->data = data;
+    newnode->next = stack->top;
+    stack->top    = newnode;
+}
+
+int peek(Stack *stack)
+{
+    return stack->top->data;
+}
+
+int pop(Stack *stack)
+{
+    Node *temp = stack->top;
+    int data   = stack->top->data;
+    stack->top = stack->top->next;
+    free(temp);
     return data;
-}
-
-int Stack::peek()
-{
-    return this->top->data;
-}
-
-void Stack::push(int data)
-{
-    Node *temp = new Node();
-    temp->data = data;
-    temp->next = top;
-    top = temp;
 }

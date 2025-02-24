@@ -2,20 +2,21 @@
 #define STACK_HPP
 
 #include "linkedList.hpp"
+#include "stack.hpp"
 
-class Stack
+struct Stack
 {
-    private:
-        Node *top;
-
-    public:
-        Stack(int data);
-
-        int pop();
-
-        int peek();
-
-        void push(int);
+    Node *top;
 };
+
+typedef struct Stack Stack;
+
+void createStack(Stack*);
+
+void push(Stack*, int);
+
+int peek(Stack*);
+
+int pop(Stack*);
 
 #endif
