@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include <iostream>
 #include <vector>
 #include "linearAlgebra.hpp"
@@ -7,7 +6,7 @@ std::vector<float> gaussianElimination(int size, vector2d<float> coefficient, st
 {
 	// Solve a linear equation using Gaussian Elimination.
 	// Coefficient matrix is of size n x n and augmented vector is of size n
-	float temp, scalingFactor, sum;
+	float scalingFactor, sum;
 
 	// Converts the matrix to row echelon form
 
@@ -25,17 +24,10 @@ std::vector<float> gaussianElimination(int size, vector2d<float> coefficient, st
 				{
 					nonZeroChecker = 1;
 					// temp is used here to interchange each non-zero element in the two rows
-					for (int k = 0; k < size; k++)
-					{
-						temp = coefficient[i][k];
-						coefficient[i][k] = coefficient[j][k];
-						coefficient[j][k] = temp;
-					}
+					std::swap(coefficient[i], coefficient[j]);
 
 					// Interchanges the element in augmented matrix
-					temp = augmented[i];
-					augmented[i] = augmented[j];
-					augmented[j] = temp;
+					std::swap(augmented[i], augmented[j]);
 					break;
 				}
 			}
@@ -81,7 +73,7 @@ std::vector<float> gaussJordanElimination(int size, vector2d<float> coefficient,
 {
 	// Solve a linear equation using Gaussian - Jordan Elimination.
 	// Coefficient matrix is of size n x n and augmented vector is of size n
-	float temp, scalingFactor;
+	float scalingFactor;
 
 	// Converts the matrix to row echelon form
 
@@ -99,15 +91,11 @@ std::vector<float> gaussJordanElimination(int size, vector2d<float> coefficient,
 				if (coefficient[j][i])
 				{
 					nonZeroChecker = 1;
-					for (int k = 0; k < size; k++)
-					{
-						temp = coefficient[i][k];
-						coefficient[i][k] = coefficient[j][k];
-						coefficient[j][k] = temp;
-					}
-					temp = augmented[i];
-					augmented[i] = augmented[j];
-					augmented[j] = temp;
+					// temp is used here to interchange each non-zero element in the two rows
+					std::swap(coefficient[i], coefficient[j]);
+
+					// Interchanges the element in augmented matrix
+					std::swap(augmented[i], augmented[j]);
 					break;
 				}
 			}
@@ -151,7 +139,7 @@ vector2d<float> rowEchelon(int rows, int columns, vector2d<float> matrix)
 {
     // Converts a matrix into row echelon form
 	int row, column;
-    float temp, scalingFactor;
+    float scalingFactor;
 
     // Checking for non-zero pivot and interchanging rows
     // if a non-zero number is spotted below a zero
@@ -183,12 +171,7 @@ vector2d<float> rowEchelon(int rows, int columns, vector2d<float> matrix)
 					columnOnlyIncrement = 0;
 
 					// Swapping the two rows and then, breaking the loop
-					for (int j = column; j < columns; j++)
-					{
-						temp = matrix[row][j];
-						matrix[row][j] = matrix[i][j];
-						matrix[i][j] = temp;
-					}
+					std::swap(matrix[row], matrix[i]);
 					break;
 				}
 			}
@@ -268,12 +251,7 @@ vector2d<float> reducedRowEchelon(int rows, int columns, vector2d<float> matrix)
 					columnOnlyIncrement = 0;
 
 					// Swapping the two rows and then, breaking the loop
-					for (int j = column; j < columns; j++)
-					{
-						temp = matrix[row][j];
-						matrix[row][j] = matrix[i][j];
-						matrix[i][j] = temp;
-					}
+					std::swap(matrix[row], matrix[i]);
 					break;
 				}
 			}
@@ -483,14 +461,10 @@ vector2d<float> matrixInverse(int size, vector2d<float> matrix)
 					for (int k = 0; k < size; k++)
 					{
 						// Swapping rows of the matrix
-						temp = matrix[i][k];
-						matrix[i][k] = matrix[j][k];
-						matrix[j][k] = temp;
+						std::swap(matrix[i], matrix[j]);
 
 						// Swapping rows of Identity matrix
-						temp = identity[i][k];
-						identity[i][k] = identity[j][k];
-						identity[j][k] = temp;
+						std::swap(identity[i], identity[j]);
 					}
 					break;
 				}
