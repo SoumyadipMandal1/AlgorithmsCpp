@@ -1,10 +1,9 @@
-#ifndef LINEARALGEBRA_H
-#define LINEARALGEBRA_H
-#endif
-
 #include <stdlib.h>
+#include <iostream>
+#include <vector>
+#include "linearAlgebra.hpp"
 
-void gaussianElimination(int size, float coefficient[size][size], float augmented[size])
+std::vector<float> gaussianElimination(int size, vector2d<float> coefficient, std::vector<float> augmented)
 {
 	// Solve a linear equation using Gaussian Elimination.
 	// Coefficient matrix is of size n x n and augmented vector is of size n
@@ -12,35 +11,51 @@ void gaussianElimination(int size, float coefficient[size][size], float augmente
 
 	// Converts the matrix to row echelon form
 
+	// Iterates through each row
 	for (int i = 0; i < size; i++)
 	{
 		// For handling zero divisions
 		if (coefficient[i][i] == 0)
 		{
+			// Checks if any other row below has a non-zero pivot
+			int nonZeroChecker = 0;
 			for (int j = i + 1; j < size; j++)
 			{
 				if (coefficient[j][i])
 				{
-					// temp is used here
+					nonZeroChecker = 1;
+					// temp is used here to interchange each non-zero element in the two rows
 					for (int k = 0; k < size; k++)
 					{
 						temp = coefficient[i][k];
 						coefficient[i][k] = coefficient[j][k];
 						coefficient[j][k] = temp;
 					}
+
+					// Interchanges the element in augmented matrix
 					temp = augmented[i];
 					augmented[i] = augmented[j];
 					augmented[j] = temp;
 					break;
 				}
 			}
+
+			if (!nonZeroChecker)
+			{
+				std::cout << "The system of linear equations has no solutions\n";
+				return {};
+			}
 		}
 
+		// Executing necessary elementary roe operations
 		for (int j = i + 1; j < size; j++)
 		{
 			// If scalingFactor is zero, then there will be no changes
 			if (coefficient[j][i] == 0)
 				continue;
+
+			// Elemetary row operations are done in such a way that
+			// all the numbers in the matrix below the pivot becomes zero
 			scalingFactor = coefficient[j][i] / coefficient[i][i];
 			coefficient[j][i] = 0;
 			for (int k = i + 1; k < size; k++)
@@ -58,25 +73,32 @@ void gaussianElimination(int size, float coefficient[size][size], float augmente
 			sum += coefficient[i][j] * augmented[j];
 		augmented[i] = (augmented[i] - sum) / coefficient[i][i];
 	}
+
+	return augmented;
 }
 
-void gaussJordanElimination(int size, float coefficient[size][size], float augmented[size])
+std::vector<float> gaussJordanElimination(int size, vector2d<float> coefficient, std::vector<float> augmented)
 {
 	// Solve a linear equation using Gaussian - Jordan Elimination.
 	// Coefficient matrix is of size n x n and augmented vector is of size n
 	float temp, scalingFactor;
 
 	// Converts the matrix to row echelon form
+
+	// Iterates through each row
 	for (int i = 0; i < size; i++)
 	{
 		// For handling zero divisions
 		if (coefficient[i][i] == 0)
 		{
+			// Checks if any other row below has a non-zero pivot
+			int nonZeroChecker = 0;
 			for (int j = i + 1; j < size; j++)
 			{
 				// temp is used here
 				if (coefficient[j][i])
 				{
+					nonZeroChecker = 1;
 					for (int k = 0; k < size; k++)
 					{
 						temp = coefficient[i][k];
@@ -88,6 +110,12 @@ void gaussJordanElimination(int size, float coefficient[size][size], float augme
 					augmented[j] = temp;
 					break;
 				}
+			}
+
+			if (!nonZeroChecker)
+			{
+				std::cout << "The system of linear equations has no solutions\n";
+				return {};
 			}
 		}
 
@@ -115,34 +143,45 @@ void gaussJordanElimination(int size, float coefficient[size][size], float augme
 			}
 		}
 	}
+
+	return augmented;
 }
 
-void rowEchelon(int rows, int columns, float matrix[rows][columns])
+vector2d<float> rowEchelon(int rows, int columns, vector2d<float> matrix)
 {
     // Converts a matrix into row echelon form
 	int row, column;
     float temp, scalingFactor;
 
-    // Checking for non-zero pivot and interchanging
-    // rows if a non-zero number is spotted below a zero
+    // Checking for non-zero pivot and interchanging rows
+    // if a non-zero number is spotted below a zero
 
 	// Keeps track of rows and columns
 	row = column = 0;
 
 	// This flag checks whether to increment column only or not
-	int flag;
+	int columnOnlyIncrement;
 
+	// This loop stops operating if one of variable exceeds in value
 	while (row < rows && column < columns)
 	{
-		flag = 1;
+		// Initializing the flag
+		columnOnlyIncrement = 0;
+
+		// If the number bottom - right of the pivot is not zero
 		if (matrix[row][column] == 0)
 		{
-			flag = 0;
+			// Flag will be set to zero if all the numbers below the pivot is zero
+			columnOnlyIncrement = 1;
+
+			// Checks if a number below the pivot is non-zero
 			for (int i = row + 1; i < rows; i++)
 			{
 				if (matrix[i][column])
 				{
-					flag = 1;
+					// Changing the flag if a non zero element is found below the pivot
+					columnOnlyIncrement = 0;
+
 					// Swapping the two rows and then, breaking the loop
 					for (int j = column; j < columns; j++)
 					{
@@ -155,17 +194,22 @@ void rowEchelon(int rows, int columns, float matrix[rows][columns])
 			}
 		}
 
-		if (flag)
+		// If both column and row is to be incremented
+		if (!columnOnlyIncrement)
 		{
 			// scalingFactor is used here
+			// Iterates through each row
 			for (int i = row + 1; i < rows; i++)
 			{
-
 				// If scalingFactor is zero, then there will be no changes
 				if (matrix[i][column] == 0)
 					continue;
+
 				scalingFactor = matrix[i][column] / matrix[row][column];
+				// Each number below the pivot should be zero
 				matrix[i][column] = 0;
+
+				// Iterates through each column
 				for (int j = column + 1; j < columns; j++)
 				{
 					matrix[i][j] -= matrix[row][j] * scalingFactor;
@@ -176,6 +220,8 @@ void rowEchelon(int rows, int columns, float matrix[rows][columns])
 			row++;
 			column++;
 		}
+
+		// If only column is to be incremented
 		else
 		{
 			// Incrementing column if all the numbers below and including pivot is zero
@@ -183,9 +229,11 @@ void rowEchelon(int rows, int columns, float matrix[rows][columns])
 			continue;
 		}
 	}
+
+	return matrix;
 }
 
-void reducedRowEchelon(int rows, int columns, float matrix[rows][columns])
+vector2d<float> reducedRowEchelon(int rows, int columns, vector2d<float> matrix)
 {
     // Converts a matrix into row echelon form
 	int row, column;
@@ -198,19 +246,27 @@ void reducedRowEchelon(int rows, int columns, float matrix[rows][columns])
 	row = column = 0;
 
 	// This flag checks whether to increment column only or not
-	int flag;
+	int columnOnlyIncrement;
 
+	// This loop stops operating if one of variable exceeds in value
 	while (row < rows && column < columns)
 	{
-		flag = 1;
+		// Initializing the flag
+		columnOnlyIncrement = 0;
+
+		// If the number bottom - right of the pivot is not zero
 		if (matrix[row][column] == 0)
 		{
-			flag = 0;
+			// Flag will be set to zero if all the numbers below the pivot is zero
+			columnOnlyIncrement = 1;
+
 			for (int i = row + 1; i < rows; i++)
 			{
 				if (matrix[i][column])
 				{
-					flag = 1;
+					// Changing the flag if a non zero element is found below the pivot
+					columnOnlyIncrement = 0;
+
 					// Swapping the two rows and then, breaking the loop
 					for (int j = column; j < columns; j++)
 					{
@@ -223,23 +279,28 @@ void reducedRowEchelon(int rows, int columns, float matrix[rows][columns])
 			}
 		}
 
-		if (flag)
+		if (!columnOnlyIncrement)
 		{
 
 			// Scaling the pivot to 1
 			scalingFactor = matrix[row][column];
 			matrix[row][column] = 1;
+
+			// Scaling the row so that pivot = 1
 			for (int i = column + 1; i < columns; i++)
 				matrix[row][i] /= scalingFactor;
 
 			// scalingFactor is used here
 			for (int i = 0; i < rows; i++)
 			{
+				// All the numbers above and below the pivot changed to zero
+				// by Elemetary row operations
 				if (i != row)
 				{
 					// If scalingFactor is zero, then there will be no changes
 					if (matrix[i][column] == 0)
 						continue;
+
 					scalingFactor = matrix[i][column];
 					matrix[i][column] = 0;
 					for (int j = column + 1; j < columns; j++)
@@ -258,75 +319,110 @@ void reducedRowEchelon(int rows, int columns, float matrix[rows][columns])
 			continue;
 		}
 	}
+
+	return matrix;
 }
 
-int rank(int rows, int columns, float matrix[rows][columns])
+int rank(int rows, int columns, vector2d<float> matrix)
 {
+	// Rank is the number of nonzero rows in row echelon form or row reduced echelon form
+
+	// This flag checks if the row is non - zero or not
 	int flag;
+
+	// Initializing the rank variable
 	int rank = 0;
-	rowEchelon(rows, columns, matrix);
+
+	// Converting the matrix to row reduced echelon form
+	matrix = rowEchelon(rows, columns, matrix);
+
+	// Iterating through each row
 	for (int i = 0; i < rows; i++)
 	{
 		flag = 0;
+
+		// Checking each number of each row
 		for (int j = 0; j < columns; j++)
 		{
 			if (matrix[i][j])
 				flag = 1;
 		}
+
+		// If the row is non - zero, then incrementing the rank variable
 		if (flag)
 			rank++;
+
+		// All the rows below a zero row are zero rows
+		// Thus no need to continue the loop further
+		else
+ ;			break;
 	}
+
 	return rank;
 }
 
-void matrixAdd(int rows, int columns, float matrix1[rows][columns], float matrix2[rows][columns], float matrixSum[rows][columns])
+vector2d<float> matrixAdd(int rows, int columns, vector2d<float> matrix1, vector2d<float> matrix2)
 {
+	vector2d<float> matrixSum;
+
 	// Adding matrix
+	// Looping the rows
 	for (int i = 0; i < rows; i++)
 	{
+		// Looping the columns
 		for (int j = 0; j < columns; j++)
 			matrixSum[i][j] = matrix1[i][j] + matrix2[i][j];
 	}
+
+	return matrixSum;
 }
 
-void scalarMultiplication(int rows, int columns, float matrix[rows][columns], float scalar)
+vector2d<float> scalarMultiplication(int rows, int columns, vector2d<float> matrix, float scalar)
 {
 	for (int i = 0; i < rows; i++)
 	{
 		for (int j = 0; j < columns; j++)
 			matrix[i][j] *= scalar;
 	}
+
+	return matrix;
 }
 
-void transpose(int rows, int columns, float matrix[rows][columns], float matrixTranspose[columns][rows])
+vector2d<float> transpose(int rows, int columns, vector2d<float> matrix)
 {
+	vector2d<float> matrixTranspose;
+
 	// Transposing matrix
 	for (int i = 0; i < columns; i++)
 	{
 		for (int j = 0; j < rows; j++)
 			matrixTranspose[i][j] = matrix[j][i];
 	}
+
+	return matrixTranspose;
 }
 
-int isSymmetric(int size, float matrix[size][size])
+int isSymmetric(int size, vector2d<float> matrix)
 {
 	// Transposing Matrix
-	float matrixTranspose[size][size];
-	transpose(size, size, matrix, matrixTranspose);
+	vector2d<float> matrixTranspose;
+	matrixTranspose = transpose(size, size, matrix);
 
 	// Stores the condition whether a matrix is symmetric or not
 	int flag = 1;
 
+	// Checks if each number in each position is same or not
 	for (int i = 0; i < size; i++)
 	{
 		for (int j = 0; j < size; j++)
 		{
-		if (matrix[i][j] != matrixTranspose[i][j])
+			if (matrix[i][j] != matrixTranspose[i][j])
 			{
 				flag = 0;
 				break;
 			}
-			if (flag == 0)
+
+			if (!flag)
 				break;
 		}
 	}
@@ -334,8 +430,11 @@ int isSymmetric(int size, float matrix[size][size])
 	return flag;
 }
 
-void matrixMultiply(int m, int p, int n, float matrix1[m][p], float matrix2[p][n], float matrixProduct[m][n])
+vector2d<float> matrixMultiply(int m, int p, int n, vector2d<float> matrix1, vector2d<float> matrix2)
 {
+	// uses the old O(n^3) algorithm
+	vector2d<float> matrixProduct;
+
 	// Multiplying matrices
 	for (int i = 0; i < m; i++)
 	{
@@ -346,18 +445,25 @@ void matrixMultiply(int m, int p, int n, float matrix1[m][p], float matrix2[p][n
 				matrixProduct[i][j] += matrix1[i][k] * matrix2[k][j];
 		}
 	}
+
+	return matrixProduct;
 }
 
-void matrixInverse(int size, float matrix[size][size], float identity[size][size])
+vector2d<float> matrixInverse(int size, vector2d<float> matrix)
 {
 	// Inversing a matrix
 	float temp, scalingFactor;
 
 	// Creating Identity Matrix
+	vector2d<float> identity;
+
 	for (int i = 0; i < size; i++)
 	{
+		// Initializing every element in the matrix to zero
 		for (int j = 0; j < size; j++)
 			identity[i][j] = 0;
+
+		// Only diagonal element equals to one
 		identity[i][i] = 1;
 	}
 
@@ -423,9 +529,11 @@ void matrixInverse(int size, float matrix[size][size], float identity[size][size
 			}
 		}
 	}
+
+	return matrix;
 }
 
-void rankNormal(int rows, int columns, float matrix[rows][columns])
+void rankNormal(int rows, int columns, vector2d<float> matrix)
 {
 	int rankMatrix = rank(rows, columns, matrix);
 	for (int i = 0; i < rankMatrix; i++)
@@ -442,7 +550,7 @@ void rankNormal(int rows, int columns, float matrix[rows][columns])
 }
 
 
-float determinant(int size, float matrix[size][size])
+float determinant(int size, vector2d<float> matrix)
 {
 	int inversion = 0;
 	int flag = 0;
