@@ -1,16 +1,20 @@
 #ifndef TREE_HPP
 #define TREE_HPP
 
-#include "linkedList.hpp"
-#include <cmath>
+#include <vector>
+#include <string>
 
-struct treeNode
+struct binaryTreeNode
 {
     int data;
-    Node *left;
-    Node *right;
+    struct binaryTreeNode *left;
+    struct binaryTreeNode *right;
 };
 
-typedef struct treeNode treeNode;
+typedef struct binaryTreeNode binaryTreeNode;
+
+binaryTreeNode* binarySearchTree(std::vector<int>, int);
+
+std::string searchBST(binaryTreeNode*, int);
 
 #endif
