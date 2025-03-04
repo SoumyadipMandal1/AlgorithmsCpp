@@ -13,6 +13,12 @@ struct binaryTreeNode
 
 typedef struct binaryTreeNode binaryTreeNode;
 
+void preOrderTraversal(binaryTreeNode*, std::vector<int>&);
+
+void inOrderTraversal(binaryTreeNode*, std::vector<int>&);
+
+void postOrderTraversal(binaryTreeNode*, std::vector<int>&);
+
 binaryTreeNode* binarySearchTree(std::vector<int>, int);
 
 std::string searchBST(binaryTreeNode*, int);
