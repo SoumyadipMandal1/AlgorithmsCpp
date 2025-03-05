@@ -1,18 +1,16 @@
-#ifndef MATH_H
-#define MATH_H
-#endif
+#include <vector>
 
-void swap(int* a, int* b)
+void swap(int& a, int& b)
 {
-	int temp = *a;
-	*a = *b;
-	*b = temp;
+	int temp = a;
+	a = b;
+	b = temp;
 }
 
 int gcd(int a, int b)
 {
 	if (a < b)
-		swap(&a, &b);
+		swap(a, b);
 
 	if (b == 0)
 		return a;
@@ -20,7 +18,7 @@ int gcd(int a, int b)
 		return gcd(b, a % b);
 }
 
-int horner(int arr[], int x, int length)
+int horner(std::vector<int> coefficient, int x, int length)
 {
 	// If an array [a0, a1, a2, ..., an] is given, then
 	// a0 + a1 * x + a2 * x^2 + ... + an * x^n is returned
@@ -29,7 +27,7 @@ int horner(int arr[], int x, int length)
 	int result = 0;
 
 	for (int i = length - 1; i >= 0; i--)
-		result = arr[i] + result * x;
+		result = coefficient[i] + result * x;
 
 	return result;
 }
