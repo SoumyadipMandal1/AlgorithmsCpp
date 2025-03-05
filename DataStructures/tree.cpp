@@ -6,23 +6,32 @@
 
 void preOrderTraversal(binaryTreeNode *root, std::vector<int>& treeArray)
 {
-    treeArray.push_back(root->data);
-    preOrderTraversal(root->left, treeArray);
-    preOrderTraversal(root->right, treeArray);
+    if (root != NULL)
+    {
+        treeArray.push_back(root->data);
+        preOrderTraversal(root->left, treeArray);
+        preOrderTraversal(root->right, treeArray);
+    }
 }
 
 void inOrderTraversal(binaryTreeNode *root, std::vector<int>& treeArray)
 {
-    inOrderTraversal(root->left, treeArray);
-    treeArray.push_back(root->data);
-    inOrderTraversal(root->right, treeArray);
+    if (root != NULL)
+    {
+        inOrderTraversal(root->left, treeArray);
+        treeArray.push_back(root->data);
+        inOrderTraversal(root->right, treeArray);
+    }
 }
 
 void postOrderTraversal(binaryTreeNode *root, std::vector<int>& treeArray)
 {
-    postOrderTraversal(root->left, treeArray);
-    postOrderTraversal(root->right, treeArray);
-    treeArray.push_back(root->data);
+    if (root != NULL)
+    {
+        postOrderTraversal(root->left, treeArray);
+        postOrderTraversal(root->right, treeArray);
+        treeArray.push_back(root->data);
+    }
 }
 
 binaryTreeNode* binarySearchTree(std::vector<int> arr, int n)
