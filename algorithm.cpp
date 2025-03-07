@@ -7,31 +7,31 @@ void swap(int& a, int& b)
 	b = temp;
 }
 
-int linear(std::vector<int> array, int length, int key)
+int linear(std::vector<int> arr, int length, int key)
 {
 	for (int i = 0; i < length; i++)
 	{
-		if (array[i] == key)
+		if (arr[i] == key)
 			return i;
 	}
 
-	// If key is not found in the array
+	// If key is not found in the arr
 	return -1;
 }
 
-int binaryLeft(std::vector<int> array, int low, int high, int key)
+int binaryLeft(std::vector<int> arr, int low, int high, int key)
 {
 	// Calculating the middle value
 	int mid = low + (high - low) / 2;
 
-	if (array[mid] == key)
+	if (arr[mid] == key)
 	{
-		// array[low - 1] is out of range
+		// arr[low - 1] is out of range
 		if (mid == low)
 			return mid;
 		// Checking if any other element in the left is equal to the key
-		else if (array[mid - 1] == key)
-			return binaryLeft(array, low, mid, key);
+		else if (arr[mid - 1] == key)
+			return binaryLeft(arr, low, mid, key);
 		else
 			return mid;
 	}
@@ -40,24 +40,24 @@ int binaryLeft(std::vector<int> array, int low, int high, int key)
 	else if (mid == low || mid == high)
 		return -1;
 
-	else if (array[mid] > key)
-		return binaryLeft(array, low, mid, key);
+	else if (arr[mid] > key)
+		return binaryLeft(arr, low, mid, key);
 	else
-		return binaryLeft(array, mid, high, key);
+		return binaryLeft(arr, mid, high, key);
 }
 
-int binaryRight(std::vector<int> array, int low, int high, int key)
+int binaryRight(std::vector<int> arr, int low, int high, int key)
 {
 	// Calculating the middle value
 	int mid = low + (high - low) / 2;
 
-	if (array[mid] == key)
+	if (arr[mid] == key)
 	{
-		// array[high + 1] is out of range
+		// arr[high + 1] is out of range
 		if (mid == high)
 			return mid;
 		// Checking if any other element in right is equal to the key
-		else if (array[mid + 1] == key)
+		else if (arr[mid + 1] == key)
 			// if low = high - 1, then
 			// mid = (high - 1) - (high - (high - 1)) / 2
 			// mid = high - 1 - (high - high + 1) / 2
@@ -65,7 +65,7 @@ int binaryRight(std::vector<int> array, int low, int high, int key)
 			// mid = low
 			// To fix this issue, mid + 1 is taken instead of mid
 			// as done in binarySearchLeft
-			return binaryRight(array, mid + 1, high, key);
+			return binaryRight(arr, mid + 1, high, key);
 		else
 			return mid;
 	}
@@ -74,35 +74,35 @@ int binaryRight(std::vector<int> array, int low, int high, int key)
 	else if (mid == low || mid == high)
 		return -1;
 
-	else if (array[mid] > key)
-		return binaryRight(array, low, mid, key);
+	else if (arr[mid] > key)
+		return binaryRight(arr, low, mid, key);
 	else
-		return binaryRight(array, mid, high, key);
+		return binaryRight(arr, mid, high, key);
 }
 
-int min(std::vector<int> array, int length)
+int min(std::vector<int> arr, int length)
 {
-	int min = array[0];
+	int min = arr[0];
 	for (int i = 1; i < length; i++)
 	{
-		if (min > array[i])
-			min = array[i];
+		if (min > arr[i])
+			min = arr[i];
 	}
 	return min;
 }
 
-int max(std::vector<int> array, int length)
+int max(std::vector<int> arr, int length)
 {
-	int max = array[0];
+	int max = arr[0];
 	for (int i = 1; i < length; i++)
 	{
-		if (max < array[i])
-			max = array[i];
+		if (max < arr[i])
+			max = arr[i];
 	}
 	return max;
 }
 
-std::vector<int> bubbleSort(std::vector<int> array, int length, bool reverse = false)
+std::vector<int> bubbleSort(std::vector<int> arr, int length, bool reverse = false)
 {
 	if (reverse)
 	{
@@ -110,8 +110,8 @@ std::vector<int> bubbleSort(std::vector<int> array, int length, bool reverse = f
 		{
 			for (int j = i + 1; j < length; j++)
 			{
-				if (array[i] < array[j])
-					swap(array[i], array[j]);
+				if (arr[i] < arr[j])
+					swap(arr[i], arr[j]);
 			}
 		}
 	}
@@ -121,16 +121,16 @@ std::vector<int> bubbleSort(std::vector<int> array, int length, bool reverse = f
 		{
 			for (int j = i + 1; j < length; j++)
 			{
-				if (array[i] > array[j])
-					swap(array[i], array[j]);
+				if (arr[i] > arr[j])
+					swap(arr[i], arr[j]);
 			}
 		}
 	}
 
-	return array;
+	return arr;
 }
 
-std::vector<int> insertionSort(std::vector<int> array, int length, bool reverse = false)
+std::vector<int> insertionSort(std::vector<int> arr, int length, bool reverse = false)
 {
 	int key, j; // For Loop optimization
 
@@ -139,52 +139,52 @@ std::vector<int> insertionSort(std::vector<int> array, int length, bool reverse 
 		int key, j; // For Loop optimization
 		for (int i = 1; i < length; i++)
 		{
-			key = array[i];
+			key = arr[i];
 			j = i - 1;
-			while (j >= 0 && array[j] < key)
+			while (j >= 0 && arr[j] < key)
 			{
-				array[j + 1] = array[j];
+				arr[j + 1] = arr[j];
 				j--;
 			}
-			array[j + 1] = key;
+			arr[j + 1] = key;
 		}
 	}
 	else
 	{
 		for (int i = 1; i < length; i++)
 		{
-			key = array[i];
+			key = arr[i];
 			j = i - 1;
-			while (j >= 0 && array[j] > key)
+			while (j >= 0 && arr[j] > key)
 			{
-				array[j + 1] = array[j];
+				arr[j + 1] = arr[j];
 				j--;
 			}
-			array[j + 1] = key;
+			arr[j + 1] = key;
 		}
 	}
 
-	return array;
+	return arr;
 }
 
-std::vector<int> selectionSort(std::vector<int> array, int length, bool reverse = false)
+std::vector<int> selectionSort(std::vector<int> arr, int length, bool reverse = false)
 {
 	if (reverse)
 	{
 		int min, minpos; // For loop optimization
 		for (int i = 0; i < length - 1; i++)
 		{
-			min = array[i];
+			min = arr[i];
 			minpos = i;
 			for (int j = i + 1; j < length; j++)
 			{
-				if (min < array[j])
+				if (min < arr[j])
 				{
-					min = array[j];
+					min = arr[j];
 					minpos = j;
 				}
 			}
-			swap(array[i], array[minpos]);
+			swap(arr[i], arr[minpos]);
 		}
 	}
 	else
@@ -192,81 +192,81 @@ std::vector<int> selectionSort(std::vector<int> array, int length, bool reverse 
 		int max, minpos; // For loop optimization
 		for (int i = 0; i < length - 1; i++)
 		{
-			max = array[i];
+			max = arr[i];
 			minpos = i;
 			for (int j = i + 1; j < length; j++)
 			{
-				if (max > array[j])
+				if (max > arr[j])
 				{
-					max = array[j];
+					max = arr[j];
 					minpos = j;
 				}
 			}
-			swap(array[i], array[minpos]);
+			swap(arr[i], arr[minpos]);
 		}
 	}
 
-	return array;
+	return arr;
 }
 
-void merge(std::vector<int>& array, int left, int mid, int right, bool reverse = false)
+void merge(std::vector<int>& arr, int left, int mid, int right, bool reverse = false)
 {
-	// Creating two arrays
-	// One array contains form array[left] to array[middle]
-	// Other from array[middle + 1] to array[right]
+	// Creating two arrs
+	// One arr contains form arr[left] to arr[middle]
+	// Other from arr[middle + 1] to arr[right]
 
-	// Length of first array
+	// Length of first arr
 	int leftLength = mid - left + 1;
 
-	// Length of second array
+	// Length of second arr
 	// right - (middle + 1) + 1
 	//       = right - middle - 1 + 1
 	//       = right - middle
 	int rightLength = right - mid;
 
-	int leftarray[leftLength];
-	int rightarray[rightLength];
+	int leftarr[leftLength];
+	int rightarr[rightLength];
 
 	for (int i = 0; i < leftLength; i++)
-		leftarray[i]  = array[left + i];
+		leftarr[i]  = arr[left + i];
 
 	for (int i = 0; i < rightLength; i++)
-		rightarray[i] = array[mid + i + 1];
+		rightarr[i] = arr[mid + i + 1];
 
 	// Merging
 
-	int leftpos  = 0;    // Keeps track of left array
-	int rightpos = 0;    // Keeps track of right array
-	int mainpos  = left; // Keeps track of main array
+	int leftpos  = 0;    // Keeps track of left arr
+	int rightpos = 0;    // Keeps track of right arr
+	int mainpos  = left; // Keeps track of main arr
 
 	while (leftpos < leftLength && rightpos < rightLength)
 	{
 		if (reverse)
 		{
-			if (leftarray[leftpos] > rightarray[rightpos])
+			if (leftarr[leftpos] > rightarr[rightpos])
 			{
-				array[mainpos] = leftarray[leftpos];
+				arr[mainpos] = leftarr[leftpos];
 				leftpos++;
 				mainpos++;
 			}
 			else
 			{
-				array[mainpos] = rightarray[rightpos];
+				arr[mainpos] = rightarr[rightpos];
 				rightpos++;
 				mainpos++;
 			}
 		}
 		else
 		{
-			if (leftarray[leftpos] < rightarray[rightpos])
+			if (leftarr[leftpos] < rightarr[rightpos])
 			{
-				array[mainpos] = leftarray[leftpos];
+				arr[mainpos] = leftarr[leftpos];
 				leftpos++;
 				mainpos++;
 			}
 			else
 			{
-				array[mainpos] = rightarray[rightpos];
+				arr[mainpos] = rightarr[rightpos];
 				rightpos++;
 				mainpos++;
 			}
@@ -277,29 +277,29 @@ void merge(std::vector<int>& array, int left, int mid, int right, bool reverse =
 
 	while (leftpos < leftLength)
 	{
-		array[mainpos] = leftarray[leftpos];
+		arr[mainpos] = leftarr[leftpos];
 		leftpos++;
 		mainpos++;
 	}
 
 	while(rightpos < rightLength)
 	{
-		array[mainpos] = rightarray[rightpos];
+		arr[mainpos] = rightarr[rightpos];
 		rightpos++;
 		mainpos++;
 	}
 }
 
-void mergeSort(std::vector<int>& array, int left, int right, bool reverse = false)
+void mergeSort(std::vector<int>& arr, int left, int right, bool reverse = false)
 {
 	if (reverse)
 	{
 		if (left < right)
 		{
 			int mid = left + (right - left) / 2;
-			mergeSort(array, left, mid, reverse = true);
-			mergeSort(array, mid + 1, right, true);
-			merge(array, left, mid, right, true);
+			mergeSort(arr, left, mid, reverse = true);
+			mergeSort(arr, mid + 1, right, true);
+			merge(arr, left, mid, right, true);
 		}
 	}
 	else
@@ -307,9 +307,39 @@ void mergeSort(std::vector<int>& array, int left, int right, bool reverse = fals
 		if (left < right)
 		{
 			int mid = left + (right - left) / 2;
-			mergeSort(array, left, mid);
-			mergeSort(array, mid + 1, right);
-			merge(array, left, mid, right);
+			mergeSort(arr, left, mid);
+			mergeSort(arr, mid + 1, right);
+			merge(arr, left, mid, right);
 		}
 	}
+}
+
+void permute(std::vector<std::vector<int>>& permutations, std::vector<int> permutation, std::vector<int> arr, std::vector<bool>& chosen)
+{
+	if (permutation.size() == arr.size())
+		permutations.push_back(permutation);
+	else
+	{
+		for (int i = 0; i < arr.size(); i++)
+		{
+			if (chosen[i])
+				continue;
+			chosen[i] = true;
+			permutation.push_back(arr[i]);
+			permute(permutations, permutation, arr, chosen);
+			chosen[i] = false;
+			permutation.pop_back();
+		}
+	}
+}
+
+std::vector<std::vector<int>> permutation(std::vector<int> arr)
+{
+	std::vector<std::vector<int>> permutations;
+	std::vector<int> permutation;
+	std::vector<bool> chosen(arr.size(), false);
+
+	permute(permutations, permutation, arr, chosen);
+
+	return permutations;
 }
