@@ -77,7 +77,7 @@ binaryTreeNode* binarySearchTree(std::vector<int> arr, int n)
             continue;
 
         // Creating new node
-        binaryTreeNode *newnode =(binaryTreeNode*)malloc(sizeof(binaryTreeNode));
+        binaryTreeNode *newnode = (binaryTreeNode*)malloc(sizeof(binaryTreeNode));
         newnode->data = arr[i];
         newnode->left = newnode->right = NULL;
 
