@@ -23,4 +23,6 @@ binaryTreeNode* binarySearchTree(std::vector<int>, int);
 
 std::string searchBST(binaryTreeNode*, int);
 
+binaryTreeNode* randomBinaryTree(double leftChildProbability = 0.5, double rightChildProbability = 0.5);
+
 #endif

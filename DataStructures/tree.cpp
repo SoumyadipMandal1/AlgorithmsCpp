@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <stdexcept>
+#include <climits>
 #include "tree.hpp"
 
 void preOrderTraversal(binaryTreeNode *root, std::vector<int>& treeArray)
@@ -113,4 +114,24 @@ std::string searchBST(binaryTreeNode *root, int key)
         else
             return "->Not Found";
     }
+}
+
+binaryTreeNode* randomBinaryTree(double leftChildProbability, double rightChildProbability)
+{
+    // Creating node
+    binaryTreeNode *root = (binaryTreeNode*)malloc(sizeof(binaryTreeNode));
+    root->data = rand();
+    root->left = root->right = NULL;
+
+    // creating left child
+    double createLeftChild = rand() / (double) RAND_MAX;
+    if (createLeftChild <= leftChildProbability)
+        root->left = randomBinaryTree(leftChildProbability, rightChildProbability);
+
+    // creating right child
+    double createRightChild = rand() / (double) RAND_MAX;
+    if (createRightChild <= rightChildProbability)
+        root->right = randomBinaryTree(leftChildProbability, rightChildProbability);
+
+    return root;
 }

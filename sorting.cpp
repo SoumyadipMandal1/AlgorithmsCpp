@@ -155,6 +155,7 @@ void merge(std::vector<int>& arr, int left, int mid, int right, bool reverse = f
                 mainpos++;
             }
         }
+
         else
         {
             if (leftarr[leftpos] < rightarr[rightpos])
