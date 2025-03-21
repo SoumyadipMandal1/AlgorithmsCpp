@@ -27,4 +27,6 @@ binaryTreeNode* randomBinaryTree(int start, int end, double leftChildProbability
 
 void printBinaryTree(binaryTreeNode *root, int depth = 0, const std::string& direction = "");
 
+binaryTreeNode* binaryTreeFromPreOrderAndInOrder(std::vector<int> preOrder, std::vector<int> inOrder);
+
 #endif

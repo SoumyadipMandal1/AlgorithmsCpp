@@ -4,6 +4,7 @@
 #include <string>
 #include <stdexcept>
 #include <climits>
+#include "../algorithm.hpp"
 #include "tree.hpp"
 
 void preOrderTraversal(binaryTreeNode *root, std::vector<int>& treeArray)
@@ -141,13 +142,15 @@ binaryTreeNode* randomBinaryTree(int start, int end, double leftChildProbability
 
 void printBinaryTree(binaryTreeNode *root, int depth, const std::string& direction)
 {
-    // Printing Binary Tree
-    if (root == NULL)   // Base Case
+    // Base Case
+    if (root == NULL)
         return;
 
+    // Printing Binary Tree
     for (int i = 0; i < depth; i++)
-        std::cout << "|   ";
+        std::cout << "|   ";   // Print the tab spaces
 
+    // Prints the direction and number in the binary tree
     if (direction == "L")
         std::cout << "L-- " << root->data << '\n';
     else if (direction == "R")
@@ -158,4 +161,32 @@ void printBinaryTree(binaryTreeNode *root, int depth, const std::string& directi
     // Traversing the tree
     printBinaryTree(root->left, depth + 1, "L");
     printBinaryTree(root->right, depth + 1, "R");
+}
+
+binaryTreeNode* binaryTreeFromPreOrderAndInOrder(std::vector<int> preOrder, std::vector<int> inOrder)
+{
+    if (preOrder.empty() == 0)
+    {
+        // Creating newnode
+        binaryTreeNode *root = (binaryTreeNode*)malloc(sizeof(binaryTreeNode*));
+        root->data = preOrder[0];
+        root->left = root->right = NULL;
+
+        // Searching for the position of root in the in-order array
+        int rootPos = linear(inOrder, inOrder.size(), root->data);
+
+        // Creating pre-order and in-order arrays of left and right trees
+        std::vector<int> preOrderLeft(preOrder.begin() + 1, preOrder.begin() + rootPos + 1);
+        std::vector<int> preOrderRight(preOrder.begin() + rootPos + 1, preOrder.begin() + preOrder.size());
+        std::vector<int> inOrderLeft(inOrder.begin(), inOrder.begin() + rootPos);
+        std::vector<int> inOrderRight(inOrder.begin() + rootPos + 1, inOrder.begin() + inOrder.size());
+
+        // traversing the binary tree
+        root->left  = binaryTreeFromPreOrderAndInOrder(preOrderLeft,  inOrderLeft);
+        root->right = binaryTreeFromPreOrderAndInOrder(preOrderRight, inOrderRight);
+
+        return root;
+    }
+    else
+        return NULL;
 }
