@@ -1,3 +1,4 @@
+#include <iostream>
 #include <stdlib.h>
 #include <vector>
 #include <string>
@@ -116,22 +117,45 @@ std::string searchBST(binaryTreeNode *root, int key)
     }
 }
 
-binaryTreeNode* randomBinaryTree(double leftChildProbability, double rightChildProbability)
+binaryTreeNode* randomBinaryTree(int start, int end, double leftChildProbability, double rightChildProbability)
 {
+    // TODO : For larger values of probability, an error is generated due to large recursion depth
+
     // Creating node
     binaryTreeNode *root = (binaryTreeNode*)malloc(sizeof(binaryTreeNode));
-    root->data = rand();
+    root->data = start + rand() % (end - start + 1);
     root->left = root->right = NULL;
 
     // creating left child
     double createLeftChild = rand() / (double) RAND_MAX;
     if (createLeftChild <= leftChildProbability)
-        root->left = randomBinaryTree(leftChildProbability, rightChildProbability);
+        root->left = randomBinaryTree(start, end, leftChildProbability, rightChildProbability);
 
     // creating right child
     double createRightChild = rand() / (double) RAND_MAX;
     if (createRightChild <= rightChildProbability)
-        root->right = randomBinaryTree(leftChildProbability, rightChildProbability);
+        root->right = randomBinaryTree(start, end, leftChildProbability, rightChildProbability);
 
     return root;
+}
+
+void printBinaryTree(binaryTreeNode *root, int depth, const std::string& direction)
+{
+    // Printing Binary Tree
+    if (root == NULL)   // Base Case
+        return;
+
+    for (int i = 0; i < depth; i++)
+        std::cout << "|   ";
+
+    if (direction == "L")
+        std::cout << "L-- " << root->data << '\n';
+    else if (direction == "R")
+        std::cout << "R-- " << root->data << '\n';
+    else
+        std::cout << root->data << '\n';
+
+    // Traversing the tree
+    printBinaryTree(root->left, depth + 1, "L");
+    printBinaryTree(root->right, depth + 1, "R");
 }
