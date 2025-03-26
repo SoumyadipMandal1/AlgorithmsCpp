@@ -19,6 +19,10 @@ void inOrderTraversal(binaryTreeNode *, std::vector<int> &);
 
 void postOrderTraversal(binaryTreeNode *, std::vector<int> &);
 
+void insertBST(binaryTreeNode *root, int n);
+
+void deleteBST(binaryTreeNode *previousBinaryTreeNode, binaryTreeNode *currentBinaryTreeNode);
+
 binaryTreeNode *binarySearchTree(std::vector<int>, int);
 
 std::string searchBST(binaryTreeNode *, int);
@@ -28,7 +32,5 @@ binaryTreeNode *randomBinaryTree(int start, int end, double leftChildProbability
 void printBinaryTree(binaryTreeNode *root, int depth = 0, const std::string &direction = "");
 
 binaryTreeNode *binaryTreeFromPreOrderAndInOrder(std::vector<int> preOrder, std::vector<int> inOrder);
-
-void deleteBinaryTreeNode(binaryTreeNode *previousBinaryTreeNode, binaryTreeNode *currentBinaryTreeNode);
 
 #endif

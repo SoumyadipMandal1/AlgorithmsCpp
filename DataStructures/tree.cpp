@@ -3,7 +3,6 @@
 #include <climits>
 #include <cstddef>
 #include <iostream>
-#include <stdexcept>
 #include <stdlib.h>
 #include <string>
 #include <vector>
@@ -38,59 +37,121 @@ void postOrderTraversal(binaryTreeNode *root, std::vector<int> &treeArray)
     }
 }
 
-binaryTreeNode *binarySearchTree(std::vector<int> arr, int n)
+void insertBST(binaryTreeNode *root, int n)
 {
-    // Empty array
-    if (!n)
-        return NULL;
+    // Creating new node
+    binaryTreeNode *newnode;
+    newnode->data = n;
+    newnode->left = newnode->right = NULL;
 
-    else if (n < 0)
-        throw std::invalid_argument("Number of elements in the array can not be less than zero");
-
-    // Initializing the root
-    binaryTreeNode *root = (binaryTreeNode *)malloc(sizeof(binaryTreeNode));
-    root->data = arr[0];
-    root->left = root->right = NULL;
-
-    // This flag checks if same number is encountered in the binary search tree
-    int sameNumber;
-
-    binaryTreeNode *temp;
-    for (int i = 1; i < n; i++)
+    if (root == NULL)
     {
-        // Initializing the flag
-        sameNumber = 0;
+        root = newnode;
+        return;
+    }
 
-        temp = root;
-        while ((arr[i] < temp->data && temp->left != NULL) || (arr[i] > temp->data && temp->right != NULL))
+    binaryTreeNode *temp = root;
+    while ((n < temp->data && temp->left != NULL) || (n > temp->data && temp->right != NULL))
+    {
+        if (n < temp->data)
+            temp = temp->left;
+        else if (n > temp->data)
+            temp = temp->right;
+        else
+            return;
+    }
+
+    if (n < temp->data)
+        temp->left = newnode;
+    else
+        temp->right = newnode;
+    return;
+}
+
+void deleteBST(binaryTreeNode *previousBinaryTreeNode, binaryTreeNode *currentBinaryTreeNode)
+{
+    if (currentBinaryTreeNode->left == NULL && currentBinaryTreeNode->right == NULL)
+    {
+        free(currentBinaryTreeNode);
+        previousBinaryTreeNode->left = previousBinaryTreeNode->right = NULL;
+    }
+
+    else if (currentBinaryTreeNode->left != NULL && currentBinaryTreeNode->right == NULL)
+    {
+        previousBinaryTreeNode->left = currentBinaryTreeNode->left;
+        free(currentBinaryTreeNode);
+    }
+
+    else if (currentBinaryTreeNode->left == NULL && currentBinaryTreeNode->right != NULL)
+    {
+        previousBinaryTreeNode->right = currentBinaryTreeNode->right;
+        free(currentBinaryTreeNode);
+    }
+
+    else
+    {
+        if (previousBinaryTreeNode->left == currentBinaryTreeNode)
         {
-            if (arr[i] < temp->data)
-                temp = temp->left;
+            // Replacing the leftmost child of the right sub-tree as the deleted node
+            binaryTreeNode *previousTemp, *currentTemp;
+            previousTemp = currentBinaryTreeNode->right;
 
-            else if (arr[i] > temp->data)
-                temp = temp->right;
-
+            if (previousTemp->left == NULL)
+                currentTemp = previousTemp;
             else
             {
-                sameNumber = 1;
-                break;
+                currentTemp = previousTemp->left;
+                while (currentTemp->left != NULL)
+                {
+                    previousTemp = currentTemp;
+                    currentTemp = currentTemp->left;
+                }
+                previousTemp->left = NULL;
             }
+
+            previousBinaryTreeNode->left = currentTemp;
+            currentTemp->left = currentBinaryTreeNode->left;
+            currentTemp->right = currentBinaryTreeNode->right;
         }
 
-        if (sameNumber)
-            continue;
+        else if (previousBinaryTreeNode->right == currentBinaryTreeNode)
+        {
+            // Replacing the leftmost child of the right sub-tree as the deleted node
+            binaryTreeNode *previousTemp, *currentTemp;
+            previousTemp = currentBinaryTreeNode->right;
 
-        // Creating new node
-        binaryTreeNode *newnode = (binaryTreeNode *)malloc(sizeof(binaryTreeNode));
-        newnode->data = arr[i];
-        newnode->left = newnode->right = NULL;
+            if (previousTemp->left == NULL)
+                currentTemp = previousTemp;
+            else
+            {
+                currentTemp = previousTemp->left;
+                while (currentTemp->left != NULL)
+                {
+                    previousTemp = currentTemp;
+                    currentTemp = currentTemp->left;
+                }
+                previousTemp->left = NULL;
+            }
 
-        if (arr[i] < temp->data)
-            temp->left = newnode;
-
-        else
-            temp->right = newnode;
+            previousBinaryTreeNode->right = currentTemp;
+            currentTemp->left = currentBinaryTreeNode->left;
+            currentTemp->right = currentBinaryTreeNode->right;
+        }
     }
+}
+
+binaryTreeNode *binarySearchTreeFromArray(std::vector<int> arr)
+{
+    // Empty array
+    if (arr.empty())
+        return NULL;
+
+    // Initializing the root
+    binaryTreeNode *root = NULL;
+
+    binaryTreeNode *temp;
+    for (int i = 0; i < arr.size(); i++)
+        insertBST(root, arr[i]);
 
     return root;
 }
@@ -218,76 +279,4 @@ binaryTreeNode *binaryTreeFromPostOrderAndInOrder(std::vector<int> postOrder, st
     }
     else
         return NULL;
-}
-
-void deleteBinaryTreeNode(binaryTreeNode *previousBinaryTreeNode, binaryTreeNode *currentBinaryTreeNode)
-{
-    if (currentBinaryTreeNode->left == NULL && currentBinaryTreeNode->right == NULL)
-    {
-        free(currentBinaryTreeNode);
-        previousBinaryTreeNode->left = previousBinaryTreeNode->right = NULL;
-    }
-
-    else if (currentBinaryTreeNode->left != NULL && currentBinaryTreeNode->right == NULL)
-    {
-        previousBinaryTreeNode->left = currentBinaryTreeNode->left;
-        free(currentBinaryTreeNode);
-    }
-
-    else if (currentBinaryTreeNode->left == NULL && currentBinaryTreeNode->right != NULL)
-    {
-        previousBinaryTreeNode->right = currentBinaryTreeNode->right;
-        free(currentBinaryTreeNode);
-    }
-
-    else
-    {
-        if (previousBinaryTreeNode->left == currentBinaryTreeNode)
-        {
-            // Replacing the leftmost child of the right sub-tree as the deleted node
-            binaryTreeNode *previousTemp, *currentTemp;
-            previousTemp = currentBinaryTreeNode->right;
-
-            if (previousTemp->left == NULL)
-                currentTemp = previousTemp;
-            else
-            {
-                currentTemp = previousTemp->left;
-                while (currentTemp->left != NULL)
-                {
-                    previousTemp = currentTemp;
-                    currentTemp = currentTemp->left;
-                }
-                previousTemp->left = NULL;
-            }
-
-            previousBinaryTreeNode->left = currentTemp;
-            currentTemp->left = currentBinaryTreeNode->left;
-            currentTemp->right = currentBinaryTreeNode->right;
-        }
-
-        else if (previousBinaryTreeNode->right == currentBinaryTreeNode)
-        {
-            // Replacing the leftmost child of the right sub-tree as the deleted node
-            binaryTreeNode *previousTemp, *currentTemp;
-            previousTemp = currentBinaryTreeNode->right;
-
-            if (previousTemp->left == NULL)
-                currentTemp = previousTemp;
-            else
-            {
-                currentTemp = previousTemp->left;
-                while (currentTemp->left != NULL)
-                {
-                    previousTemp = currentTemp;
-                    currentTemp = currentTemp->left;
-                }
-                previousTemp->left = NULL;
-            }
-
-            previousBinaryTreeNode->right = currentTemp;
-            currentTemp->left = currentBinaryTreeNode->left;
-            currentTemp->right = currentBinaryTreeNode->right;
-        }
-    }
 }
