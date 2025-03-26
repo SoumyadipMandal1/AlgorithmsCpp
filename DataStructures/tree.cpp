@@ -1,6 +1,7 @@
 #include "tree.hpp"
 #include "../algorithm.hpp"
 #include <climits>
+#include <cstddef>
 #include <iostream>
 #include <stdexcept>
 #include <stdlib.h>
@@ -217,4 +218,76 @@ binaryTreeNode *binaryTreeFromPostOrderAndInOrder(std::vector<int> postOrder, st
     }
     else
         return NULL;
+}
+
+void deleteBinaryTreeNode(binaryTreeNode *previousBinaryTreeNode, binaryTreeNode *currentBinaryTreeNode)
+{
+    if (currentBinaryTreeNode->left == NULL && currentBinaryTreeNode->right == NULL)
+    {
+        free(currentBinaryTreeNode);
+        previousBinaryTreeNode->left = previousBinaryTreeNode->right = NULL;
+    }
+
+    else if (currentBinaryTreeNode->left != NULL && currentBinaryTreeNode->right == NULL)
+    {
+        previousBinaryTreeNode->left = currentBinaryTreeNode->left;
+        free(currentBinaryTreeNode);
+    }
+
+    else if (currentBinaryTreeNode->left == NULL && currentBinaryTreeNode->right != NULL)
+    {
+        previousBinaryTreeNode->right = currentBinaryTreeNode->right;
+        free(currentBinaryTreeNode);
+    }
+
+    else
+    {
+        if (previousBinaryTreeNode->left == currentBinaryTreeNode)
+        {
+            // Replacing the leftmost child of the right sub-tree as the deleted node
+            binaryTreeNode *previousTemp, *currentTemp;
+            previousTemp = currentBinaryTreeNode->right;
+
+            if (previousTemp->left == NULL)
+                currentTemp = previousTemp;
+            else
+            {
+                currentTemp = previousTemp->left;
+                while (currentTemp->left != NULL)
+                {
+                    previousTemp = currentTemp;
+                    currentTemp = currentTemp->left;
+                }
+                previousTemp->left = NULL;
+            }
+
+            previousBinaryTreeNode->left = currentTemp;
+            currentTemp->left = currentBinaryTreeNode->left;
+            currentTemp->right = currentBinaryTreeNode->right;
+        }
+
+        else if (previousBinaryTreeNode->right == currentBinaryTreeNode)
+        {
+            // Replacing the leftmost child of the right sub-tree as the deleted node
+            binaryTreeNode *previousTemp, *currentTemp;
+            previousTemp = currentBinaryTreeNode->right;
+
+            if (previousTemp->left == NULL)
+                currentTemp = previousTemp;
+            else
+            {
+                currentTemp = previousTemp->left;
+                while (currentTemp->left != NULL)
+                {
+                    previousTemp = currentTemp;
+                    currentTemp = currentTemp->left;
+                }
+                previousTemp->left = NULL;
+            }
+
+            previousBinaryTreeNode->right = currentTemp;
+            currentTemp->left = currentBinaryTreeNode->left;
+            currentTemp->right = currentBinaryTreeNode->right;
+        }
+    }
 }

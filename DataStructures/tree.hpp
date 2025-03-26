@@ -1,8 +1,8 @@
 #ifndef TREE_HPP
 #define TREE_HPP
 
-#include <vector>
 #include <string>
+#include <vector>
 
 struct binaryTreeNode
 {
@@ -13,20 +13,22 @@ struct binaryTreeNode
 
 typedef struct binaryTreeNode binaryTreeNode;
 
-void preOrderTraversal(binaryTreeNode*, std::vector<int>&);
+void preOrderTraversal(binaryTreeNode *, std::vector<int> &);
 
-void inOrderTraversal(binaryTreeNode*, std::vector<int>&);
+void inOrderTraversal(binaryTreeNode *, std::vector<int> &);
 
-void postOrderTraversal(binaryTreeNode*, std::vector<int>&);
+void postOrderTraversal(binaryTreeNode *, std::vector<int> &);
 
-binaryTreeNode* binarySearchTree(std::vector<int>, int);
+binaryTreeNode *binarySearchTree(std::vector<int>, int);
 
-std::string searchBST(binaryTreeNode*, int);
+std::string searchBST(binaryTreeNode *, int);
 
-binaryTreeNode* randomBinaryTree(int start, int end, double leftChildProbability = 0.5, double rightChildProbability = 0.5);
+binaryTreeNode *randomBinaryTree(int start, int end, double leftChildProbability = 0.5, double rightChildProbability = 0.5);
 
-void printBinaryTree(binaryTreeNode *root, int depth = 0, const std::string& direction = "");
+void printBinaryTree(binaryTreeNode *root, int depth = 0, const std::string &direction = "");
 
-binaryTreeNode* binaryTreeFromPreOrderAndInOrder(std::vector<int> preOrder, std::vector<int> inOrder);
+binaryTreeNode *binaryTreeFromPreOrderAndInOrder(std::vector<int> preOrder, std::vector<int> inOrder);
+
+void deleteBinaryTreeNode(binaryTreeNode *previousBinaryTreeNode, binaryTreeNode *currentBinaryTreeNode);
 
 #endif
