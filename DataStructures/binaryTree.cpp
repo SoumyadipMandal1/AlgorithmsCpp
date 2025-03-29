@@ -1,8 +1,9 @@
-#include "tree.hpp"
+#include "binaryTree.hpp"
 #include "../algorithm.hpp"
 #include <climits>
 #include <cstddef>
 #include <iostream>
+#include <stdexcept>
 #include <stdlib.h>
 #include <string>
 #include <vector>
@@ -40,15 +41,9 @@ void postOrderTraversal(binaryTreeNode *root, std::vector<int> &treeArray)
 void insertBST(binaryTreeNode *root, int n)
 {
     // Creating new node
-    binaryTreeNode *newnode;
+    binaryTreeNode *newnode = (binaryTreeNode *)malloc(sizeof(binaryTreeNode));
     newnode->data = n;
     newnode->left = newnode->right = NULL;
-
-    if (root == NULL)
-    {
-        root = newnode;
-        return;
-    }
 
     binaryTreeNode *temp = root;
     while ((n < temp->data && temp->left != NULL) || (n > temp->data && temp->right != NULL))
@@ -57,11 +52,11 @@ void insertBST(binaryTreeNode *root, int n)
             temp = temp->left;
         else if (n > temp->data)
             temp = temp->right;
-        else
-            return;
     }
 
-    if (n < temp->data)
+    if (n == temp->data)
+        return;
+    else if (n < temp->data)
         temp->left = newnode;
     else
         temp->right = newnode;
@@ -147,10 +142,11 @@ binaryTreeNode *binarySearchTreeFromArray(std::vector<int> arr)
         return NULL;
 
     // Initializing the root
-    binaryTreeNode *root = NULL;
+    binaryTreeNode *root = (binaryTreeNode *)malloc(sizeof(binaryTreeNode));
+    root->data = arr[0];
+    root->left = root->right = NULL;
 
-    binaryTreeNode *temp;
-    for (int i = 0; i < arr.size(); i++)
+    for (int i = 1; i < arr.size(); i++)
         insertBST(root, arr[i]);
 
     return root;
@@ -162,7 +158,6 @@ std::string searchBST(binaryTreeNode *root, int key)
 {
     if (root->data == key)
         return "->Found";
-
     else if (key < root->data)
     {
         if (root->left)
@@ -227,7 +222,18 @@ void printBinaryTree(binaryTreeNode *root, int depth, const std::string &directi
 
 binaryTreeNode *binaryTreeFromPreOrderAndInOrder(std::vector<int> preOrder, std::vector<int> inOrder)
 {
-    if (preOrder.empty() == 0)
+    // For empty tree
+    if (preOrder.empty() && inOrder.empty())
+        return NULL;
+
+    // Handling errors
+    else if (preOrder.empty() || inOrder.empty())
+        throw std::logic_error("The two vectors does not represent pre-order and in-order of a same binary tree.");
+    // else if (preOrder.back() != inOrder.back())
+    // throw std::logic_error("The two vectors does not represent pre-order and in-order of a same binary tree.");
+
+    // Main body of the function
+    else
     {
         // Creating new node
         binaryTreeNode *root = (binaryTreeNode *)malloc(sizeof(binaryTreeNode *));
@@ -249,16 +255,25 @@ binaryTreeNode *binaryTreeFromPreOrderAndInOrder(std::vector<int> preOrder, std:
 
         return root;
     }
-    else
-        return NULL;
 }
 
 binaryTreeNode *binaryTreeFromPostOrderAndInOrder(std::vector<int> postOrder, std::vector<int> inOrder)
 {
-    if (postOrder.empty() == 0)
+    // For empty tree
+    if (postOrder.empty() && inOrder.empty())
+        return NULL;
+
+    // Handling errors
+    else if (postOrder.empty() || inOrder.empty())
+        throw std::logic_error("The two vectors does not represent post-order and in-order of a same binary tree.");
+    // else if (postOrder[0] != inOrder[0])
+    // throw std::logic_error("The two vectors does not represent post-order and in-order of a same binary tree.");
+
+    // Main body of the function
+    else
     {
         // Creating new node
-        binaryTreeNode *root = (binaryTreeNode *)malloc(sizeof(binaryTreeNode *));
+        binaryTreeNode *root = (binaryTreeNode *)malloc(sizeof(binaryTreeNode));
         root->data = postOrder.back();
         root->left = root->right = NULL;
 
@@ -277,6 +292,45 @@ binaryTreeNode *binaryTreeFromPostOrderAndInOrder(std::vector<int> postOrder, st
 
         return root;
     }
-    else
+}
+
+binaryTreeNode *binaryTreeFromPreOrderAndPostOrder(std::vector<int> preOrder, std::vector<int> postOrder)
+{
+    // For empty tree
+    if (preOrder.empty() && postOrder.empty())
         return NULL;
+
+    // Handling errors
+    else if (preOrder.empty() || postOrder.empty())
+        throw std::logic_error("The two vectors does not represent pre-order and post-order of a same binary tree.");
+    // else if (preOrder[0] != postOrder.back())
+    // throw std::logic_error("The two vectors does not represent pre-order and post-order of a same binary tree.");
+
+    // Main body of the function
+    else
+    {
+        // Creating new node
+        binaryTreeNode *root = (binaryTreeNode *)malloc(sizeof(binaryTreeNode));
+        root->data = preOrder[0];
+        root->left = root->right = NULL;
+
+        // If pre-order and post-order arrays contains only single element
+        if (preOrder[0] == postOrder[0])
+            return root;
+
+        // Searching left child in post-order array
+        int leftChildPos = linear(postOrder, postOrder.size(), preOrder[1]);
+
+        // Creating pre-order and post-order arrays of left and right sub-trees
+        std::vector<int> preOrderLeft(preOrder.begin() + 1, preOrder.begin() + leftChildPos + 2);
+        std::vector<int> postOrderLeft(postOrder.begin(), postOrder.begin() + leftChildPos + 1);
+        std::vector<int> preOrderRight(preOrder.begin() + leftChildPos + 2, preOrder.end());
+        std::vector<int> postOrderRight(postOrder.begin() + leftChildPos + 1, postOrder.end() - 1);
+
+        // Traversing the binary tree
+        root->left = binaryTreeFromPreOrderAndPostOrder(preOrderLeft, postOrderLeft);
+        root->right = binaryTreeFromPreOrderAndPostOrder(preOrderRight, postOrderRight);
+
+        return root;
+    }
 }
