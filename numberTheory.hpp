@@ -3,7 +3,7 @@
 
 #include <vector>
 
-void swap(int&, int&);
+void swap(int &, int &);
 
 int gcd(int, int);
 
@@ -14,5 +14,7 @@ int factorial(int n);
 int permutation(int n, int k);
 
 int combination(int n, int k);
+
+bool isPrime(int n);
 
 #endif
