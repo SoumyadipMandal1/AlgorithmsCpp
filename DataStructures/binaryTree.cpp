@@ -220,10 +220,12 @@ void printBinaryTree(binaryTreeNode *root, int depth, const std::string &directi
     printBinaryTree(root->right, depth + 1, "R");
 }
 
+// TODO : Implement a checking mechanism to find whether two arrays represent a binary tree or not
+
 binaryTreeNode *binaryTreeFromPreOrderAndInOrder(std::vector<int> preOrder, std::vector<int> inOrder)
 {
     // For empty tree
-    if (preOrder.empty() && inOrder.empty())
+    if (preOrder.empty() && inOrder.empty()) // Base Case
         return NULL;
 
     // Handling errors
@@ -260,7 +262,7 @@ binaryTreeNode *binaryTreeFromPreOrderAndInOrder(std::vector<int> preOrder, std:
 binaryTreeNode *binaryTreeFromPostOrderAndInOrder(std::vector<int> postOrder, std::vector<int> inOrder)
 {
     // For empty tree
-    if (postOrder.empty() && inOrder.empty())
+    if (postOrder.empty() && inOrder.empty()) // Base Case
         return NULL;
 
     // Handling errors
@@ -286,7 +288,7 @@ binaryTreeNode *binaryTreeFromPostOrderAndInOrder(std::vector<int> postOrder, st
         std::vector<int> inOrderLeft(inOrder.begin(), inOrder.begin() + rootPos);
         std::vector<int> inOrderRight(inOrder.begin() + rootPos + 1, inOrder.begin() + inOrder.size());
 
-        // traversing the binary tree
+        // Traversing the binary tree
         root->left = binaryTreeFromPostOrderAndInOrder(postOrderLeft, inOrderLeft);
         root->right = binaryTreeFromPostOrderAndInOrder(postOrderRight, inOrderRight);
 
@@ -315,7 +317,7 @@ binaryTreeNode *binaryTreeFromPreOrderAndPostOrder(std::vector<int> preOrder, st
         root->left = root->right = NULL;
 
         // If pre-order and post-order arrays contains only single element
-        if (preOrder[0] == postOrder[0])
+        if (preOrder[0] == postOrder[0]) // Base Case
             return root;
 
         // Searching left child in post-order array
@@ -333,4 +335,159 @@ binaryTreeNode *binaryTreeFromPreOrderAndPostOrder(std::vector<int> preOrder, st
 
         return root;
     }
+}
+
+// TODO : Generating all binary trees from a given pre-order and post-order
+
+/*************** Implementing Hoffman's Coding ****************************/
+
+std::vector<std::pair<char, int>> frequencyCount(std::string text)
+{
+    int found; // Flag for checking if a character is already present in the string or not
+    std::vector<std::pair<char, int>> frequency;
+
+    // Calculating frequency of each character in a text
+    for (char character : text)
+    {
+        found = 0;
+        for (std::pair<char, int> frequencyPair : frequency)
+        {
+            if (character == frequencyPair.first)
+            {
+                frequencyPair.second++;
+                found = 1;
+            }
+        }
+
+        if (!found)
+            frequency.push_back({character, 1});
+    }
+
+    return frequency;
+}
+
+huffmanBinaryTree *createHoffmanCodeTree(std::vector<std::pair<char, int>> frequency)
+{
+    std::vector<std::pair<huffmanBinaryTree *, int>> huffmanCodes;
+
+    // Creating array of nodes of for huffman coding
+    for (std::pair<char, int> frequencyPair : frequency)
+    {
+        huffmanBinaryTree *root = (huffmanBinaryTree *)malloc(sizeof(huffmanBinaryTree));
+        root->character = frequencyPair.first;
+        root->left = root->right = NULL;
+        huffmanCodes.push_back({root, frequencyPair.second});
+    }
+
+    int firstmin, secondmin;
+    int firstminpos, secondminpos;
+    while (huffmanCodes.size() > 1)
+    {
+        // Find the first and second minimum number and finding its position
+        firstmin = secondmin = INT_MAX;
+        firstminpos = secondminpos = -1;
+        for (int i = 0; i < huffmanCodes.size(); i++)
+        {
+            if (huffmanCodes[i].second < firstmin)
+            {
+                firstmin = huffmanCodes[i].second;
+                secondmin = firstmin;
+                firstminpos = i;
+                secondminpos = firstminpos;
+            }
+            else if (huffmanCodes[i].second >= firstmin && huffmanCodes[i].second < secondmin)
+            {
+                secondmin = huffmanCodes[i].second;
+                secondminpos = i;
+            }
+        }
+
+        // Updatind the hoffman tree array
+        huffmanBinaryTree *root = (huffmanBinaryTree *)malloc(sizeof(huffmanBinaryTree));
+        root->left = huffmanCodes[firstminpos].first;
+        root->right = huffmanCodes[secondminpos].first;
+        huffmanCodes.erase(huffmanCodes.begin() + firstmin);
+        huffmanCodes.erase(huffmanCodes.begin() + secondmin);
+        huffmanCodes.push_back({root, firstmin + secondmin});
+    }
+
+    return huffmanCodes[0].first;
+}
+
+void createHuffmanCodesHelperFunction(huffmanBinaryTree *root, std::vector<std::pair<char, std::vector<bool>>> &huffmanCodes, std::vector<bool> huffmanCode)
+{
+    // Base Case
+    if (root->left == NULL && root->right == NULL)
+    {
+        huffmanCodes.push_back({root->character, huffmanCode});
+        return;
+    }
+
+    {
+        huffmanCode.push_back(false);
+        createHuffmanCodesHelperFunction(root->left, huffmanCodes, huffmanCode);
+    }
+
+    {
+        huffmanCode.push_back(true);
+        createHuffmanCodesHelperFunction(root->right, huffmanCodes, huffmanCode);
+    }
+}
+
+std::vector<std::pair<char, std::vector<bool>>> createHuffmanCodes(huffmanBinaryTree *root)
+{
+    std::vector<std::pair<char, std::vector<bool>>> huffmanCodes;
+    std::vector<bool> huffmanCode;
+    createHuffmanCodesHelperFunction(root, huffmanCodes, huffmanCode);
+    return huffmanCodes;
+}
+
+std::pair<std::vector<bool>, huffmanBinaryTree *> huffmanCoding(std::string text)
+{
+    std::vector<std::pair<char, int>> frequency = frequencyCount(text);
+    huffmanBinaryTree *root = createHoffmanCodeTree(frequency);
+    std::vector<std::pair<char, std::vector<bool>>> huffmanCode = createHuffmanCodes(root);
+
+    std::vector<bool> compressedData;
+    // This for loop iterates over the text
+    for (char character : text)
+    {
+        // This for loop iterates over all the characters present in the huffmanCode
+        for (std::pair<char, std::vector<bool>> characterCodePair : huffmanCode)
+        {
+            if (character == characterCodePair.first)
+            {
+                // Appends the huffman code for each character to the main array
+                for (int i = 0; i < characterCodePair.second.size(); i++)
+                    compressedData.push_back(characterCodePair.second[i]);
+            }
+        }
+    }
+
+    return {compressedData, root};
+}
+
+std::string huffmanCode_to_text(std::vector<bool> compressedData, huffmanBinaryTree *root)
+{
+    huffmanBinaryTree *temp = root;
+    int pos = 0;
+    std::string text = "";
+
+    while (pos < compressedData.size())
+    {
+        while (temp->left != NULL && temp->right != NULL)
+        {
+            if (compressedData[pos] == false)
+                temp = temp->left;
+            else
+                temp = temp->right;
+            pos++;
+        }
+
+        text += temp->character;
+        pos++;
+        temp = root;
+    }
+
+    return text;
 }

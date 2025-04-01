@@ -37,4 +37,25 @@ binaryTreeNode *binaryTreeFromPostOrderAndInOrder(std::vector<int> preOrder, std
 
 binaryTreeNode *binaryTreeFromPreOrderAndPostOrder(std::vector<int> preOrder, std::vector<int> inOrder);
 
+struct huffmanBinaryTree
+{
+    char character;
+    struct huffmanBinaryTree *left;
+    struct huffmanBinaryTree *right;
+};
+
+typedef struct huffmanBinaryTree huffmanBinaryTree;
+
+std::vector<std::pair<char, int>> frequencyCount(std::string);
+
+huffmanBinaryTree *createHoffmanCodeTree(std::vector<std::pair<char, int>>);
+
+void createHuffmanCodesHelperFunction(huffmanBinaryTree *, std::vector<std::pair<char, std::vector<bool>>> &, std::vector<bool>);
+
+std::vector<std::pair<char, std::vector<bool>>> createHuffmanCodes(huffmanBinaryTree *);
+
+std::pair<std::vector<bool>, huffmanBinaryTree *> huffmanCoding(std::string);
+
+std::string huffmanCode_to_text(std::vector<bool>, huffmanBinaryTree *);
+
 #endif
