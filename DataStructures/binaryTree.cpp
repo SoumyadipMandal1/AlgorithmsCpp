@@ -350,7 +350,7 @@ std::vector<std::pair<char, int>> frequencyCount(std::string text)
     for (char character : text)
     {
         found = 0;
-        for (std::pair<char, int> frequencyPair : frequency)
+        for (std::pair<char, int> &frequencyPair : frequency)
         {
             if (character == frequencyPair.first)
             {
@@ -366,7 +366,7 @@ std::vector<std::pair<char, int>> frequencyCount(std::string text)
     return frequency;
 }
 
-huffmanBinaryTree *createHoffmanCodeTree(std::vector<std::pair<char, int>> frequency)
+huffmanBinaryTree *createHuffmanCodeTree(std::vector<std::pair<char, int>> frequency)
 {
     std::vector<std::pair<huffmanBinaryTree *, int>> huffmanCodes;
 
@@ -374,7 +374,7 @@ huffmanBinaryTree *createHoffmanCodeTree(std::vector<std::pair<char, int>> frequ
     for (std::pair<char, int> frequencyPair : frequency)
     {
         huffmanBinaryTree *root = (huffmanBinaryTree *)malloc(sizeof(huffmanBinaryTree));
-        root->character = frequencyPair.first;
+        root->data = frequencyPair.first;
         root->left = root->right = NULL;
         huffmanCodes.push_back({root, frequencyPair.second});
     }
@@ -390,10 +390,10 @@ huffmanBinaryTree *createHoffmanCodeTree(std::vector<std::pair<char, int>> frequ
         {
             if (huffmanCodes[i].second < firstmin)
             {
-                firstmin = huffmanCodes[i].second;
                 secondmin = firstmin;
-                firstminpos = i;
+                firstmin = huffmanCodes[i].second;
                 secondminpos = firstminpos;
+                firstminpos = i;
             }
             else if (huffmanCodes[i].second >= firstmin && huffmanCodes[i].second < secondmin)
             {
@@ -402,36 +402,45 @@ huffmanBinaryTree *createHoffmanCodeTree(std::vector<std::pair<char, int>> frequ
             }
         }
 
-        // Updatind the hoffman tree array
+        // Updatind the huffman tree array
         huffmanBinaryTree *root = (huffmanBinaryTree *)malloc(sizeof(huffmanBinaryTree));
         root->left = huffmanCodes[firstminpos].first;
         root->right = huffmanCodes[secondminpos].first;
-        huffmanCodes.erase(huffmanCodes.begin() + firstmin);
-        huffmanCodes.erase(huffmanCodes.begin() + secondmin);
-        huffmanCodes.push_back({root, firstmin + secondmin});
+        huffmanCodes.push_back({root, huffmanCodes[firstminpos].second + huffmanCodes[secondminpos].second});
+
+        if (firstminpos > secondminpos)
+        {
+            huffmanCodes.erase(huffmanCodes.begin() + firstminpos);
+            huffmanCodes.erase(huffmanCodes.begin() + secondminpos);
+        }
+        else
+        {
+            huffmanCodes.erase(huffmanCodes.begin() + secondminpos);
+            huffmanCodes.erase(huffmanCodes.begin() + firstminpos);
+        }
     }
 
     return huffmanCodes[0].first;
 }
 
-void createHuffmanCodesHelperFunction(huffmanBinaryTree *root, std::vector<std::pair<char, std::vector<bool>>> &huffmanCodes, std::vector<bool> huffmanCode)
+std::vector<bool> arrayReturnAfterPush(std::vector<bool> array, bool parameter)
 {
-    // Base Case
+    array.push_back(parameter);
+    return array;
+}
+
+void createHuffmanCodesHelperFunction(huffmanBinaryTree *root,
+                                      std::vector<std::pair<char, std::vector<bool>>> &huffmanCodes,
+                                      std::vector<bool> huffmanCode)
+{
     if (root->left == NULL && root->right == NULL)
     {
-        huffmanCodes.push_back({root->character, huffmanCode});
+        huffmanCodes.push_back({root->data, huffmanCode});
         return;
     }
 
-    {
-        huffmanCode.push_back(false);
-        createHuffmanCodesHelperFunction(root->left, huffmanCodes, huffmanCode);
-    }
-
-    {
-        huffmanCode.push_back(true);
-        createHuffmanCodesHelperFunction(root->right, huffmanCodes, huffmanCode);
-    }
+    createHuffmanCodesHelperFunction(root->left, huffmanCodes, arrayReturnAfterPush(huffmanCode, false));
+    createHuffmanCodesHelperFunction(root->right, huffmanCodes, arrayReturnAfterPush(huffmanCode, true));
 }
 
 std::vector<std::pair<char, std::vector<bool>>> createHuffmanCodes(huffmanBinaryTree *root)
@@ -445,7 +454,7 @@ std::vector<std::pair<char, std::vector<bool>>> createHuffmanCodes(huffmanBinary
 std::pair<std::vector<bool>, huffmanBinaryTree *> huffmanCoding(std::string text)
 {
     std::vector<std::pair<char, int>> frequency = frequencyCount(text);
-    huffmanBinaryTree *root = createHoffmanCodeTree(frequency);
+    huffmanBinaryTree *root = createHuffmanCodeTree(frequency);
     std::vector<std::pair<char, std::vector<bool>>> huffmanCode = createHuffmanCodes(root);
 
     std::vector<bool> compressedData;
@@ -484,8 +493,7 @@ std::string huffmanCode_to_text(std::vector<bool> compressedData, huffmanBinaryT
             pos++;
         }
 
-        text += temp->character;
-        pos++;
+        text += temp->data;
         temp = root;
     }
 
