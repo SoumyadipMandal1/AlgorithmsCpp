@@ -1,6 +1,7 @@
 #ifndef TREE_HPP
 #define TREE_HPP
 
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -19,23 +20,45 @@ void inOrderTraversal(binaryTreeNode *, std::vector<int> &);
 
 void postOrderTraversal(binaryTreeNode *, std::vector<int> &);
 
-void insertBST(binaryTreeNode *root, int n);
+void insertBST(binaryTreeNode *, int);
 
-void deleteBST(binaryTreeNode *previousBinaryTreeNode, binaryTreeNode *currentBinaryTreeNode);
+void deleteBST(binaryTreeNode *, binaryTreeNode *);
 
 binaryTreeNode *binarySearchTreeFromArray(std::vector<int>);
 
 std::string searchBST(binaryTreeNode *, int);
 
-binaryTreeNode *randomBinaryTree(int start, int end, double leftChildProbability = 0.5, double rightChildProbability = 0.5);
+binaryTreeNode *randomBinaryTree(int, int, double leftChildProbability = 0.5, double rightChildProbability = 0.5);
 
-void printBinaryTree(binaryTreeNode *root, int depth = 0, const std::string &direction = "");
+template <typename T>
+inline void printTree(T *root, int depth = 0, const std::string &direction = "")
+{
+    // Base Case
+    if (root == NULL)
+        return;
 
-binaryTreeNode *binaryTreeFromPreOrderAndInOrder(std::vector<int> preOrder, std::vector<int> inOrder);
+    // Printing Binary Tree
+    for (int i = 0; i < depth; i++)
+        std::cout << "|   "; // Print the tab spaces
 
-binaryTreeNode *binaryTreeFromPostOrderAndInOrder(std::vector<int> preOrder, std::vector<int> inOrder);
+    // Prints the direction and number in the binary tree
+    if (direction == "L")
+        std::cout << "L-- " << root->data << '\n';
+    else if (direction == "R")
+        std::cout << "R-- " << root->data << '\n';
+    else
+        std::cout << root->data << '\n';
 
-binaryTreeNode *binaryTreeFromPreOrderAndPostOrder(std::vector<int> preOrder, std::vector<int> inOrder);
+    // Traversing the tree
+    printTree(root->left, depth + 1, "L");
+    printTree(root->right, depth + 1, "R");
+}
+
+binaryTreeNode *binaryTreeFromPreOrderAndInOrder(std::vector<int>, std::vector<int>);
+
+binaryTreeNode *binaryTreeFromPostOrderAndInOrder(std::vector<int>, std::vector<int>);
+
+binaryTreeNode *binaryTreeFromPreOrderAndPostOrder(std::vector<int>, std::vector<int>);
 
 struct huffmanBinaryTree
 {

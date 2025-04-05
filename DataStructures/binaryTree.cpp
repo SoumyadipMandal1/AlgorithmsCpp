@@ -2,7 +2,6 @@
 #include "../algorithm.hpp"
 #include <climits>
 #include <cstddef>
-#include <iostream>
 #include <stdexcept>
 #include <stdlib.h>
 #include <string>
@@ -195,29 +194,6 @@ binaryTreeNode *randomBinaryTree(int start, int end, double leftChildProbability
         root->right = randomBinaryTree(start, end, leftChildProbability, rightChildProbability);
 
     return root;
-}
-
-void printBinaryTree(binaryTreeNode *root, int depth, const std::string &direction)
-{
-    // Base Case
-    if (root == NULL)
-        return;
-
-    // Printing Binary Tree
-    for (int i = 0; i < depth; i++)
-        std::cout << "|   "; // Print the tab spaces
-
-    // Prints the direction and number in the binary tree
-    if (direction == "L")
-        std::cout << "L-- " << root->data << '\n';
-    else if (direction == "R")
-        std::cout << "R-- " << root->data << '\n';
-    else
-        std::cout << root->data << '\n';
-
-    // Traversing the tree
-    printBinaryTree(root->left, depth + 1, "L");
-    printBinaryTree(root->right, depth + 1, "R");
 }
 
 // TODO : Implement a checking mechanism to find whether two arrays represent a binary tree or not
@@ -423,12 +399,6 @@ huffmanBinaryTree *createHuffmanCodeTree(std::vector<std::pair<char, int>> frequ
     return huffmanCodes[0].first;
 }
 
-std::vector<bool> arrayReturnAfterPush(std::vector<bool> array, bool parameter)
-{
-    array.push_back(parameter);
-    return array;
-}
-
 void createHuffmanCodesHelperFunction(huffmanBinaryTree *root,
                                       std::vector<std::pair<char, std::vector<bool>>> &huffmanCodes,
                                       std::vector<bool> huffmanCode)
@@ -439,8 +409,8 @@ void createHuffmanCodesHelperFunction(huffmanBinaryTree *root,
         return;
     }
 
-    createHuffmanCodesHelperFunction(root->left, huffmanCodes, arrayReturnAfterPush(huffmanCode, false));
-    createHuffmanCodesHelperFunction(root->right, huffmanCodes, arrayReturnAfterPush(huffmanCode, true));
+    createHuffmanCodesHelperFunction(root->left, huffmanCodes, array_push(huffmanCode, false));
+    createHuffmanCodesHelperFunction(root->right, huffmanCodes, array_push(huffmanCode, true));
 }
 
 std::vector<std::pair<char, std::vector<bool>>> createHuffmanCodes(huffmanBinaryTree *root)
