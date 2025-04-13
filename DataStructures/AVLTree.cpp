@@ -88,18 +88,18 @@ AVLTreeNode *insertAVLTree(AVLTreeNode *root, int data)
         return rightRotation(root);
 
     // RR rotation
-    if (balance < -1 && data > root->right->data)
+    else if (balance < -1 && data > root->right->data)
         return leftRotation(root);
 
     // LR rotation
-    if (balance > 1 && data > root->left->data)
+    else if (balance > 1 && data > root->left->data)
     {
         root->left = leftRotation(root->left);
         return rightRotation(root);
     }
 
     // RL rotation
-    if (balance < -1 && data < root->right->data)
+    else if (balance < -1 && data < root->right->data)
     {
         root->right = rightRotation(root->right);
         return leftRotation(root);
@@ -126,8 +126,6 @@ AVLTreeNode *AVLTreeFromArray(std::vector<int> array)
     return root;
 }
 
-// TODO : Generating all possible AVL Trees
-
 std::string searchAVLTree(AVLTreeNode *root, int key)
 {
     if (root->data == key)
@@ -147,4 +145,100 @@ std::string searchAVLTree(AVLTreeNode *root, int key)
         else
             return "->Not Found";
     }
+}
+
+AVLTreeNode *deleteAVLTree(AVLTreeNode *root, int n)
+{
+    // If node is not present
+    if (root == NULL)
+        return root;
+
+    // Traversing the AVL Tree to reach the node
+    else if (n < root->data)
+        root->left = deleteAVLTree(root->left, n);
+    else if (n > root->data)
+        root->right = deleteAVLTree(root->right, n);
+
+    else
+    {
+        // Deleting Node
+
+        // For no child case
+        if (root->left == NULL && root->right == NULL)
+            return NULL;
+
+        // For one child case
+        else if ((root->left == NULL) != (root->right == NULL))
+        {
+            AVLTreeNode *NodeToDelete = root;
+            AVLTreeNode *nextNode;
+            if (root->left != NULL)
+                nextNode = root->left;
+            else
+                nextNode = root->right;
+
+            *root = *nextNode;
+            free(NodeToDelete);
+        }
+
+        // If both children are present
+        else
+        {
+            // Traversing the AVL Tree to the in-order successor
+            AVLTreeNode *temp = root->right;
+            while (temp->left != NULL)
+                temp = temp->left;
+
+            // Copying the in-order successor's data
+            root->data = temp->data;
+
+            // Deleting the in-order successor node
+            root->right = deleteAVLTree(root->right, temp->data);
+        }
+    }
+
+    // Updating the height of current node
+    root->height = 1 + maxpair(height(root->left), height(root->right));
+
+    // Balance Factor
+    int balance = balanceFactor(root);
+
+    // Balancing the tree
+    if (balance > 1)
+    {
+        // R0 Rotation
+        if (balanceFactor(root->left) == 0)
+            return rightRotation(root);
+
+        // R1 Rotation
+        else if (balanceFactor(root->left) == 1)
+            return rightRotation(root);
+
+        // R-1 Rotation
+        else if (balanceFactor(root->left) == -1)
+        {
+            root->left = leftRotation(root->left);
+            return rightRotation(root);
+        }
+    }
+
+    else if (balance < -1)
+    {
+        // L0 Rotation
+        if (balanceFactor(root->right) == 0)
+            return leftRotation(root);
+
+        // L1 Rotation
+        else if (balanceFactor(root->right) == 1)
+            return leftRotation(root);
+
+        // L-1 Rotation
+        else if (balanceFactor(root->right) == -1)
+        {
+            root->right = rightRotation(root->right);
+            return leftRotation(root);
+        }
+    }
+
+    return root;
 }

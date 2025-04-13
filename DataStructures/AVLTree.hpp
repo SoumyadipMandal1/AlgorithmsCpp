@@ -28,4 +28,6 @@ AVLTreeNode *AVLTreeFromArray(std::vector<int>);
 
 std::string searchAVLTree(AVLTreeNode *, int);
 
+AVLTreeNode *deleteAVLTree(AVLTreeNode *, int);
+
 #endif
