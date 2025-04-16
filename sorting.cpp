@@ -1,5 +1,5 @@
-#include <vector>
 #include "algorithm.hpp"
+#include <vector>
 
 std::vector<int> bubbleSort(std::vector<int> arr, int length, bool reverse = false)
 {
@@ -108,7 +108,7 @@ std::vector<int> selectionSort(std::vector<int> arr, int length, bool reverse = 
     return arr;
 }
 
-void merge(std::vector<int>& arr, int left, int mid, int right, bool reverse = false)
+void merge(std::vector<int> &arr, int left, int mid, int right, bool reverse = false)
 {
     // Creating two arrs
     // One arr contains form arr[left] to arr[middle]
@@ -127,16 +127,16 @@ void merge(std::vector<int>& arr, int left, int mid, int right, bool reverse = f
     int rightarr[rightLength];
 
     for (int i = 0; i < leftLength; i++)
-        leftarr[i]  = arr[left + i];
+        leftarr[i] = arr[left + i];
 
     for (int i = 0; i < rightLength; i++)
         rightarr[i] = arr[mid + i + 1];
 
     // Merging
 
-    int leftpos  = 0;    // Keeps track of left arr
-    int rightpos = 0;    // Keeps track of right arr
-    int mainpos  = left; // Keeps track of main arr
+    int leftpos = 0;    // Keeps track of left arr
+    int rightpos = 0;   // Keeps track of right arr
+    int mainpos = left; // Keeps track of main arr
 
     while (leftpos < leftLength && rightpos < rightLength)
     {
@@ -182,7 +182,7 @@ void merge(std::vector<int>& arr, int left, int mid, int right, bool reverse = f
         mainpos++;
     }
 
-    while(rightpos < rightLength)
+    while (rightpos < rightLength)
     {
         arr[mainpos] = rightarr[rightpos];
         rightpos++;
@@ -190,7 +190,7 @@ void merge(std::vector<int>& arr, int left, int mid, int right, bool reverse = f
     }
 }
 
-void mergeSort(std::vector<int>& arr, int left, int right, bool reverse = false)
+void mergeSort(std::vector<int> &arr, int left, int right, bool reverse = false)
 {
     if (reverse)
     {
@@ -211,5 +211,32 @@ void mergeSort(std::vector<int>& arr, int left, int right, bool reverse = false)
             mergeSort(arr, mid + 1, right);
             merge(arr, left, mid, right);
         }
+    }
+}
+
+int partition(std::vector<int> &arr, int low, int high)
+{
+    int pivot = arr[low];
+    int i = high;
+
+    for (int j = high; j >= low; j--)
+    {
+        if (arr[j] >= pivot)
+        {
+            swap(arr[i], arr[j]);
+            i--;
+        }
+    }
+
+    return i + 1;
+}
+
+void quickSort(std::vector<int> &arr, int low, int high)
+{
+    if (low < high)
+    {
+        int partitionIndex = partition(arr, low, high);
+        quickSort(arr, low, partitionIndex - 1);
+        quickSort(arr, partitionIndex + 1, high);
     }
 }

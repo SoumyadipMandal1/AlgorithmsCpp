@@ -11,8 +11,12 @@ std::vector<int> insertionSort(std::vector<int>, int, bool);
 
 std::vector<int> selectionSort(std::vector<int>, int, bool);
 
-void merge(std::vector<int>&, int, int, int, bool);
+void merge(std::vector<int> &, int, int, int, bool);
 
-void mergeSort(std::vector<int>&, int, int, int, bool);
+void mergeSort(std::vector<int> &, int, int, int, bool);
+
+int partition(std::vector<int> &arr, int low, int high);
+
+void quickSort(std::vector<int> &arr, int low, int high);
 
 #endif
