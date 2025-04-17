@@ -19,4 +19,10 @@ int partition(std::vector<int> &arr, int low, int high);
 
 void quickSort(std::vector<int> &arr, int low, int high);
 
+void heapify(std::vector<int> &arr, int index, int length);
+
+void buildMaxHeap(std::vector<int> &arr);
+
+void heapSort(std::vector<int> &arr);
+
 #endif

@@ -240,3 +240,38 @@ void quickSort(std::vector<int> &arr, int low, int high)
         quickSort(arr, partitionIndex + 1, high);
     }
 }
+
+void heapify(std::vector<int> &arr, int index, int length)
+{
+    int left = 2 * index + 1;
+    int right = 2 * index + 2;
+    int largestNode = index;
+
+    if (left < length && arr[left] > arr[largestNode])
+        largestNode = left;
+    if (right < length && arr[right] > arr[largestNode])
+        largestNode = right;
+
+    if (largestNode != index)
+    {
+        swap(arr[largestNode], arr[index]);
+        heapify(arr, largestNode, length);
+    }
+}
+
+void buildMaxHeap(std::vector<int> &arr)
+{
+    for (int i = arr.size() / 2 - 1; i >= 0; i--)
+        heapify(arr, i, arr.size());
+}
+
+void heapSort(std::vector<int> &arr)
+{
+    buildMaxHeap(arr);
+
+    for (int i = arr.size() - 1; i >= 0; i--)
+    {
+        swap(arr[0], arr[i]);
+        heapify(arr, 0, i);
+    }
+}
