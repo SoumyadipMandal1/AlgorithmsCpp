@@ -80,6 +80,22 @@ int binaryRight(std::vector<int> arr, int low, int high, int key)
         return binaryRight(arr, mid, high, key);
 }
 
+int interpolationSearch(std::vector<int> arr, int low, int high, int key)
+{
+    int mid = low + (high - low) * (key - arr[low]) / (arr[high] - arr[low]);
+
+    while (low <= high)
+    {
+        if (arr[mid] == key)
+            return mid;
+        else if (arr[mid] > key)
+            high = mid - 1;
+        else
+            low = mid + 1;
+    }
+    return -1;
+}
+
 int min(std::vector<int> arr)
 {
     int min = arr[0];

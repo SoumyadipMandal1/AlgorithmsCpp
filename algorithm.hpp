@@ -18,6 +18,8 @@ int binaryLeft(std::vector<int>, int, int, int);
 
 int binaryRight(std::vector<int>, int, int, int);
 
+int interpolationSearch(std::vector<int>, int, int, int);
+
 int min(std::vector<int>);
 
 int minpair(int, int);
