@@ -3,13 +3,12 @@
 #include <climits>
 #include <cstddef>
 #include <stdexcept>
-#include <stdlib.h>
 #include <string>
 #include <vector>
 
 void preOrderTraversal(binaryTreeNode *root, std::vector<int> &treeArray)
 {
-    if (root != NULL)
+    if (root != nullptr)
     {
         treeArray.push_back(root->data);
         preOrderTraversal(root->left, treeArray);
@@ -19,7 +18,7 @@ void preOrderTraversal(binaryTreeNode *root, std::vector<int> &treeArray)
 
 void inOrderTraversal(binaryTreeNode *root, std::vector<int> &treeArray)
 {
-    if (root != NULL)
+    if (root != nullptr)
     {
         inOrderTraversal(root->left, treeArray);
         treeArray.push_back(root->data);
@@ -29,7 +28,7 @@ void inOrderTraversal(binaryTreeNode *root, std::vector<int> &treeArray)
 
 void postOrderTraversal(binaryTreeNode *root, std::vector<int> &treeArray)
 {
-    if (root != NULL)
+    if (root != nullptr)
     {
         postOrderTraversal(root->left, treeArray);
         postOrderTraversal(root->right, treeArray);
@@ -40,12 +39,10 @@ void postOrderTraversal(binaryTreeNode *root, std::vector<int> &treeArray)
 void insertBST(binaryTreeNode *root, int n)
 {
     // Creating new node
-    binaryTreeNode *newnode = (binaryTreeNode *)malloc(sizeof(binaryTreeNode));
-    newnode->data = n;
-    newnode->left = newnode->right = NULL;
+    binaryTreeNode *newnode = new binaryTreeNode(n);
 
     binaryTreeNode *temp = root;
-    while ((n < temp->data && temp->left != NULL) || (n > temp->data && temp->right != NULL))
+    while ((n < temp->data && temp->left != nullptr) || (n > temp->data && temp->right != nullptr))
     {
         if (n < temp->data)
             temp = temp->left;
@@ -64,19 +61,19 @@ void insertBST(binaryTreeNode *root, int n)
 
 void deleteBST(binaryTreeNode *previousBinaryTreeNode, binaryTreeNode *currentBinaryTreeNode)
 {
-    if (currentBinaryTreeNode->left == NULL && currentBinaryTreeNode->right == NULL)
+    if (currentBinaryTreeNode->left == nullptr && currentBinaryTreeNode->right == nullptr)
     {
         free(currentBinaryTreeNode);
-        previousBinaryTreeNode->left = previousBinaryTreeNode->right = NULL;
+        previousBinaryTreeNode->left = previousBinaryTreeNode->right = nullptr;
     }
 
-    else if (currentBinaryTreeNode->left != NULL && currentBinaryTreeNode->right == NULL)
+    else if (currentBinaryTreeNode->left != nullptr && currentBinaryTreeNode->right == nullptr)
     {
         previousBinaryTreeNode->left = currentBinaryTreeNode->left;
         free(currentBinaryTreeNode);
     }
 
-    else if (currentBinaryTreeNode->left == NULL && currentBinaryTreeNode->right != NULL)
+    else if (currentBinaryTreeNode->left == nullptr && currentBinaryTreeNode->right != nullptr)
     {
         previousBinaryTreeNode->right = currentBinaryTreeNode->right;
         free(currentBinaryTreeNode);
@@ -90,17 +87,17 @@ void deleteBST(binaryTreeNode *previousBinaryTreeNode, binaryTreeNode *currentBi
             binaryTreeNode *previousTemp, *currentTemp;
             previousTemp = currentBinaryTreeNode->right;
 
-            if (previousTemp->left == NULL)
+            if (previousTemp->left == nullptr)
                 currentTemp = previousTemp;
             else
             {
                 currentTemp = previousTemp->left;
-                while (currentTemp->left != NULL)
+                while (currentTemp->left != nullptr)
                 {
                     previousTemp = currentTemp;
                     currentTemp = currentTemp->left;
                 }
-                previousTemp->left = NULL;
+                previousTemp->left = nullptr;
             }
 
             previousBinaryTreeNode->left = currentTemp;
@@ -114,17 +111,17 @@ void deleteBST(binaryTreeNode *previousBinaryTreeNode, binaryTreeNode *currentBi
             binaryTreeNode *previousTemp, *currentTemp;
             previousTemp = currentBinaryTreeNode->right;
 
-            if (previousTemp->left == NULL)
+            if (previousTemp->left == nullptr)
                 currentTemp = previousTemp;
             else
             {
                 currentTemp = previousTemp->left;
-                while (currentTemp->left != NULL)
+                while (currentTemp->left != nullptr)
                 {
                     previousTemp = currentTemp;
                     currentTemp = currentTemp->left;
                 }
-                previousTemp->left = NULL;
+                previousTemp->left = nullptr;
             }
 
             previousBinaryTreeNode->right = currentTemp;
@@ -138,12 +135,10 @@ binaryTreeNode *binarySearchTreeFromArray(std::vector<int> arr)
 {
     // Empty array
     if (arr.empty())
-        return NULL;
+        return nullptr;
 
     // Initializing the root
-    binaryTreeNode *root = (binaryTreeNode *)malloc(sizeof(binaryTreeNode));
-    root->data = arr[0];
-    root->left = root->right = NULL;
+    binaryTreeNode *root = new binaryTreeNode(arr[0]);
 
     for (int i = 1; i < arr.size(); i++)
         insertBST(root, arr[i]);
@@ -179,9 +174,7 @@ binaryTreeNode *randomBinaryTree(int start, int end, double leftChildProbability
     // TODO : For larger values of probability, an error is generated due to large recursion depth
 
     // Creating node
-    binaryTreeNode *root = (binaryTreeNode *)malloc(sizeof(binaryTreeNode));
-    root->data = start + rand() % (end - start + 1);
-    root->left = root->right = NULL;
+    binaryTreeNode *root = new binaryTreeNode(start + rand() % (end - start + 1));
 
     // creating left child
     double createLeftChild = rand() / (double)RAND_MAX;
@@ -202,7 +195,7 @@ binaryTreeNode *binaryTreeFromPreOrderAndInOrder(std::vector<int> preOrder, std:
 {
     // For empty tree
     if (preOrder.empty() && inOrder.empty()) // Base Case
-        return NULL;
+        return nullptr;
 
     // Handling errors
     else if (preOrder.empty() || inOrder.empty())
@@ -214,9 +207,7 @@ binaryTreeNode *binaryTreeFromPreOrderAndInOrder(std::vector<int> preOrder, std:
     else
     {
         // Creating new node
-        binaryTreeNode *root = (binaryTreeNode *)malloc(sizeof(binaryTreeNode *));
-        root->data = preOrder[0];
-        root->left = root->right = NULL;
+        binaryTreeNode *root = new binaryTreeNode(preOrder[0]);
 
         // Searching for the position of root in the in-order array
         int rootPos = linear(inOrder, inOrder.size(), root->data);
@@ -239,7 +230,7 @@ binaryTreeNode *binaryTreeFromPostOrderAndInOrder(std::vector<int> postOrder, st
 {
     // For empty tree
     if (postOrder.empty() && inOrder.empty()) // Base Case
-        return NULL;
+        return nullptr;
 
     // Handling errors
     else if (postOrder.empty() || inOrder.empty())
@@ -251,9 +242,7 @@ binaryTreeNode *binaryTreeFromPostOrderAndInOrder(std::vector<int> postOrder, st
     else
     {
         // Creating new node
-        binaryTreeNode *root = (binaryTreeNode *)malloc(sizeof(binaryTreeNode));
-        root->data = postOrder.back();
-        root->left = root->right = NULL;
+        binaryTreeNode *root = new binaryTreeNode(postOrder.back());
 
         // Searching for the position of root in the in-order array
         int rootPos = linear(inOrder, inOrder.size(), root->data);
@@ -276,7 +265,7 @@ binaryTreeNode *binaryTreeFromPreOrderAndPostOrder(std::vector<int> preOrder, st
 {
     // For empty tree
     if (preOrder.empty() && postOrder.empty())
-        return NULL;
+        return nullptr;
 
     // Handling errors
     else if (preOrder.empty() || postOrder.empty())
@@ -288,9 +277,7 @@ binaryTreeNode *binaryTreeFromPreOrderAndPostOrder(std::vector<int> preOrder, st
     else
     {
         // Creating new node
-        binaryTreeNode *root = (binaryTreeNode *)malloc(sizeof(binaryTreeNode));
-        root->data = preOrder[0];
-        root->left = root->right = NULL;
+        binaryTreeNode *root = new binaryTreeNode(preOrder[0]);
 
         // If pre-order and post-order arrays contains only single element
         if (preOrder[0] == postOrder[0]) // Base Case
@@ -349,9 +336,7 @@ huffmanBinaryTree *createHuffmanCodeTree(std::vector<std::pair<char, int>> frequ
     // Creating array of nodes of for huffman coding
     for (std::pair<char, int> frequencyPair : frequency)
     {
-        huffmanBinaryTree *root = (huffmanBinaryTree *)malloc(sizeof(huffmanBinaryTree));
-        root->data = frequencyPair.first;
-        root->left = root->right = NULL;
+        huffmanBinaryTree *root = new huffmanBinaryTree(frequencyPair.first);
         huffmanCodes.push_back({root, frequencyPair.second});
     }
 
@@ -379,7 +364,7 @@ huffmanBinaryTree *createHuffmanCodeTree(std::vector<std::pair<char, int>> frequ
         }
 
         // Updatind the huffman tree array
-        huffmanBinaryTree *root = (huffmanBinaryTree *)malloc(sizeof(huffmanBinaryTree));
+        huffmanBinaryTree *root = new huffmanBinaryTree();
         root->left = huffmanCodes[firstminpos].first;
         root->right = huffmanCodes[secondminpos].first;
         huffmanCodes.push_back({root, huffmanCodes[firstminpos].second + huffmanCodes[secondminpos].second});
@@ -403,7 +388,7 @@ void createHuffmanCodesHelperFunction(huffmanBinaryTree *root,
                                       std::vector<std::pair<char, std::vector<bool>>> &huffmanCodes,
                                       std::vector<bool> huffmanCode)
 {
-    if (root->left == NULL && root->right == NULL)
+    if (root->left == nullptr && root->right == nullptr)
     {
         huffmanCodes.push_back({root->data, huffmanCode});
         return;
@@ -454,7 +439,7 @@ std::string huffmanCode_to_text(std::vector<bool> compressedData, huffmanBinaryT
 
     while (pos < compressedData.size())
     {
-        while (temp->left != NULL && temp->right != NULL)
+        while (temp->left != nullptr && temp->right != nullptr)
         {
             if (compressedData[pos] == false)
                 temp = temp->left;

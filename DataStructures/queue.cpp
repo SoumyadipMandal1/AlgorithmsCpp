@@ -1,50 +1,55 @@
-#include <stdlib.h>
-#include <stdexcept>
-#include "linkedList.hpp"
 #include "queue.hpp"
+#include "linkedList.hpp"
+#include <stdexcept>
 
-void initializeQueue(Queue *queue)
+Queue::Queue()
 {
-    queue->front = NULL;
-    queue->rear  = NULL;
+    front = nullptr;
+    rear = nullptr;
 }
 
-void enqueue(Queue *queue, int data)
+bool Queue::isEmpty()
+{
+    if (front == nullptr)
+        return true;
+    else
+        return false;
+}
+
+void Queue::enqueue(int data)
 {
     // Creating Node
-    Node *newnode = (Node*)malloc(sizeof(Node));
-    newnode->data = data;
-    newnode->next = NULL;
+    Node *newnode = new Node(data);
 
     // Adding Node
-    if (queue->front == NULL && queue->rear == NULL)
-        queue->front = queue->rear = newnode;
+    if (front == nullptr && rear == nullptr)
+        front = rear = newnode;
 
     else
     {
-        queue->rear->next = newnode;
-        queue->rear = newnode;
+        rear->next = newnode;
+        rear = newnode;
     }
 }
 
-int dequeue(Queue *queue)
+int Queue::dequeue()
 {
-    if (queue->front == NULL)
+    if (front == nullptr)
         throw std::underflow_error("Empty Queue");
 
-    else if (queue->front == queue->rear)
+    else if (front == rear)
     {
-        int data = queue->front->data;
-        queue->front = queue->rear = NULL;
+        int data = front->data;
+        front = rear = nullptr;
         return data;
     }
 
     else
     {
-        Node *temp   = queue->front;
-        int data     = queue->front->data;
-        queue->front = queue->front->next;
-        free(temp);
+        Node *temp = front;
+        int data = front->data;
+        front = front->next;
+        delete temp;
         return data;
     }
 }

@@ -8,8 +8,14 @@
 struct binaryTreeNode
 {
     int data;
-    struct binaryTreeNode *left;
-    struct binaryTreeNode *right;
+    struct binaryTreeNode *left{};
+    struct binaryTreeNode *right{};
+
+    binaryTreeNode() = default;
+
+    binaryTreeNode(int n) : data(n),
+                            left(nullptr),
+                            right(nullptr) {}
 };
 
 typedef struct binaryTreeNode binaryTreeNode;
@@ -34,7 +40,7 @@ template <typename T>
 inline void printTree(T *root, int depth = 0, const std::string &direction = "")
 {
     // Base Case
-    if (root == NULL)
+    if (root == nullptr)
         return;
 
     // Printing Binary Tree
@@ -63,8 +69,14 @@ binaryTreeNode *binaryTreeFromPreOrderAndPostOrder(std::vector<int>, std::vector
 struct huffmanBinaryTree
 {
     char data;
-    struct huffmanBinaryTree *left;
-    struct huffmanBinaryTree *right;
+    struct huffmanBinaryTree *left{};
+    struct huffmanBinaryTree *right{};
+
+    huffmanBinaryTree() = default;
+
+    huffmanBinaryTree(char character) : data(character),
+                                        left(nullptr),
+                                        right(nullptr) {}
 };
 
 typedef struct huffmanBinaryTree huffmanBinaryTree;

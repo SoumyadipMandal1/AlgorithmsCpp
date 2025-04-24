@@ -1,47 +1,55 @@
 #ifndef LINKEDLIST_HPP
 #define LINKEDLIST_HPP
 
-struct singlyLinkedListNode
+struct Node
 {
     int data;
-    struct singlyLinkedListNode *next;
+    Node *next{};
+
+    Node() = default;
+
+    Node(int n)
+        : data(n),
+          next(nullptr) {}
 };
 
-typedef struct singlyLinkedListNode Node;
+Node *createLinkedList(int *, int);
 
-Node* createNode(int);
+int searchLinkedList(Node *, int);
 
-Node* createLinkedList(int*, int);
+Node *deleteFirst(Node *);
 
-int searchLinkedList(Node*, int);
+Node *deleteLast(Node *);
 
-Node* deleteFirst(Node*);
+Node *deleteLinkedList(Node *, int);
 
-Node* deleteLast(Node*);
+Node *insertFirst(Node *, int);
 
-Node* deleteLinkedList(Node*, int);
+Node *insertLast(Node *, int);
 
-Node* insertFirst(Node*, int);
+Node *insertLinkedList(Node *, int, int);
 
-Node* insertLast(Node*, int);
+Node *reverseLinkedList(Node *);
 
-Node* insertLinkedList(Node*, int, int);
-
-Node* reverseLinkedList(Node*);
-
-Node* createCirculatLinkedList(int*, int);
+Node *createCirculatLinkedList(int *, int);
 
 struct doublyLinkedListNode
 {
     int data;
-    struct doublyLinkedListNode* next;
-    struct doublyLinkedListNode* prev;
+    struct doublyLinkedListNode *next;
+    struct doublyLinkedListNode *prev;
+
+    doublyLinkedListNode() = default;
+
+    doublyLinkedListNode(int n) : data(n),
+                                  next(nullptr),
+                                  prev(nullptr) {}
 };
 
 typedef struct doublyLinkedListNode doubleNode;
 
-doubleNode* createDoubleNode(int);
+doubleNode *createDoubleNode(int);
 
-doubleNode* createDoublyLinkedList(int*, int);
+doubleNode *createDoublyLinkedList(int *, int);
 
 #endif

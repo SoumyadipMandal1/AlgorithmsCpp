@@ -1,30 +1,20 @@
-#include <stdlib.h>
 #include "linkedList.hpp"
+#include <stdlib.h>
 
-Node* createNode(int data)
-{
-    // This function creates a node having data stored in it
-    Node* node;
-    node = (Node*)malloc(sizeof(Node));
-    node->data = data;
-    node->next = NULL;
-    return node;
-}
-
-Node* createLinkedList(int* arr, int n)
+Node *createLinkedList(int *arr, int n)
 {
     // Creates a linked list from array
     Node *head, *newnode;
 
     if (n == 0)
-        return NULL;
+        return nullptr;
 
-    head = createNode(arr[0]);
+    head = new Node(arr[0]);
     newnode = head;
 
     for (int i = 1; i < n; i++)
     {
-        newnode->next = createNode(arr[i]);
+        newnode->next = new Node(arr[i]);
         newnode = newnode->next;
     }
 
@@ -36,7 +26,7 @@ int searchLinkedList(Node *head, int key)
     int counter = 0;
     Node *temp = head;
 
-    while (temp != NULL)
+    while (temp != nullptr)
     {
         if (temp->data == key)
             return counter;
@@ -46,7 +36,7 @@ int searchLinkedList(Node *head, int key)
     return -1;
 }
 
-Node* deleteFirst(Node *head)
+Node *deleteFirst(Node *head)
 {
     Node *temp = head;
     head = head->next;
@@ -54,17 +44,17 @@ Node* deleteFirst(Node *head)
     return head;
 }
 
-Node* deleteLast(Node *head)
+Node *deleteLast(Node *head)
 {
     Node *temp = head;
-    while (temp->next->next != NULL)
+    while (temp->next->next != nullptr)
         temp = temp->next;
     free(temp->next);
-    temp->next = NULL;
+    temp->next = nullptr;
     return head;
 }
 
-Node* deleteLinkedList(Node *head, int index)
+Node *deleteLinkedList(Node *head, int index)
 {
     if (index == 0)
         return deleteFirst(head);
@@ -73,7 +63,7 @@ Node* deleteLinkedList(Node *head, int index)
     Node *previousNode;
     int counter = 0;
 
-    while (currentNode->next != NULL)
+    while (currentNode->next != nullptr)
     {
         // Updating the nodes and counter
         previousNode = currentNode;
@@ -86,45 +76,44 @@ Node* deleteLinkedList(Node *head, int index)
             free(currentNode);
             return head;
         }
-
     }
 
     if (counter + 1 == index)
     {
-        previousNode->next = NULL;
+        previousNode->next = nullptr;
         free(currentNode);
         return head;
     }
 }
 
-Node* insertFirst(Node *head, int data)
+Node *insertFirst(Node *head, int data)
 {
-    Node *newnode = createNode(data);
+    Node *newnode = new Node(data);
     newnode->next = head;
     return newnode;
 }
 
-Node* insertLast(Node *head, int data)
+Node *insertLast(Node *head, int data)
 {
-    Node *newnode = createNode(data);
+    Node *newnode = new Node(data);
     Node *temp = head;
-    while (temp->next != NULL)
+    while (temp->next != nullptr)
         temp = temp->next;
     temp->next = newnode;
     return head;
 }
 
-Node* insertLinkedList(Node *head, int data, int index)
+Node *insertLinkedList(Node *head, int data, int index)
 {
     // If index is more than length, then data is inserted at the end of the linked list
 
     if (index == 0)
         return insertFirst(head, data);
 
-    Node *newnode = createNode(data);
+    Node *newnode = new Node(data);
     Node *temp = head;
     int counter = 1;
-    while (temp->next != NULL)
+    while (temp->next != nullptr)
     {
         if (counter == index)
         {
@@ -141,31 +130,31 @@ Node* insertLinkedList(Node *head, int data, int index)
     return head;
 }
 
-Node* reverseLinkedList(Node *head)
+Node *reverseLinkedList(Node *head)
 {
     Node *temp1, *temp2, *temp3;
 
-    if (head == NULL)
-        return NULL;
+    if (head == nullptr)
+        return nullptr;
 
-    else if (head->next == NULL)
+    else if (head->next == nullptr)
         return head;
 
-    else if (head->next->next == NULL)
+    else if (head->next->next == nullptr)
     {
         temp1 = head;
         temp2 = head->next;
         temp2->next = temp1;
-        temp1->next = NULL;
+        temp1->next = nullptr;
         return temp2;
     }
     temp1 = head;
     temp2 = head->next;
     temp3 = head->next->next;
     temp2->next = temp1;
-    temp1->next = NULL;
+    temp1->next = nullptr;
 
-    while (temp3->next != NULL)
+    while (temp3->next != nullptr)
     {
         temp1 = temp2;
         temp2 = temp3;
@@ -177,19 +166,19 @@ Node* reverseLinkedList(Node *head)
     return temp3;
 }
 
-Node* createCircularLinkedList(int* arr, int n)
+Node *createCircularLinkedList(int *arr, int n)
 {
     Node *head, *newnode;
 
     if (n == 0)
-        return NULL;
+        return nullptr;
 
-    head = createNode(arr[0]);
+    head = new Node(arr[0]);
     newnode = head;
 
     for (int i = 1; i < n; i++)
     {
-        newnode->next = createNode(arr[i]);
+        newnode->next = new Node(arr[i]);
         newnode = newnode->next;
     }
 
@@ -199,37 +188,26 @@ Node* createCircularLinkedList(int* arr, int n)
     return head;
 }
 
-doubleNode* createDoubleNode(int data)
-{
-    // This function creates a node having data stored in it
-    doubleNode* node;
-    node = (doubleNode*)malloc(sizeof(doubleNode));
-    node->data = data;
-    node->next = NULL;
-    node->prev = NULL;
-    return node;
-}
-
-doubleNode* createDoublyLinkedList(int* arr, int n)
+doubleNode *createDoublyLinkedList(int *arr, int n)
 {
     doubleNode *head, *newnode;
 
     if (n == 0)
-        return NULL;
+        return nullptr;
 
-    head = createDoubleNode(arr[0]);
+    head = new doubleNode(arr[0]);
     newnode = head;
 
     for (int i = 1; i < n; i++)
     {
-        newnode->next = createDoubleNode(arr[i]);
+        newnode->next = new doubleNode(arr[i]);
         newnode = newnode->next;
         newnode->next->prev = newnode;
     }
 
     // Making the Doubly Linked List circular
     newnode->next = head;
-    head->prev    = newnode;
+    head->prev = newnode;
 
     return head;
 }

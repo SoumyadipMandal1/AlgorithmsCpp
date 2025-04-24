@@ -1,12 +1,11 @@
 #include "AVLTree.hpp"
 #include "../algorithm.hpp"
-#include <stdlib.h>
 #include <string>
 #include <vector>
 
 int height(AVLTreeNode *node)
 {
-    if (node == NULL)
+    if (node == nullptr)
         return 0;
     else
         return node->height;
@@ -14,7 +13,7 @@ int height(AVLTreeNode *node)
 
 int balanceFactor(AVLTreeNode *node)
 {
-    if (node == NULL)
+    if (node == nullptr)
         return 0;
     else
         return height(node->left) - height(node->right);
@@ -56,12 +55,9 @@ AVLTreeNode *insertAVLTree(AVLTreeNode *root, int data)
 {
     static int isInserted = 1;
 
-    if (root == NULL)
+    if (root == nullptr)
     {
-        AVLTreeNode *newnode = (AVLTreeNode *)malloc(sizeof(AVLTreeNode));
-        newnode->data = data;
-        newnode->height = 1;
-        newnode->left = newnode->right = NULL;
+        AVLTreeNode *newnode = new AVLTreeNode(data);
         return newnode;
     }
 
@@ -111,17 +107,12 @@ AVLTreeNode *insertAVLTree(AVLTreeNode *root, int data)
 AVLTreeNode *AVLTreeFromArray(std::vector<int> array)
 {
     if (array.empty())
-        return NULL;
+        return nullptr;
 
-    AVLTreeNode *root = (AVLTreeNode *)malloc(sizeof(AVLTreeNode));
-    root->data = array[0];
-    root->height = 1;
-    root->left = root->right = NULL;
+    AVLTreeNode *root = new AVLTreeNode(array[0]);
 
     for (int i = 1; i < array.size(); i++)
-    {
         root = insertAVLTree(root, array[i]);
-    }
 
     return root;
 }
@@ -150,7 +141,7 @@ std::string searchAVLTree(AVLTreeNode *root, int key)
 AVLTreeNode *deleteAVLTree(AVLTreeNode *root, int n)
 {
     // If node is not present
-    if (root == NULL)
+    if (root == nullptr)
         return root;
 
     // Traversing the AVL Tree to reach the node
@@ -164,15 +155,15 @@ AVLTreeNode *deleteAVLTree(AVLTreeNode *root, int n)
         // Deleting Node
 
         // For no child case
-        if (root->left == NULL && root->right == NULL)
-            return NULL;
+        if (root->left == nullptr && root->right == nullptr)
+            return nullptr;
 
         // For one child case
-        else if ((root->left == NULL) != (root->right == NULL))
+        else if ((root->left == nullptr) != (root->right == nullptr))
         {
             AVLTreeNode *NodeToDelete = root;
             AVLTreeNode *nextNode;
-            if (root->left != NULL)
+            if (root->left != nullptr)
                 nextNode = root->left;
             else
                 nextNode = root->right;
@@ -186,7 +177,7 @@ AVLTreeNode *deleteAVLTree(AVLTreeNode *root, int n)
         {
             // Traversing the AVL Tree to the in-order successor
             AVLTreeNode *temp = root->right;
-            while (temp->left != NULL)
+            while (temp->left != nullptr)
                 temp = temp->left;
 
             // Copying the in-order successor's data

@@ -8,8 +8,15 @@ struct AVLTreeNode
 {
     int data;
     int height;
-    struct AVLTreeNode *left;
-    struct AVLTreeNode *right;
+    struct AVLTreeNode *left{};
+    struct AVLTreeNode *right{};
+
+    AVLTreeNode() = default;
+
+    AVLTreeNode(int n) : data(n),
+                         height(1),
+                         left(nullptr),
+                         right(nullptr) {}
 };
 
 typedef struct AVLTreeNode AVLTreeNode;

@@ -3,19 +3,21 @@
 
 #include "linkedList.hpp"
 
-struct Stack
+class Stack
 {
+  private:
     Node *top;
+
+  public:
+    Stack();
+
+    bool isEmpty();
+
+    void push(int n);
+
+    int peek();
+
+    int pop();
 };
-
-typedef struct Stack Stack;
-
-void initializeStack(Stack*);
-
-void push(Stack*, int);
-
-int peek(Stack*);
-
-int pop(Stack*);
 
 #endif

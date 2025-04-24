@@ -1,40 +1,52 @@
-#include <stdlib.h>
-#include <stdexcept>
-#include "linkedList.hpp"
 #include "stack.hpp"
+#include "linkedList.hpp"
+#include <stdexcept>
 
-void initializeStack(Stack *stack)
+Stack::Stack()
 {
-    stack->top = NULL;
+    top = nullptr;
 }
 
-void push(Stack *stack, int data)
+bool Stack::isEmpty()
 {
-    // Creating Node
-    Node *newnode =(Node*)malloc(sizeof(Node*));
-    newnode->data = data;
-
-    // Adding Node to the Stack
-    newnode->next = stack->top;
-    stack->top    = newnode;
+    if (top == nullptr)
+        return true;
+    else
+        return false;
 }
 
-int peek(Stack *stack)
+void Stack::push(int n)
 {
-    return stack->top->data;
-}
+    Node *newnode = new Node(n);
 
-int pop(Stack *stack)
-{
-    if (stack->top == NULL)
-        throw std::underflow_error("Empty Stack");
-
+    if (top == nullptr)
+    {
+        top = newnode;
+    }
     else
     {
-        Node *temp = stack->top;
-        int data   = stack->top->data;
-        stack->top = stack->top->next;
-        free(temp);
-        return data;
+        newnode->next = top;
+        top = newnode;
     }
+}
+
+int Stack::peek()
+{
+    if (top == nullptr)
+        throw std::underflow_error("Empty Stack\n");
+
+    return top->data;
+}
+
+int Stack::pop()
+{
+    if (top == nullptr)
+        throw std::underflow_error("Empty Stack");
+
+    int data = top->data;
+    Node *temp = top;
+    top = top->next;
+    delete temp;
+
+    return data;
 }

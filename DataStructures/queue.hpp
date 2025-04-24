@@ -3,16 +3,20 @@
 
 #include "linkedList.hpp"
 
-struct Queue
+class Queue
 {
+  private:
     Node *front;
     Node *rear;
+
+  public:
+    Queue();
+
+    bool isEmpty();
+
+    void enqueue(int n);
+
+    int dequeue();
 };
-
-void initializeQueue(Queue*);
-
-void enqueue(Queue*, int);
-
-int dequeue(Queue*);
 
 #endif
