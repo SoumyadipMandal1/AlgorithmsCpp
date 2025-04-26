@@ -19,7 +19,7 @@ void addEdgeDirectedGraph(std::vector<std::vector<Pair>> &graph, int source, int
 std::vector<int> breadthFirstSearch(std::vector<std::vector<Pair>> &graph, int startpos)
 {
     // Initializing all the necessary variables
-    Queue *queue = new Queue();
+    auto *queue = new Queue<int>();
     std::vector<bool> isVisited(graph.size(), false);
     std::vector<int> bfs;
     int temp;
@@ -50,7 +50,7 @@ std::vector<int> breadthFirstSearch(std::vector<std::vector<Pair>> &graph, int s
 std::vector<int> depthFirstSearch(std::vector<std::vector<Pair>> &graph, int startpos)
 {
     // Initializing all the necessary variables
-    Stack *stack = new Stack();
+    auto *stack = new Stack<int>();
     std::vector<bool> isVisited(graph.size(), false);
     std::vector<int> dfs;
     int temp;

@@ -1,23 +1,72 @@
 #ifndef STACK_HPP
 #define STACK_HPP
 
-#include "linkedList.hpp"
+#include <stdexcept>
 
+template <typename T>
 class Stack
 {
   private:
+    struct Node
+    {
+        T data;
+        Node *next;
+    };
+
     Node *top;
 
   public:
-    Stack();
+    Stack()
+    {
+        top = nullptr;
+    }
 
-    bool isEmpty();
+    ~Stack()
+    {
+        while (!isEmpty())
+            pop();
+    }
 
-    void push(int n);
+    bool isEmpty()
+    {
+        return (top == nullptr);
+    }
 
-    int peek();
+    void push(T n)
+    {
+        Node *newnode = new Node(n);
 
-    int pop();
+        if (top == nullptr)
+        {
+            top = newnode;
+        }
+        else
+        {
+            newnode->next = top;
+            top = newnode;
+        }
+    }
+
+    T peek()
+    {
+        if (top == nullptr)
+            throw std::underflow_error("Empty Stack\n");
+
+        return top->data;
+    }
+
+    T pop()
+    {
+        if (top == nullptr)
+            throw std::underflow_error("Empty Stack");
+
+        T data = top->data;
+        Node *temp = top;
+        top = top->next;
+        delete temp;
+
+        return data;
+    }
 };
 
 #endif

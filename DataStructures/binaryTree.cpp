@@ -1,7 +1,7 @@
 #include "binaryTree.hpp"
 #include "../algorithm.hpp"
+#include "queue.hpp"
 #include <climits>
-#include <cstddef>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -34,6 +34,30 @@ void postOrderTraversal(binaryTreeNode *root, std::vector<int> &treeArray)
         postOrderTraversal(root->right, treeArray);
         treeArray.push_back(root->data);
     }
+}
+
+std::vector<int> levelOrderTraversal(binaryTreeNode *root)
+{
+    if (root == NULL)
+        return {};
+
+    binaryTreeNode *temp;
+    auto *queue = new Queue<binaryTreeNode *>();
+    queue->enqueue(root);
+    std::vector<int> treeArray;
+
+    while (!queue->isEmpty())
+    {
+        temp = queue->dequeue();
+        treeArray.push_back(temp->data);
+
+        if (temp->left != NULL)
+            queue->enqueue(temp->left);
+        if (temp->right != NULL)
+            queue->enqueue(temp->right);
+    }
+
+    return treeArray;
 }
 
 void insertBST(binaryTreeNode *root, int n)
