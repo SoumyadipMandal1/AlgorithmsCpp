@@ -11,4 +11,6 @@ void addEdgeDirectedGraph(std::vector<std::vector<Pair>> &graph, int source, int
 
 std::vector<int> breadthFirstSearch(std::vector<std::vector<Pair>> &graph, int root);
 
+std::vector<int> depthFirstSearch(std::vector<std::vector<Pair>> &graph, int root);
+
 #endif
