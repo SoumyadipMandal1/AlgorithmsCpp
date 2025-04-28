@@ -11,6 +11,12 @@ class Stack
     {
         T data;
         Node *next;
+
+        Node() = default;
+
+        Node(T n)
+            : data(n),
+              next(nullptr) {}
     };
 
     Node *top;

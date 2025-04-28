@@ -10,7 +10,13 @@ class Queue
     struct Node
     {
         T data;
-        Node *next;
+        Node *next{};
+
+        Node() = default;
+
+        Node(T n)
+            : data(n),
+              next(nullptr) {}
     };
     Node *front;
     Node *rear;
