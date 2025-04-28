@@ -2,6 +2,7 @@
 #define TREE_HPP
 
 #include <iostream>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -81,7 +82,7 @@ struct huffmanBinaryTree
 
 typedef struct huffmanBinaryTree huffmanBinaryTree;
 
-std::vector<std::pair<char, int>> frequencyCount(std::string);
+std::map<char, int> frequencyCount(std::string);
 
 huffmanBinaryTree *createHuffmanCodeTree(std::vector<std::pair<char, int>>);
 

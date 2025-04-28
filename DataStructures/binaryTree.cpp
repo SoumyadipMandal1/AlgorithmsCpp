@@ -2,6 +2,7 @@
 #include "../algorithm.hpp"
 #include "queue.hpp"
 #include <climits>
+#include <map>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -328,40 +329,29 @@ binaryTreeNode *binaryTreeFromPreOrderAndPostOrder(std::vector<int> preOrder, st
 
 /*************** Implementing Hoffman's Coding ****************************/
 
-std::vector<std::pair<char, int>> frequencyCount(std::string text)
+std::map<char, int> frequencyCount(std::string text)
 {
     int found; // Flag for checking if a character is already present in the string or not
-    std::vector<std::pair<char, int>> frequency;
+    std::map<char, int> frequency;
 
     // Calculating frequency of each character in a text
     for (char character : text)
     {
-        found = 0;
-        for (std::pair<char, int> &frequencyPair : frequency)
-        {
-            if (character == frequencyPair.first)
-            {
-                frequencyPair.second++;
-                found = 1;
-            }
-        }
-
-        if (!found)
-            frequency.push_back({character, 1});
+        frequency[character]++;
     }
 
     return frequency;
 }
 
-huffmanBinaryTree *createHuffmanCodeTree(std::vector<std::pair<char, int>> frequency)
+huffmanBinaryTree *createHuffmanCodeTree(std::map<char, int> frequency)
 {
     std::vector<std::pair<huffmanBinaryTree *, int>> huffmanCodes;
 
     // Creating array of nodes of for huffman coding
-    for (std::pair<char, int> frequencyPair : frequency)
+    for (auto &[character, occurence] : frequency)
     {
-        huffmanBinaryTree *root = new huffmanBinaryTree(frequencyPair.first);
-        huffmanCodes.push_back({root, frequencyPair.second});
+        huffmanBinaryTree *root = new huffmanBinaryTree(character);
+        huffmanCodes.push_back({root, occurence});
     }
 
     int firstmin, secondmin;
@@ -432,7 +422,7 @@ std::vector<std::pair<char, std::vector<bool>>> createHuffmanCodes(huffmanBinary
 
 std::pair<std::vector<bool>, huffmanBinaryTree *> huffmanCoding(std::string text)
 {
-    std::vector<std::pair<char, int>> frequency = frequencyCount(text);
+    std::map<char, int> frequency = frequencyCount(text);
     huffmanBinaryTree *root = createHuffmanCodeTree(frequency);
     std::vector<std::pair<char, std::vector<bool>>> huffmanCode = createHuffmanCodes(root);
 
