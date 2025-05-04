@@ -336,9 +336,7 @@ std::map<char, int> frequencyCount(std::string text)
 
     // Calculating frequency of each character in a text
     for (char character : text)
-    {
         frequency[character]++;
-    }
 
     return frequency;
 }
