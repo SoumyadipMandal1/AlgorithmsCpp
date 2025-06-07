@@ -82,10 +82,11 @@ int binaryRight(std::vector<int> arr, int low, int high, int key)
 
 int interpolationSearch(std::vector<int> arr, int low, int high, int key)
 {
-    int mid = low + (high - low) * (key - arr[low]) / (arr[high] - arr[low]);
-
-    while (low <= high)
+    // Also checking if key is within the range of arr[low] and arr[high]
+    while (low <= high and key >= arr[low] and key <= arr[high])
     {
+        int mid = low + (high - low) * (key - arr[low]) / (arr[high] - arr[low]);
+
         if (arr[mid] == key)
             return mid;
         else if (arr[mid] > key)
