@@ -7,6 +7,17 @@
 #include <string>
 #include <vector>
 
+binaryTreeNode *cloneTree(binaryTreeNode *root)
+{
+    if (root == nullptr)
+        return nullptr;
+
+    binaryTreeNode *newroot = new binaryTreeNode(root->data);
+    newroot->left = cloneTree(root->left);
+    newroot->right = cloneTree(root->right);
+    return newroot;
+}
+
 void preOrderTraversal(binaryTreeNode *root, std::vector<int> &treeArray)
 {
     if (root != nullptr)
