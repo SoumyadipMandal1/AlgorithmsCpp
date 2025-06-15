@@ -49,6 +49,11 @@ class complex
         return complex(Real, Imaginary);
     }
 
+    complex conjugate()
+    {
+        return complex(real, -imaginary);
+    }
+
     void print()
     {
         std::cout << real << " + i" << imaginary;
