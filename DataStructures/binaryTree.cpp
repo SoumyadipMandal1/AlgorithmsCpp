@@ -299,7 +299,10 @@ binaryTreeNode *binaryTreeFromPostOrderAndInOrder(std::vector<int> postOrder, st
 
 std::vector<binaryTreeNode *> binaryTreesFromPreOrderAndPostOrder(std::vector<int> preOrder, std::vector<int> postOrder)
 {
+    // Generates all Binary Search Trees from Pre-order and Post-order
+
     std::vector<binaryTreeNode *> trees;
+
     // For empty tree
     if (preOrder.empty() && postOrder.empty())
         return {nullptr};
@@ -356,8 +359,6 @@ std::vector<binaryTreeNode *> binaryTreesFromPreOrderAndPostOrder(std::vector<in
 
     return trees;
 }
-
-// TODO : Generating all binary trees from a given pre-order and post-order
 
 /*************** Implementing Hoffman's Coding ****************************/
 
