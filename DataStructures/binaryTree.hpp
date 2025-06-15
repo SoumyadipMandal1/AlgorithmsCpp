@@ -65,7 +65,7 @@ binaryTreeNode *binaryTreeFromPreOrderAndInOrder(std::vector<int>, std::vector<i
 
 binaryTreeNode *binaryTreeFromPostOrderAndInOrder(std::vector<int>, std::vector<int>);
 
-binaryTreeNode *binaryTreeFromPreOrderAndPostOrder(std::vector<int>, std::vector<int>);
+std::vector<binaryTreeNode *> binaryTreesFromPreOrderAndPostOrder(std::vector<int>, std::vector<int>);
 
 struct huffmanBinaryTree
 {

@@ -297,11 +297,12 @@ binaryTreeNode *binaryTreeFromPostOrderAndInOrder(std::vector<int> postOrder, st
     }
 }
 
-binaryTreeNode *binaryTreeFromPreOrderAndPostOrder(std::vector<int> preOrder, std::vector<int> postOrder)
+std::vector<binaryTreeNode *> binaryTreesFromPreOrderAndPostOrder(std::vector<int> preOrder, std::vector<int> postOrder)
 {
+    std::vector<binaryTreeNode *> trees;
     // For empty tree
     if (preOrder.empty() && postOrder.empty())
-        return nullptr;
+        return {nullptr};
 
     // Handling errors
     else if (preOrder.empty() || postOrder.empty())
@@ -312,12 +313,14 @@ binaryTreeNode *binaryTreeFromPreOrderAndPostOrder(std::vector<int> preOrder, st
     // Main body of the function
     else
     {
-        // Creating new node
-        binaryTreeNode *root = new binaryTreeNode(preOrder[0]);
 
         // If pre-order and post-order arrays contains only single element
         if (preOrder[0] == postOrder[0]) // Base Case
-            return root;
+        {
+            // Creating new node
+            binaryTreeNode *root = new binaryTreeNode(preOrder[0]);
+            return {root};
+        }
 
         // Searching left child in post-order array
         int leftChildPos = linear(postOrder, postOrder.size(), preOrder[1]);
@@ -329,11 +332,29 @@ binaryTreeNode *binaryTreeFromPreOrderAndPostOrder(std::vector<int> preOrder, st
         std::vector<int> postOrderRight(postOrder.begin() + leftChildPos + 1, postOrder.end() - 1);
 
         // Traversing the binary tree
-        root->left = binaryTreeFromPreOrderAndPostOrder(preOrderLeft, postOrderLeft);
-        root->right = binaryTreeFromPreOrderAndPostOrder(preOrderRight, postOrderRight);
+        std::vector<binaryTreeNode *> leftTrees = binaryTreesFromPreOrderAndPostOrder(preOrderLeft, postOrderLeft);
+        std::vector<binaryTreeNode *> rightTrees = binaryTreesFromPreOrderAndPostOrder(preOrderRight, postOrderRight);
 
-        return root;
+        for (binaryTreeNode *i : leftTrees)
+        {
+            for (binaryTreeNode *j : rightTrees)
+            {
+                binaryTreeNode *root = new binaryTreeNode(preOrder[0]);
+                root->left = i;
+                root->right = j;
+                trees.push_back(root);
+                if (j == nullptr)
+                {
+                    binaryTreeNode *root = new binaryTreeNode(preOrder[0]);
+                    root->left = j;
+                    root->right = i;
+                    trees.push_back(root);
+                }
+            }
+        }
     }
+
+    return trees;
 }
 
 // TODO : Generating all binary trees from a given pre-order and post-order
