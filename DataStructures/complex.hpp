@@ -1,6 +1,7 @@
 #ifndef COMPLEX_HPP
 #define COMPLEX_HPP
 
+#include <iostream>
 #include <math.h>
 
 template <typename T>
@@ -46,6 +47,11 @@ class complex
         double Imaginary = (double)(imaginary * other.real - real * other.imaginary) / (double)(other.real * other.real + other.imaginary * other.imaginary);
 
         return complex(Real, Imaginary);
+    }
+
+    void print()
+    {
+        std::cout << real << " + i" << imaginary;
     }
 };
 

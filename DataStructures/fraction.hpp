@@ -2,6 +2,7 @@
 #define FRACTION_HPP
 
 #include "../numberTheory.hpp"
+#include <iostream>
 #include <stdexcept>
 
 class fraction
@@ -54,6 +55,11 @@ class fraction
         long long Denominator = denominator * other.numerator;
 
         return fraction(Numerator / gcd(Numerator, Denominator), Denominator / gcd(Numerator, Denominator));
+    }
+
+    void print()
+    {
+        std::cout << numerator << '/' << denominator;
     }
 };
 
