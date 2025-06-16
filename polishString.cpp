@@ -1,5 +1,5 @@
-#include "stack.hpp"
-#include "../string.hpp"
+#include "DataStructures/stack.hpp"
+#include "string.hpp"
 #include <stdexcept>
 #include <string>
 
@@ -30,60 +30,60 @@ bool precedence(char operator1, char operator2)
 std::string infixToPostfix(std::string infix)
 {
     std::string postfix = "";
-    auto *stack = new Stack<char>();
+    auto *operatorStack = new Stack<char>();
 
     // Traversing the infix string
     for (char i : infix)
     {
         if (i == '(' or i == '{' or i == '[')
-            stack->push(i);
+            operatorStack->push(i);
 
         else if (i == ')')
         {
-            while (stack->peek() != '(')
+            while (operatorStack->peek() != '(')
             {
-                if (stack->peek() == '{' or stack->peek() == '[')
+                if (operatorStack->peek() == '{' or operatorStack->peek() == '[')
                     throw std::invalid_argument("The infix expression has incorrect bracket order");
-                postfix += stack->pop();
+                postfix += operatorStack->pop();
             }
-            stack->pop();
+            operatorStack->pop();
         }
         else if (i == '}')
         {
-            while (stack->peek() != '{')
+            while (operatorStack->peek() != '{')
             {
-                if (stack->peek() == '(' or stack->peek() == '[')
+                if (operatorStack->peek() == '(' or operatorStack->peek() == '[')
                     throw std::invalid_argument("The infix expression has incorrect bracket order");
-                postfix += stack->pop();
+                postfix += operatorStack->pop();
             }
-            stack->pop();
+            operatorStack->pop();
         }
         else if (i == ']')
         {
-            while (stack->peek() != '[')
+            while (operatorStack->peek() != '[')
             {
-                if (stack->peek() == '(' or stack->peek() == '{')
+                if (operatorStack->peek() == '(' or operatorStack->peek() == '{')
                     throw std::invalid_argument("The infix expression has incorrect bracket order");
-                postfix += stack->pop();
+                postfix += operatorStack->pop();
             }
-            stack->pop();
+            operatorStack->pop();
         }
 
         else if (i == '+' or i == '-' or i == '*' or i == '/' or i == '^')
         {
-            if (stack->isEmpty())
-                stack->push(i);
-            else if (stack->peek() == '(' or stack->peek() == '{' or stack->peek() == '[')
-                stack->push(i);
+            if (operatorStack->isEmpty())
+                operatorStack->push(i);
+            else if (operatorStack->peek() == '(' or operatorStack->peek() == '{' or operatorStack->peek() == '[')
+                operatorStack->push(i);
             else
             {
-                if (precedence(stack->peek(), i))
+                if (precedence(operatorStack->peek(), i))
                 {
-                    postfix += stack->pop();
-                    stack->push(i);
+                    postfix += operatorStack->pop();
+                    operatorStack->push(i);
                 }
                 else
-                    stack->push(i);
+                    operatorStack->push(i);
             }
         }
 
@@ -94,8 +94,8 @@ std::string infixToPostfix(std::string infix)
             postfix += i;
     }
 
-    while (not stack->isEmpty())
-        postfix += stack->pop();
+    while (not operatorStack->isEmpty())
+        postfix += operatorStack->pop();
 
     return postfix;
 }
