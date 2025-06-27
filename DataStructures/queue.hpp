@@ -63,6 +63,7 @@ class Queue
         else if (front == rear)
         {
             T data = front->data;
+            delete front; // Frees memory to prevent memory leaks
             front = rear = nullptr;
             return data;
         }
