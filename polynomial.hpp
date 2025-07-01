@@ -33,4 +33,8 @@ term *multiplyPolynomial(term *polynomial1, term *polynomial2);
 
 term *dividePolynomial(term *polynomial1, term *polynomial2);
 
+term *differentiate(term *polynomial);
+
+term *integrate(term *polynomial);
+
 #endif

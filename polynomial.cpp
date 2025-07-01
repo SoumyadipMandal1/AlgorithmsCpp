@@ -313,3 +313,34 @@ std::pair<term *, term *> divdePolynomial(term *polynomial1, term *polynomial2)
 
     return {quotient, polynomial2};
 }
+
+term *differentiate(term *polynomial)
+{
+    term *temp = polynomial;
+
+    while (temp != nullptr)
+    {
+        if (temp->exponent)
+        {
+            temp->coefficient *= temp->exponent;
+            temp->exponent--;
+            temp = temp->next;
+        }
+    }
+
+    return polynomial;
+}
+
+term *integrate(term *polynomial)
+{
+    term *temp = polynomial;
+
+    while (temp != nullptr)
+    {
+        temp->coefficient /= (float)temp->exponent;
+        temp->exponent++;
+        temp = temp->next;
+    }
+
+    return polynomial;
+}
