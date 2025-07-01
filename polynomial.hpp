@@ -16,15 +16,19 @@ struct term
 
 typedef struct term term;
 
-term *merge(term *polynomial1, term *polynomial2);
+term *mergePolynomial(term *polynomial1, term *polynomial2);
 
-term *sort(term *polynomial);
+term *sortPolynomial(term *polynomial);
 
-term *add(term *polynomial1, term *polynomial2);
+term *addPolynomial(term *polynomial1, term *polynomial2);
 
 template <typename T>
-term *scalarmultiply(term *polynomial, T scalar);
+term *scalarMultiplyPolynomial(term *polynomial, T scalar);
 
-term *subtract(term *polynomial1, term *polynomial2);
+term *subtractPolynomial(term *polynomial1, term *polynomial2);
+
+term *multiplyWithMonomial(term *polynomial, term *monomial);
+
+term *multiplyPolynomial(term *polynomial1, term *polynomial2);
 
 #endif

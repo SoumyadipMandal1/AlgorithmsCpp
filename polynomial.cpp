@@ -3,6 +3,8 @@
 // All polynomials are assumed to be sorted in descending order
 // except for the sorting function
 
+// Zero polynomial is denoted by nullptr
+
 // An IMPORTANT thing I want to tell to those who want to read this code:
 // I found out that creating a new term object and
 // then assigning its information of coefficient and exponent
@@ -10,7 +12,7 @@
 // because no time is spent on finding and giving a memory location.
 // So I have used this knowledge in my code in case of addition
 
-term *merge(term *polynomial1, term *polynomial2)
+term *mergePolynomial(term *polynomial1, term *polynomial2)
 {
     // Edge cases
     if (polynomial1 == nullptr)
@@ -64,7 +66,7 @@ term *merge(term *polynomial1, term *polynomial2)
     return result;
 }
 
-term *sort(term *polynomial)
+term *sortPolynomial(term *polynomial)
 {
     // Sorting the terms of polynomial in descending order of its exponents
 
@@ -111,21 +113,21 @@ term *sort(term *polynomial)
     oddtemp->next = nullptr;
     eventemp->next = nullptr;
 
-    odd = sort(odd);
-    even = sort(even);
+    odd = sortPolynomial(odd);
+    even = sortPolynomial(even);
 
-    term *result = merge(odd, even);
+    term *result = mergePolynomial(odd, even);
     return result;
 }
 
-term *add(term *polynomial1, term *polynomial2)
+term *addPolynomial(term *polynomial1, term *polynomial2)
 {
     term *sum = nullptr;
     term *temp1, *temp2;
     temp1 = polynomial1;
     temp2 = polynomial2;
 
-    // Initializing the sum node
+    // Initializing the first term of sum polynomial
     // This loop is for checking whether the first term has non-zero coefficient
     int flag = 1;
     while (sum == nullptr and temp1 != nullptr and temp2 != nullptr)
@@ -217,7 +219,7 @@ term *add(term *polynomial1, term *polynomial2)
 }
 
 template <typename T>
-term *scalarmultiply(term *polynomial, T scalar)
+term *scalarMultiplyPolynomial(term *polynomial, T scalar)
 {
     term *temp = polynomial; // temporary node for traversal
     while (temp != nullptr)  // traversing the polynomial
@@ -225,7 +227,54 @@ term *scalarmultiply(term *polynomial, T scalar)
     return polynomial;
 }
 
-term *subtract(term *polynomial1, term *polynomial2)
+term *subtractPolynomial(term *polynomial1, term *polynomial2)
 {
-    return add(polynomial1, scalarmultiply(polynomial2, -1));
+    return addPolynomial(polynomial1, scalarMultiplyPolynomial(polynomial2, -1));
+}
+
+term *multiplyWithMonomial(term *polynomial, term *monomial)
+{
+    // Handling Edge cases
+    if (monomial == nullptr)
+        // Returns Zero polynomial (Null pointer) because
+        // zero times everything is zero and Null pointer is considered as a zero polynomial
+        return nullptr;
+
+    if (monomial->coefficient)
+    {
+        // Initializing variables
+        term *temp;
+        temp = polynomial;
+
+        while (temp != nullptr)
+        {
+            temp->coefficient *= monomial->coefficient;
+            temp->exponent += monomial->exponent;
+            temp = temp->next;
+        }
+
+        return polynomial;
+    }
+    else
+        // Returns Zero polynomial (Null pointer) because
+        // zero times everything is zero
+        return nullptr;
+}
+
+term *multiplyPolynomial(term *polynomial1, term *polynomial2)
+{
+    // Initialization
+    term *temp2;
+    temp2 = polynomial2;
+    polynomial1 = multiplyWithMonomial(polynomial1, temp2);
+    temp2 = temp2->next;
+
+    // Multiplying in polynomial1
+    while (temp2 != nullptr)
+    {
+        polynomial1 = addPolynomial(polynomial1, multiplyWithMonomial(polynomial1, temp2));
+        temp2 = temp2->next;
+    }
+
+    return polynomial1;
 }
