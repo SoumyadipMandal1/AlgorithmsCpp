@@ -1,4 +1,5 @@
 #include "polynomial.hpp"
+#include <utility>
 
 // All polynomials are assumed to be sorted in descending order
 // except for the sorting function
@@ -6,11 +7,11 @@
 // Zero polynomial is denoted by nullptr
 
 // An IMPORTANT thing I want to tell to those who want to read this code:
-// I found out that creating a new term object and
-// then assigning its information of coefficient and exponent
+// I found out that creating a new term object and then assigning its information of coefficient and exponent
 // is slower than changing the information of an already created object
 // because no time is spent on finding and giving a memory location.
-// So I have used this knowledge in my code in case of addition
+// So I have used this knowledge in my code by
+// changing the values of previous variables without creating new variables as much as possible
 
 term *mergePolynomial(term *polynomial1, term *polynomial2)
 {
@@ -129,7 +130,6 @@ term *addPolynomial(term *polynomial1, term *polynomial2)
 
     // Initializing the first term of sum polynomial
     // This loop is for checking whether the first term has non-zero coefficient
-    int flag = 1;
     while (sum == nullptr and temp1 != nullptr and temp2 != nullptr)
     {
         if (temp1->exponent > temp2->exponent)
@@ -277,4 +277,39 @@ term *multiplyPolynomial(term *polynomial1, term *polynomial2)
     }
 
     return polynomial1;
+}
+
+std::pair<term *, term *> divdePolynomial(term *polynomial1, term *polynomial2)
+{
+    // This polynomial divides polynomial1 by polynomial2
+    // i.e., the result is polynomial1 / polynomial2
+
+    // In this function, I have stored the quotient in new memory locations
+    // The first polynomial of the pair is quotient and
+    // the secnd pair of the pair is remainder
+
+    term *quotient, *tempQuotient;
+    quotient = nullptr;
+
+    // Initialization
+    if (polynomial1 != nullptr and polynomial1->exponent >= polynomial2->exponent)
+    {
+        quotient = new term(polynomial1->coefficient / polynomial2->coefficient, polynomial1->exponent - polynomial2->exponent);
+        polynomial1 = subtractPolynomial(polynomial1, multiplyWithMonomial(polynomial2, quotient));
+        tempQuotient = quotient;
+    }
+
+    // If the quotient is a zero polynomial
+    if (quotient == nullptr)
+        return {nullptr, polynomial2};
+
+    // Division
+    while (polynomial1 != nullptr and polynomial1->exponent >= polynomial2->exponent)
+    {
+        tempQuotient->next = new term(polynomial1->coefficient / polynomial2->coefficient, polynomial1->exponent - polynomial2->exponent);
+        polynomial1 = subtractPolynomial(polynomial1, multiplyWithMonomial(polynomial2, tempQuotient->next));
+        tempQuotient = tempQuotient->next;
+    }
+
+    return {quotient, polynomial2};
 }

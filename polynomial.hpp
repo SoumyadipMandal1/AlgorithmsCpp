@@ -31,4 +31,6 @@ term *multiplyWithMonomial(term *polynomial, term *monomial);
 
 term *multiplyPolynomial(term *polynomial1, term *polynomial2);
 
+term *dividePolynomial(term *polynomial1, term *polynomial2);
+
 #endif
