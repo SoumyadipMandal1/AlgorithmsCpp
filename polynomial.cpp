@@ -8,7 +8,7 @@
 // then assigning its information of coefficient and exponent
 // is slower than changing the information of an already created object
 // because no time is spent on finding and giving a memory location.
-// So I have used this knowledge repeatedly in my code
+// So I have used this knowledge in my code in case of addition
 
 term *merge(term *polynomial1, term *polynomial2)
 {
@@ -120,28 +120,51 @@ term *sort(term *polynomial)
 
 term *add(term *polynomial1, term *polynomial2)
 {
-    term *sum;
+    term *sum = nullptr;
     term *temp1, *temp2;
     temp1 = polynomial1;
     temp2 = polynomial2;
 
     // Initializing the sum node
-    if (temp1->exponent > temp2->exponent)
+    // This loop is for checking whether the first term has non-zero coefficient
+    int flag = 1;
+    while (sum == nullptr and temp1 != nullptr and temp2 != nullptr)
     {
-        sum = temp1;
-        temp1 = temp1->next;
-    }
-    else if (temp1->exponent < temp2->exponent)
-    {
-        sum = temp2;
-        temp2 = temp2->next;
-    }
-    else
-    {
-        temp1->coefficient += temp2->coefficient;
-        sum = temp1;
-        temp1 = temp1->next;
-        temp2 = temp2->next;
+        if (temp1->exponent > temp2->exponent)
+        {
+            if (temp1->coefficient)
+            {
+                sum = temp1;
+                temp1 = temp1->next;
+            }
+            else
+                temp1 = temp1->next;
+        }
+        else if (temp1->exponent < temp2->exponent)
+        {
+            if (temp2->coefficient)
+            {
+                sum = temp2;
+                temp2 = temp2->next;
+            }
+            else
+                temp2 = temp2->next;
+        }
+        else
+        {
+            if (temp1->coefficient + temp2->coefficient)
+            {
+                temp1->coefficient += temp2->coefficient;
+                sum = temp1;
+                temp1 = temp1->next;
+                temp2 = temp2->next;
+            }
+            else
+            {
+                temp1 = temp1->next;
+                temp2 = temp2->next;
+            }
+        }
     }
 
     // Adding the two polynomials
@@ -149,20 +172,38 @@ term *add(term *polynomial1, term *polynomial2)
     {
         if (temp1->exponent > temp2->exponent)
         {
-            sum->next = temp1;
-            temp1 = temp1->next;
+            if (temp1->coefficient)
+            {
+                sum->next = temp1;
+                temp1 = temp1->next;
+            }
+            else
+                temp1 = temp1->next;
         }
         else if (temp1->exponent < temp2->exponent)
         {
-            sum->next = temp2;
-            temp2 = temp2->next;
+            if (temp2->coefficient)
+            {
+                sum->next = temp2;
+                temp2 = temp2->next;
+            }
+            else
+                temp2 = temp2->next;
         }
         else
         {
-            temp1->coefficient += temp2->coefficient;
-            sum->next = temp1;
-            temp1 = temp1->next;
-            temp2 = temp2->next;
+            if (temp1->coefficient + temp2->coefficient)
+            {
+                temp1->coefficient += temp2->coefficient;
+                sum->next = temp1;
+                temp1 = temp1->next;
+                temp2 = temp2->next;
+            }
+            else
+            {
+                temp1 = temp1->next;
+                temp2 = temp2->next;
+            }
         }
     }
 
