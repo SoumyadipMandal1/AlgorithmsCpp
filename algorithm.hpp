@@ -5,8 +5,7 @@
 
 void swap(int &, int &);
 
-template <typename T>
-inline std::vector<T> array_push(std::vector<T> array, T parameter)
+template <typename T> inline std::vector<T> array_push(std::vector<T> array, T parameter)
 {
     array.push_back(parameter);
     return array;
@@ -31,5 +30,15 @@ int maxpair(int, int);
 void permute(std::vector<std::vector<int>> &, std::vector<int>, std::vector<int>, std::vector<bool>);
 
 std::vector<std::vector<int>> permutation(std::vector<int>);
+
+int partiton5(std::vector<int> &, int, int);
+
+int pivot(std::vector<int> &, int, int);
+
+int partition(std::vector<int> &, int, int, int, int);
+
+int select(std::vector<int> &, int, int, int);
+
+int nthSmallest(std::vector<int> &, int);
 
 #endif
