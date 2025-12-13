@@ -7,6 +7,8 @@ void swap(int &, int &);
 
 int gcd(int, int);
 
+int optimized_gcd(int a, int b);
+
 int horner(std::vector<int>, int, int);
 
 int factorial(int n);

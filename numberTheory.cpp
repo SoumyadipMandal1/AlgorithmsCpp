@@ -9,13 +9,27 @@ void swap(int &a, int &b)
 
 int gcd(int a, int b)
 {
-    if (a < b)
-        swap(a, b);
-
-    if (b == 0)
-        return a;
-    else
+    if (b)
         return gcd(b, a % b);
+    else
+        return a;
+}
+
+int optimized_gcd(int a, int b)
+{
+    if (a < b)
+        return optimized_gcd(b, a);
+
+    if (b)
+    {
+        // Uses least remainder instead of the usual remainder
+        if (a % b > b / 2)
+            return gcd(b, b - a % b);
+        else
+            return gcd(b, a % b);
+    }
+    else
+        return a;
 }
 
 int horner(std::vector<int> coefficient, int x, int length)
