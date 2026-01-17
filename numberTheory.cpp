@@ -32,6 +32,31 @@ int optimized_gcd(int a, int b)
         return a;
 }
 
+//        gcd    bezout's coefficients
+std::pair<int, std::pair<int, int>> extended_gcd(int a, int b)
+{
+    // let a = bq + r
+
+    // Initialization
+    std::pair<int, int> gcd = {a, b};
+    std::pair<int, int> bezout_coefficient_x = {1, 0};
+    std::pair<int, int> bezout_coefficient_y = {0, 1};
+
+    // Extended Euclidean algorithm
+    int quotient;
+    while (gcd.second)
+    {
+        quotient = gcd.first / gcd.second;
+        gcd = {gcd.second, gcd.first - quotient * gcd.second};
+        bezout_coefficient_x = {bezout_coefficient_x.second,
+                                bezout_coefficient_x.first - quotient * bezout_coefficient_x.second};
+        bezout_coefficient_y = {bezout_coefficient_y.second,
+                                bezout_coefficient_y.first - quotient * bezout_coefficient_y.second};
+    }
+
+    return {gcd.first, {bezout_coefficient_x.first, bezout_coefficient_y.first}};
+}
+
 int horner(std::vector<int> coefficient, int x, int length)
 {
     // If an array [a0, a1, a2, ..., an] is given, then
