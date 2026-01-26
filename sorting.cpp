@@ -216,19 +216,38 @@ void mergeSort(std::vector<int> &arr, int left, int right, bool reverse = false)
 
 int partition(std::vector<int> &arr, int low, int high)
 {
-    int pivot = arr[low];
-    int i = high;
+    // Taking the middle element as the pivot
+    int pivot = arr[low + (high - low) / 2];
 
-    for (int j = high; j >= low; j--)
+    // Taking left and right outside of the array
+    int left = low - 1;
+    int right = high + 1;
+
+    // Hoare's Partition
+    while (true)
     {
-        if (arr[j] >= pivot)
+        // Incrementing the left pointer
+        // if the elements at left is already smaller than pivot
+        do
         {
-            swap(arr[i], arr[j]);
-            i--;
-        }
-    }
+            left++;
+        } while (arr[left] < pivot);
 
-    return i + 1;
+        // Decrementing the left pointer
+        // if the elements at right is already larher than pivot
+        do
+        {
+            right--;
+        } while (arr[right] > pivot);
+
+        // If no more swapping is possible
+        if (left >= right)
+            return right;
+
+        // If an element at the left pointer is greater than pivot and
+        // the element at the right pointer is smaller than pivot
+        swap(arr[left], arr[right]);
+    }
 }
 
 void quickSort(std::vector<int> &arr, int low, int high)
@@ -236,7 +255,8 @@ void quickSort(std::vector<int> &arr, int low, int high)
     if (low < high)
     {
         int partitionIndex = partition(arr, low, high);
-        quickSort(arr, low, partitionIndex - 1);
+        // Hoare's partition returns a split point, not a pivot position
+        quickSort(arr, low, partitionIndex);
         quickSort(arr, partitionIndex + 1, high);
     }
 }
