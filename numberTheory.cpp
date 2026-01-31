@@ -96,6 +96,7 @@ int combination(int n, int k)
 
 bool isPrime(int n)
 {
+    // TODO : Optimize this function using recent primality tests
     if (n <= 1)
         return false;
 
@@ -108,4 +109,38 @@ bool isPrime(int n)
             return false;
     }
     return true;
+}
+
+std::vector<int> primeFactorize(int n)
+{
+    int iter;                      // Iterates through numbers from 2 to sqrt(n)
+                                   // to check if it can be factorised
+    bool isPrime;                  // Flag to check if the number is prime or not
+    std::vector<int> primeFactors; // Stores the prime factors of the number
+
+    while (true)
+    {
+        isPrime = true; // Considering the number to be prime at first
+        iter = 2;       // Iterating from 2 because 1 divides any number
+
+        while (iter * iter <= n)
+        {
+            if (n % iter == 0) // If the number is composite
+            {
+                primeFactors.push_back(iter); // Pushing the prime factor
+                n /= iter;                    // Updating the number
+                isPrime = false;              // The number is not prime
+                break;
+            }
+        }
+
+        // If the number becomes prime
+        if (isPrime)
+        {
+            primeFactors.push_back(n);
+            break;
+        }
+    }
+
+    return primeFactors;
 }

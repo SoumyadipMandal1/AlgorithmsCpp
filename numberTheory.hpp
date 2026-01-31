@@ -21,4 +21,6 @@ int combination(int n, int k);
 
 bool isPrime(int n);
 
+std::vector<int> primeFactorise(int n);
+
 #endif
