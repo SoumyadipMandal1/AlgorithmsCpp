@@ -3,12 +3,15 @@
 
 #include <vector>
 
-template <typename T>
-using vector2d = std::vector<std::vector<T>>;
+template <typename T> using vector2d = std::vector<std::vector<T>>;
+
+float absolute(float);
 
 std::vector<float> gaussianElimination(int, vector2d<float>, std::vector<float>);
 
 std::vector<float> gaussJordanElimination(int, vector2d<float>, std::vector<float>);
+
+std::vector<float> gaussianElimination_partialPivoting(int, vector2d<float>, std::vector<float>);
 
 vector2d<float> rowEchelon(int, int, vector2d<float>);
 
