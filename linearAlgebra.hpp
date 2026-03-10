@@ -13,6 +13,8 @@ std::vector<float> gaussJordanElimination(int, vector2d<float>, std::vector<floa
 
 std::vector<float> gaussianElimination_partialPivoting(int, vector2d<float>, std::vector<float>);
 
+std::vector<float> gaussianElimination_completePivoting(int, vector2d<float>, std::vector<float>);
+
 vector2d<float> rowEchelon(int, int, vector2d<float>);
 
 vector2d<float> reducedRowEchelon(int, int, vector2d<float>);

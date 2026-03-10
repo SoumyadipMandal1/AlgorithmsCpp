@@ -150,8 +150,6 @@ std::vector<float> gaussianElimination_partialPivoting(int size, vector2d<float>
     int maximumAbsolutValue_row;
     float scalingFactor, sum, maximum, absoluteValue;
 
-    // Converts the matrix to row echelon form
-
     // Iterates through each row
     for (int i = 0; i < size; i++)
     {
@@ -218,6 +216,106 @@ std::vector<float> gaussianElimination_partialPivoting(int size, vector2d<float>
     }
 
     return augmented;
+}
+
+std::vector<float> gaussianElimination_completePivoting(int size, vector2d<float> coefficient,
+                                                        std::vector<float> augmented)
+{
+    // Coefficient matrix is of size n x n and augmented vector is of size n
+    int maximumAbsolutValue_row, maximumAbsolutValue_column;
+    float scalingFactor, sum, maximum, absoluteValue;
+
+    std::vector<int> solution_position(size);
+    for (int i = 0; i < size; i++)
+        solution_position[i] = i;
+
+    // Iterates through each row
+    for (int i = 0; i < size; i++)
+    {
+        // Complete Pivoting
+
+        // Iterate through the numbers in the rectangle enclosed by the pivot and the bottom right position
+        // Find the number with the maximum absolute value
+        // Swap the row and the column where the number is located with the pivot row
+        // As column swapping changes the order of the solution
+        // so we need a seperate vector which tracks the order of the solution
+        // with respect to the original solution
+
+        maximum = absolute(coefficient[i][i]);
+        maximumAbsolutValue_row = i;
+        maximumAbsolutValue_column = i;
+
+        // Iterating through the numbers in the rectangle enclosed by the pivot and the bottom right position
+        for (int row = i; row < size; row++)
+        {
+            for (int column = i; column < size; column++)
+            {
+                absoluteValue = absolute(coefficient[row][column]);
+                if (maximum < absoluteValue)
+                {
+                    maximum = absoluteValue;
+                    maximumAbsolutValue_row = row;
+                    maximumAbsolutValue_column = column;
+                }
+            }
+        }
+
+        if (maximum == 0)
+        {
+            // All the numbers in the pivot position and below it are zero
+            std::cout << "The system of linear equations has no solutions\n";
+            return {};
+        }
+        else
+        {
+            // swapping the row at pivot position
+            // with the row where the maximum absolute value is located
+            for (int j = i; j < size; j++)
+                std::swap(coefficient[i][j], coefficient[maximumAbsolutValue_row][j]);
+            std::swap(augmented[i], augmented[maximumAbsolutValue_row]);
+
+            // swapping the column at pivot position
+            // with the column where the maximum absolute value is located
+            for (int j = 0; j < size; j++)
+                std::swap(coefficient[j][i], coefficient[j][maximumAbsolutValue_column]);
+
+            // order of the solution has changed
+            std::swap(solution_position[i], solution_position[maximumAbsolutValue_column]);
+        }
+
+        // Executing necessary elementary row operations
+        for (int j = i + 1; j < size; j++)
+        {
+            // If scalingFactor is zero, then there will be no changes
+            if (coefficient[j][i] == 0)
+                continue;
+
+            // Elemetary row operations are done in such a way that
+            // all the numbers in the matrix below the pivot becomes zero
+            scalingFactor = coefficient[j][i] / coefficient[i][i];
+            coefficient[j][i] = 0;
+            for (int k = i + 1; k < size; k++)
+                coefficient[j][k] -= coefficient[i][k] * scalingFactor;
+            augmented[j] -= augmented[i] * scalingFactor;
+        }
+    }
+
+    // Calculating the result by back substitution
+    // sum is used here
+    for (int i = size - 1; i >= 0; i--)
+    {
+        sum = 0;
+        for (int j = i + 1; j < size; j++)
+            sum += coefficient[i][j] * augmented[j];
+        augmented[i] = (augmented[i] - sum) / coefficient[i][i];
+    }
+
+    // Retrievig the actual solution
+    std::vector<float> actual_solution(size);
+    for (int i = 0; i < size; i++)
+        actual_solution[i] = augmented[solution_position[i]];
+
+    return actual_solution;
 }
 
 vector2d<float> rowEchelon(int rows, int columns, vector2d<float> matrix)
