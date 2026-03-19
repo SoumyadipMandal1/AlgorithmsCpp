@@ -7,34 +7,34 @@ template <typename T> using vector2d = std::vector<std::vector<T>>;
 
 float absolute(float);
 
-std::vector<float> gaussianElimination(int, vector2d<float>, std::vector<float>);
+std::vector<float> gaussianElimination(vector2d<float>, std::vector<float>);
 
-std::vector<float> gaussJordanElimination(int, vector2d<float>, std::vector<float>);
+std::vector<float> gaussJordanElimination(vector2d<float>, std::vector<float>);
 
-std::vector<float> gaussianElimination_partialPivoting(int, vector2d<float>, std::vector<float>);
+std::vector<float> gaussianElimination_partialPivoting(vector2d<float>, std::vector<float>);
 
-std::vector<float> gaussianElimination_completePivoting(int, vector2d<float>, std::vector<float>);
+std::vector<float> gaussianElimination_completePivoting(vector2d<float>, std::vector<float>);
 
-vector2d<float> rowEchelon(int, int, vector2d<float>);
+vector2d<float> rowEchelon(vector2d<float>);
 
-vector2d<float> reducedRowEchelon(int, int, vector2d<float>);
+vector2d<float> reducedRowEchelon(vector2d<float>);
 
-int rank(int, int, vector2d<float>);
+int rank(vector2d<float>);
 
-vector2d<float> matrixAdd(int, int, vector2d<float>, vector2d<float>);
+vector2d<float> matrixAdd(vector2d<float>, vector2d<float>);
 
-vector2d<float> scalarMultiplication(int, int, vector2d<float>, float);
+vector2d<float> scalarMultiplication(vector2d<float>, float);
 
-vector2d<float> transpose(int rows, int columns, vector2d<float> matrix);
+vector2d<float> transpose(vector2d<float> matrix);
 
-int isSymmetric(int, vector2d<float>);
+int isSymmetric(vector2d<float>);
 
-vector2d<float> matrixMultiply(int, int, int, vector2d<float>, vector2d<float>);
+vector2d<float> matrixMultiply(vector2d<float>, vector2d<float>);
 
-vector2d<float> matrixInverse(int, vector2d<float>);
+vector2d<float> matrixInverse(vector2d<float>);
 
-void rankNormal(int, int, vector2d<float>);
+void rankNormal(vector2d<float>);
 
-float determinant(int, vector2d<float>);
+float determinant(vector2d<float>);
 
 #endif

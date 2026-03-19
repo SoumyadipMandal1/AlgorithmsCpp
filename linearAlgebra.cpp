@@ -1,5 +1,6 @@
 #include "linearAlgebra.hpp"
 #include <iostream>
+#include <stdexcept>
 #include <vector>
 
 float absolute(float x)
@@ -10,11 +11,19 @@ float absolute(float x)
         return -x;
 }
 
-std::vector<float> gaussianElimination(int size, vector2d<float> coefficient, std::vector<float> augmented)
+std::vector<float> gaussianElimination(vector2d<float> coefficient, std::vector<float> augmented)
 {
     // Solve a linear equation using Gaussian Elimination.
     // Coefficient matrix is of size n x n and augmented vector is of size n
+    int size;
     float scalingFactor, sum;
+
+    // Checking the size of the matrix and vector
+    if (coefficient.size() != coefficient[0].size() || coefficient.size() != augmented.size())
+        throw std::logic_error("Number of rows and columns in coefficient matrix should be equal and it should also be "
+                               "equal to the sizs of the augmented vector");
+    else
+        size = coefficient.size();
 
     // Converts the matrix to row echelon form
 
@@ -77,11 +86,19 @@ std::vector<float> gaussianElimination(int size, vector2d<float> coefficient, st
     return augmented;
 }
 
-std::vector<float> gaussJordanElimination(int size, vector2d<float> coefficient, std::vector<float> augmented)
+std::vector<float> gaussJordanElimination(vector2d<float> coefficient, std::vector<float> augmented)
 {
     // Solve a linear equation using Gaussian - Jordan Elimination.
     // Coefficient matrix is of size n x n and augmented vector is of size n
+    int size;
     float scalingFactor;
+
+    // Checking the size of the matrix and vector
+    if (coefficient.size() != coefficient[0].size() || coefficient.size() != augmented.size())
+        throw std::logic_error("Number of rows and columns in coefficient matrix should be equal and it should also be "
+                               "equal to the sizs of the augmented vector");
+    else
+        size = coefficient.size();
 
     // Converts the matrix to row echelon form
 
@@ -143,12 +160,19 @@ std::vector<float> gaussJordanElimination(int size, vector2d<float> coefficient,
     return augmented;
 }
 
-std::vector<float> gaussianElimination_partialPivoting(int size, vector2d<float> coefficient,
-                                                       std::vector<float> augmented)
+std::vector<float> gaussianElimination_partialPivoting(vector2d<float> coefficient, std::vector<float> augmented)
 {
     // Coefficient matrix is of size n x n and augmented vector is of size n
+    int size;
     int maximumAbsolutValue_row;
     float scalingFactor, sum, maximum, absoluteValue;
+
+    // Checking the size of the matrix and vector
+    if (coefficient.size() != coefficient[0].size() || coefficient.size() != augmented.size())
+        throw std::logic_error("Number of rows and columns in coefficient matrix should be equal and it should also be "
+                               "equal to the sizs of the augmented vector");
+    else
+        size = coefficient.size();
 
     // Iterates through each row
     for (int i = 0; i < size; i++)
@@ -218,12 +242,19 @@ std::vector<float> gaussianElimination_partialPivoting(int size, vector2d<float>
     return augmented;
 }
 
-std::vector<float> gaussianElimination_completePivoting(int size, vector2d<float> coefficient,
-                                                        std::vector<float> augmented)
+std::vector<float> gaussianElimination_completePivoting(vector2d<float> coefficient, std::vector<float> augmented)
 {
     // Coefficient matrix is of size n x n and augmented vector is of size n
+    int size;
     int maximumAbsolutValue_row, maximumAbsolutValue_column;
     float scalingFactor, sum, maximum, absoluteValue;
+
+    // Checking the size of the matrix and vector
+    if (coefficient.size() != coefficient[0].size() || coefficient.size() != augmented.size())
+        throw std::logic_error("Number of rows and columns in coefficient matrix should be equal and it should also be "
+                               "equal to the sizs of the augmented vector");
+    else
+        size = coefficient.size();
 
     std::vector<int> solution_position(size);
     for (int i = 0; i < size; i++)
@@ -318,11 +349,14 @@ std::vector<float> gaussianElimination_completePivoting(int size, vector2d<float
     return actual_solution;
 }
 
-vector2d<float> rowEchelon(int rows, int columns, vector2d<float> matrix)
+vector2d<float> rowEchelon(vector2d<float> matrix)
 {
     // Converts a matrix into row echelon form
-    int row, column;
+    int row, rows, column, columns;
     float scalingFactor;
+
+    rows = matrix.size();
+    columns = matrix[0].size();
 
     // Checking for non-zero pivot and interchanging rows
     // if a non-zero number is spotted below a zero
@@ -399,11 +433,14 @@ vector2d<float> rowEchelon(int rows, int columns, vector2d<float> matrix)
     return matrix;
 }
 
-vector2d<float> reducedRowEchelon(int rows, int columns, vector2d<float> matrix)
+vector2d<float> reducedRowEchelon(vector2d<float> matrix)
 {
     // Converts a matrix into row echelon form
-    int row, column;
+    int row, rows, column, columns;
     float temp, scalingFactor;
+
+    rows = matrix.size();
+    columns = matrix[0].size();
 
     // Checking for non-zero pivot and interchanging
     // rows if a non-zero number is spotted below a zero
@@ -484,9 +521,12 @@ vector2d<float> reducedRowEchelon(int rows, int columns, vector2d<float> matrix)
     return matrix;
 }
 
-int rank(int rows, int columns, vector2d<float> matrix)
+int rank(vector2d<float> matrix)
 {
     // Rank is the number of nonzero rows in row echelon form or row reduced echelon form
+    int rows, columns;
+    rows = matrix.size();
+    columns = matrix[0].size();
 
     // This flag checks if the row is non - zero or not
     int flag;
@@ -495,7 +535,7 @@ int rank(int rows, int columns, vector2d<float> matrix)
     int rank = 0;
 
     // Converting the matrix to row reduced echelon form
-    matrix = rowEchelon(rows, columns, matrix);
+    matrix = rowEchelon(matrix);
 
     // Iterating through each row
     for (int i = 0; i < rows; i++)
@@ -523,8 +563,24 @@ int rank(int rows, int columns, vector2d<float> matrix)
     return rank;
 }
 
-vector2d<float> matrixAdd(int rows, int columns, vector2d<float> matrix1, vector2d<float> matrix2)
+vector2d<float> matrixAdd(vector2d<float> matrix1, vector2d<float> matrix2)
 {
+    // Checkingthe size of the matrix
+    int rows, columns;
+    if (matrix1.size() == matrix2.size()) // Checking if the number of rows in the matrices are equal or not
+    {
+        if (matrix1[0].size() ==
+            matrix2[0].size()) // Checking if the number of columns in the matrices are equal or not
+        {
+            rows = matrix1.size();
+            columns = matrix1[0].size();
+        }
+        else
+            throw std::logic_error("Number of columns in the matrices are not equal");
+    }
+    else
+        throw std::logic_error("Numeber of rows in the matrices are not equal");
+
     vector2d<float> matrixSum;
 
     // Adding matrix
@@ -539,8 +595,12 @@ vector2d<float> matrixAdd(int rows, int columns, vector2d<float> matrix1, vector
     return matrixSum;
 }
 
-vector2d<float> scalarMultiplication(int rows, int columns, vector2d<float> matrix, float scalar)
+vector2d<float> scalarMultiplication(vector2d<float> matrix, float scalar)
 {
+    int rows, columns;
+    rows = matrix.size();
+    columns = matrix[0].size();
+
     for (int i = 0; i < rows; i++)
     {
         for (int j = 0; j < columns; j++)
@@ -550,8 +610,12 @@ vector2d<float> scalarMultiplication(int rows, int columns, vector2d<float> matr
     return matrix;
 }
 
-vector2d<float> transpose(int rows, int columns, vector2d<float> matrix)
+vector2d<float> transpose(vector2d<float> matrix)
 {
+    int rows, columns;
+    rows = matrix.size();
+    columns = matrix[0].size();
+
     vector2d<float> matrixTranspose;
 
     // Transposing matrix
@@ -564,11 +628,18 @@ vector2d<float> transpose(int rows, int columns, vector2d<float> matrix)
     return matrixTranspose;
 }
 
-int isSymmetric(int size, vector2d<float> matrix)
+int isSymmetric(vector2d<float> matrix)
 {
+    // Checking the size of the matrix
+    int size;
+    if (matrix.size() != matrix[0].size())
+        return 0; // Matrices which are not in the form of a square cannot be symmetric
+    else
+        size = matrix.size();
+
     // Transposing Matrix
     vector2d<float> matrixTranspose;
-    matrixTranspose = transpose(size, size, matrix);
+    matrixTranspose = transpose(matrix);
 
     // Stores the condition whether a matrix is symmetric or not
     int flag = 1;
@@ -592,8 +663,20 @@ int isSymmetric(int size, vector2d<float> matrix)
     return flag;
 }
 
-vector2d<float> matrixMultiply(int m, int p, int n, vector2d<float> matrix1, vector2d<float> matrix2)
+vector2d<float> matrixMultiply(vector2d<float> matrix1, vector2d<float> matrix2)
 {
+    // Checking the size of the matrices
+    int m, p, n;
+    if (matrix1[0].size() != matrix2.size())
+        throw std::logic_error("Number of columns in the first matrix should be equal to the number of columns in the "
+                               "second matrix in matrix multiplication:");
+    else
+    {
+        m = matrix1.size();
+        p = matrix2.size();
+        n = matrix2[0].size();
+    }
+
     // uses the old O(n^3) algorithm
     vector2d<float> matrixProduct;
 
@@ -611,8 +694,15 @@ vector2d<float> matrixMultiply(int m, int p, int n, vector2d<float> matrix1, vec
     return matrixProduct;
 }
 
-vector2d<float> matrixInverse(int size, vector2d<float> matrix)
+vector2d<float> matrixInverse(vector2d<float> matrix)
 {
+    // Checking size of the matrix
+    int size;
+    if (matrix.size() != matrix[0].size())
+        throw std::logic_error("Non-square matrices are not invertible");
+    else
+        size = matrix.size();
+
     // Inversing a matrix
     float temp, scalingFactor;
 
@@ -691,9 +781,13 @@ vector2d<float> matrixInverse(int size, vector2d<float> matrix)
     return matrix;
 }
 
-void rankNormal(int rows, int columns, vector2d<float> matrix)
+void rankNormal(vector2d<float> matrix)
 {
-    int rankMatrix = rank(rows, columns, matrix);
+    int rows, columns;
+    rows = matrix.size();
+    columns = matrix[0].size();
+
+    int rankMatrix = rank(matrix);
     for (int i = 0; i < rankMatrix; i++)
     {
         for (int j = 0; j < columns; j++)
@@ -707,8 +801,15 @@ void rankNormal(int rows, int columns, vector2d<float> matrix)
     }
 }
 
-float determinant(int size, vector2d<float> matrix)
+float determinant(vector2d<float> matrix)
 {
+    // Checking the size of the matrix
+    int size;
+    if (matrix.size() != matrix[0].size())
+        throw std::logic_error("Determinat does not exist for non-square matrices");
+    else
+        size = matrix.size();
+
     int inversion = 0;
     int flag = 0;
     float scalingFactor, temp;
