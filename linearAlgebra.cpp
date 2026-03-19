@@ -595,6 +595,38 @@ vector2d<float> matrixAdd(vector2d<float> matrix1, vector2d<float> matrix2)
     return matrixSum;
 }
 
+vector2d<float> matrixSubtract(vector2d<float> matrix1, vector2d<float> matrix2)
+{
+    // Checkingthe size of the matrix
+    int rows, columns;
+    if (matrix1.size() == matrix2.size()) // Checking if the number of rows in the matrices are equal or not
+    {
+        if (matrix1[0].size() ==
+            matrix2[0].size()) // Checking if the number of columns in the matrices are equal or not
+        {
+            rows = matrix1.size();
+            columns = matrix1[0].size();
+        }
+        else
+            throw std::logic_error("Number of columns in the matrices are not equal");
+    }
+    else
+        throw std::logic_error("Numeber of rows in the matrices are not equal");
+
+    vector2d<float> matrixDifference;
+
+    // Adding matrix
+    // Looping the rows
+    for (int i = 0; i < rows; i++)
+    {
+        // Looping the columns
+        for (int j = 0; j < columns; j++)
+            matrixDifference[i][j] = matrix1[i][j] - matrix2[i][j];
+    }
+
+    return matrixDifference;
+}
+
 vector2d<float> scalarMultiplication(vector2d<float> matrix, float scalar)
 {
     int rows, columns;

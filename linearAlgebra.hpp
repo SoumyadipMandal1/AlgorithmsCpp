@@ -23,6 +23,8 @@ int rank(vector2d<float>);
 
 vector2d<float> matrixAdd(vector2d<float>, vector2d<float>);
 
+vector2d<float> matrixSubtract(vector2d<float>, vector2d<float>);
+
 vector2d<float> scalarMultiplication(vector2d<float>, float);
 
 vector2d<float> transpose(vector2d<float> matrix);
