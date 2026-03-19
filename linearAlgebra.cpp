@@ -563,7 +563,7 @@ int rank(vector2d<float> matrix)
     return rank;
 }
 
-vector2d<float> matrixAdd(vector2d<float> matrix1, vector2d<float> matrix2)
+vector2d<float> matrixAdd(const vector2d<float> &matrix1, const vector2d<float> &matrix2)
 {
     // Checkingthe size of the matrix
     int rows, columns;
@@ -581,7 +581,7 @@ vector2d<float> matrixAdd(vector2d<float> matrix1, vector2d<float> matrix2)
     else
         throw std::logic_error("Numeber of rows in the matrices are not equal");
 
-    vector2d<float> matrixSum;
+    vector2d<float> matrixSum(rows, std::vector<float>(columns));
 
     // Adding matrix
     // Looping the rows
@@ -595,7 +595,7 @@ vector2d<float> matrixAdd(vector2d<float> matrix1, vector2d<float> matrix2)
     return matrixSum;
 }
 
-vector2d<float> matrixSubtract(vector2d<float> matrix1, vector2d<float> matrix2)
+vector2d<float> matrixSubtract(const vector2d<float> &matrix1, const vector2d<float> &matrix2)
 {
     // Checkingthe size of the matrix
     int rows, columns;
@@ -613,7 +613,7 @@ vector2d<float> matrixSubtract(vector2d<float> matrix1, vector2d<float> matrix2)
     else
         throw std::logic_error("Numeber of rows in the matrices are not equal");
 
-    vector2d<float> matrixDifference;
+    vector2d<float> matrixDifference(rows, std::vector<float>(columns));
 
     // Adding matrix
     // Looping the rows

@@ -21,9 +21,9 @@ vector2d<float> reducedRowEchelon(vector2d<float>);
 
 int rank(vector2d<float>);
 
-vector2d<float> matrixAdd(vector2d<float>, vector2d<float>);
+vector2d<float> matrixAdd(const vector2d<float> &, const vector2d<float> &);
 
-vector2d<float> matrixSubtract(vector2d<float>, vector2d<float>);
+vector2d<float> matrixSubtract(const vector2d<float> &, const vector2d<float> &);
 
 vector2d<float> scalarMultiplication(vector2d<float>, float);
 
