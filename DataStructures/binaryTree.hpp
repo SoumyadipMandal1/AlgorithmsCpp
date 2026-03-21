@@ -1,5 +1,5 @@
-#ifndef TREE_HPP
-#define TREE_HPP
+#ifndef BINARYTREE_HPP
+#define BINARYTREE_HPP
 
 #include <iostream>
 #include <map>
@@ -14,9 +14,9 @@ struct binaryTreeNode
 
     binaryTreeNode() = default;
 
-    binaryTreeNode(int n) : data(n),
-                            left(nullptr),
-                            right(nullptr) {}
+    binaryTreeNode(int n) : data(n), left(nullptr), right(nullptr)
+    {
+    }
 };
 
 typedef struct binaryTreeNode binaryTreeNode;
@@ -37,8 +37,7 @@ std::string searchBST(binaryTreeNode *, int);
 
 binaryTreeNode *randomBinaryTree(int, int, double leftChildProbability = 0.5, double rightChildProbability = 0.5);
 
-template <typename T>
-inline void printTree(T *root, int depth = 0, const std::string &direction = "")
+template <typename T> inline void printTree(T *root, int depth = 0, const std::string &direction = "")
 {
     // Base Case
     if (root == nullptr)
@@ -75,9 +74,9 @@ struct huffmanBinaryTree
 
     huffmanBinaryTree() = default;
 
-    huffmanBinaryTree(char character) : data(character),
-                                        left(nullptr),
-                                        right(nullptr) {}
+    huffmanBinaryTree(char character) : data(character), left(nullptr), right(nullptr)
+    {
+    }
 };
 
 typedef struct huffmanBinaryTree huffmanBinaryTree;
@@ -86,7 +85,8 @@ std::map<char, int> frequencyCount(std::string);
 
 huffmanBinaryTree *createHuffmanCodeTree(std::vector<std::pair<char, int>>);
 
-void createHuffmanCodesHelperFunction(huffmanBinaryTree *, std::vector<std::pair<char, std::vector<bool>>> &, std::vector<bool>);
+void createHuffmanCodesHelperFunction(huffmanBinaryTree *, std::vector<std::pair<char, std::vector<bool>>> &,
+                                      std::vector<bool>);
 
 std::vector<std::pair<char, std::vector<bool>>> createHuffmanCodes(huffmanBinaryTree *);
 
