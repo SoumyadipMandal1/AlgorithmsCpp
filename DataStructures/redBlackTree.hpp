@@ -23,6 +23,8 @@ struct redBlackTreeNode
 
 typedef struct redBlackTreeNode redBlackTreeNode;
 
-redBlackTreeNode *leftRotateRedBlackTree(redBlackTreeNode *node);
+redBlackTreeNode *leftRotateRedBlackTree(redBlackTreeNode *);
+
+redBlackTreeNode *rightRotateRedBlackTree(redBlackTreeNode *);
 
 #endif

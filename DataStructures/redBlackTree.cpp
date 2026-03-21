@@ -14,3 +14,17 @@ redBlackTreeNode *leftRotateRedBlackTree(redBlackTreeNode *node)
 
     return rightSubTree;
 }
+
+redBlackTreeNode *rightRotateRedBlackTree(redBlackTreeNode *node)
+{
+    redBlackTreeNode *leftSubTree = node->left;
+
+    if (leftSubTree == nullptr)
+        throw std::logic_error("Right rotation cannot be performed on a node whose left sub-tree is null");
+
+    // Right rotation
+    node->left = leftSubTree->right;
+    leftSubTree->right = node;
+
+    return leftSubTree;
+}
