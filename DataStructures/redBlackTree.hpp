@@ -16,7 +16,7 @@ struct redBlackTreeNode
 
     redBlackTreeNode() = default;
 
-    redBlackTreeNode(int n) : data(n), left(nullptr), right(nullptr)
+    redBlackTreeNode(int n) : data(n), left(nullptr), right(nullptr), color(RED)
     {
     }
 };
