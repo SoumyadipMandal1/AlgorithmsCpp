@@ -95,74 +95,69 @@ void insertBST(binaryTreeNode *root, int n)
     return;
 }
 
-void deleteBST(binaryTreeNode *previousBinaryTreeNode, binaryTreeNode *currentBinaryTreeNode)
+void deleteBST(binaryTreeNode *parent, binaryTreeNode *node)
 {
-    if (currentBinaryTreeNode->left == nullptr && currentBinaryTreeNode->right == nullptr)
-    {
-        free(currentBinaryTreeNode);
-        previousBinaryTreeNode->left = previousBinaryTreeNode->right = nullptr;
-    }
+    // Determinig the position of the child in the parent node
+    char direction;
+    if (parent->left == node)
+        direction = 'l';
+    else
+        direction = 'r';
 
-    else if (currentBinaryTreeNode->left != nullptr && currentBinaryTreeNode->right == nullptr)
+    // If the node to be deleted has no child
+    if (node->left == nullptr && node->right == nullptr)
     {
-        previousBinaryTreeNode->left = currentBinaryTreeNode->left;
-        free(currentBinaryTreeNode);
+        free(node);
+        if (direction == 'l')
+            parent->left = nullptr;
+        else
+            parent->right = nullptr;
     }
-
-    else if (currentBinaryTreeNode->left == nullptr && currentBinaryTreeNode->right != nullptr)
+    // If the node to be deleted has only one child
+    else if (node->left != nullptr && node->right == nullptr)
     {
-        previousBinaryTreeNode->right = currentBinaryTreeNode->right;
-        free(currentBinaryTreeNode);
+        if (direction == 'l')
+            parent->left = node->right;
+        else
+            parent->right = node->left;
+        free(node);
     }
-
+    else if (node->left == nullptr && node->right != nullptr)
+    {
+        if (direction == 'l')
+            parent->left = node->right;
+        else
+            parent->right = node->right;
+        free(node);
+    }
+    // If the node to be deleted has two children
     else
     {
-        if (previousBinaryTreeNode->left == currentBinaryTreeNode)
+        // Finding the inorder successor of the node
+        // Here currentBinaryTreeNode will be the inorder successor of the node to be deleted
+        binaryTreeNode *previousBinaryTreeNode = node->right;
+        binaryTreeNode *currentBinaryTreeNode = node->right->left;
+        while (currentBinaryTreeNode->left)
         {
-            // Replacing the leftmost child of the right sub-tree as the deleted node
-            binaryTreeNode *previousTemp, *currentTemp;
-            previousTemp = currentBinaryTreeNode->right;
-
-            if (previousTemp->left == nullptr)
-                currentTemp = previousTemp;
-            else
-            {
-                currentTemp = previousTemp->left;
-                while (currentTemp->left != nullptr)
-                {
-                    previousTemp = currentTemp;
-                    currentTemp = currentTemp->left;
-                }
-                previousTemp->left = nullptr;
-            }
-
-            previousBinaryTreeNode->left = currentTemp;
-            currentTemp->left = currentBinaryTreeNode->left;
-            currentTemp->right = currentBinaryTreeNode->right;
+            previousBinaryTreeNode = currentBinaryTreeNode;
+            currentBinaryTreeNode = currentBinaryTreeNode->left;
         }
 
-        else if (previousBinaryTreeNode->right == currentBinaryTreeNode)
+        // swapping the data in the node to be deleted and the inorder successor of the node
+        int temp = node->data;
+        node->data = currentBinaryTreeNode->data;
+        currentBinaryTreeNode->data = temp;
+
+        // deleting the inorder successor
+        if (previousBinaryTreeNode->left == currentBinaryTreeNode)
         {
-            // Replacing the leftmost child of the right sub-tree as the deleted node
-            binaryTreeNode *previousTemp, *currentTemp;
-            previousTemp = currentBinaryTreeNode->right;
-
-            if (previousTemp->left == nullptr)
-                currentTemp = previousTemp;
-            else
-            {
-                currentTemp = previousTemp->left;
-                while (currentTemp->left != nullptr)
-                {
-                    previousTemp = currentTemp;
-                    currentTemp = currentTemp->left;
-                }
-                previousTemp->left = nullptr;
-            }
-
-            previousBinaryTreeNode->right = currentTemp;
-            currentTemp->left = currentBinaryTreeNode->left;
-            currentTemp->right = currentBinaryTreeNode->right;
+            previousBinaryTreeNode->left = nullptr;
+            free(currentBinaryTreeNode);
+        }
+        else
+        {
+            previousBinaryTreeNode->right = nullptr;
+            free(currentBinaryTreeNode);
         }
     }
 }
