@@ -16,7 +16,7 @@ struct redBlackTreeNode
 
     redBlackTreeNode() = default;
 
-    redBlackTreeNode(int n) : data(n), left(nullptr), right(nullptr), color(RED)
+    redBlackTreeNode(int n, Color color) : data(n), left(nullptr), right(nullptr), color(color)
     {
     }
 };
@@ -26,5 +26,7 @@ typedef struct redBlackTreeNode redBlackTreeNode;
 redBlackTreeNode *leftRotateRedBlackTree(redBlackTreeNode *);
 
 redBlackTreeNode *rightRotateRedBlackTree(redBlackTreeNode *);
+
+redBlackTreeNode *insertRedBlackTree(redBlackTreeNode *, int, bool isChild = false);
 
 #endif
