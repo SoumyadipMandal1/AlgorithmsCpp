@@ -1,4 +1,5 @@
 #include "redBlackTree.hpp"
+#include <vector>
 
 redBlackTreeNode *leftRotateRedBlackTree(redBlackTreeNode *node)
 {
@@ -24,6 +25,12 @@ redBlackTreeNode *rightRotateRedBlackTree(redBlackTreeNode *node)
 
 redBlackTreeNode *insertRedBlackTree(redBlackTreeNode *root, int data, bool isChild)
 {
+    // To check if we are not applying the balancing operations in the node which is the parent of the new node
+    static bool isInserted;
+
+    if (!isChild)
+        isInserted = false;
+
     if (root == nullptr)
     {
         redBlackTreeNode *newnode;
@@ -42,58 +49,87 @@ redBlackTreeNode *insertRedBlackTree(redBlackTreeNode *root, int data, bool isCh
     else
         root->right = insertRedBlackTree(root->right, data, true);
 
-    bool isLeftRed, isRightRed;
-    isLeftRed = isRightRed = false;
-
-    if (root->color == BLACK)
+    if (isInserted)
     {
-        // checks whether the left child and right child of a black tree is red or not
-        if (root->left && root->left->color == RED)
-            isLeftRed = true;
-        if (root->right && root->right->color == RED)
-            isRightRed = true;
-    }
+        // Balancing operations
 
-    // If root is black and both the child are red
-    if (isLeftRed && isRightRed)
-    {
-        if ((root->left->left && root->left->left->color == RED) ||
-            (root->left->right && root->left->right->color == RED) ||
-            (root->right->left && root->right->left->color == RED) ||
-            (root->right->right && root->right->right->color == RED))
+        bool isLeftRed, isRightRed;
+        isLeftRed = isRightRed = false;
+
+        if (root->color == BLACK)
         {
-            // swapping the color of the root and the child
-            root->color = RED;
-            root->left->color = root->right->color = BLACK;
-            return root;
+            // checks whether the left child and right child of a black tree is red or not
+            if (root->left && root->left->color == RED)
+                isLeftRed = true;
+            if (root->right && root->right->color == RED)
+                isRightRed = true;
         }
+
+        // If root is black and both the child are red
+        if (isLeftRed && isRightRed)
+        {
+            if ((root->left->left && root->left->left->color == RED) ||
+                (root->left->right && root->left->right->color == RED) ||
+                (root->right->left && root->right->left->color == RED) ||
+                (root->right->right && root->right->right->color == RED))
+            {
+                // swapping the color of the root and the child
+                root->color = RED;
+                root->left->color = root->right->color = BLACK;
+
+                // If root has no parent
+                if (!isChild)
+                    root->color = BLACK;
+
+                return root;
+            }
+        }
+        else if (isLeftRed)
+        {
+            bool isLeftRightRed = false;
+
+            if (root->left->right && root->left->right->color == RED)
+                isLeftRightRed = true;
+
+            if (isLeftRightRed)
+            {
+                root->left = leftRotateRedBlackTree(root->left);
+                root->color = RED;
+                root->left->color = BLACK;
+                return rightRotateRedBlackTree(root);
+            }
+        }
+        else if (isRightRed)
+        {
+            bool isRightLeftRed = false;
+
+            if (root->right->left && root->right->left->color == RED)
+                isRightLeftRed = true;
+
+            if (isRightLeftRed)
+            {
+                root->right = rightRotateRedBlackTree(root->right);
+                root->color = RED;
+                root->right->color = BLACK;
+                return leftRotateRedBlackTree(root);
+            }
+        }
+
+        return root;
     }
-    else if (isLeftRed)
+    else
     {
-        bool isLeftRightRed = false;
-
-        if (root->left->right && root->left->right->color == RED)
-            isLeftRightRed = true;
-
-        if (isLeftRightRed)
-            root->left = leftRotateRedBlackTree(root->left);
-        root->color = RED;
-        root->left->color = BLACK;
-        return rightRotateRedBlackTree(root);
+        isInserted = true;
+        return root;
     }
-    else if (isRightRed)
-    {
-        bool isRightLeftRed = false;
+}
 
-        if (root->right->left && root->right->left->color == RED)
-            isRightLeftRed = true;
+redBlackTreeNode *createRedBlackTree(std::vector<int> &array)
+{
+    redBlackTreeNode *root = nullptr;
 
-        if (isRightLeftRed)
-            root->right = rightRotateRedBlackTree(root->right);
-        root->color = RED;
-        root->right->color = BLACK;
-        return leftRotateRedBlackTree(root);
-    }
+    for (int i = 0; i < array.size(); i++)
+        root = insertRedBlackTree(root, array[i]);
 
     return root;
 }

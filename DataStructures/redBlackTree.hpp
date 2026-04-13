@@ -1,6 +1,8 @@
 #ifndef REDBLACKTREE_HPP
 #define REDBLACKTREE_HPP
 
+#include <vector>
+
 typedef enum
 {
     RED,
@@ -28,5 +30,7 @@ redBlackTreeNode *leftRotateRedBlackTree(redBlackTreeNode *);
 redBlackTreeNode *rightRotateRedBlackTree(redBlackTreeNode *);
 
 redBlackTreeNode *insertRedBlackTree(redBlackTreeNode *, int, bool isChild = false);
+
+redBlackTreeNode *createRedBlackTree(std::vector<int> &);
 
 #endif
