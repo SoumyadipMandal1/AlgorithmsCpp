@@ -37,10 +37,7 @@ template <typename T> class complex
         T product2 = other.imaginary * sum1;
         T product3 = imaginary * sum3;
 
-        T Real = product1 - product2;
-        T Imaginary = product2 + product3;
-
-        return complex(Real, Imaginary);
+        return complex(product1 - product2, product2 + product3);
     }
 
     double modulus()
