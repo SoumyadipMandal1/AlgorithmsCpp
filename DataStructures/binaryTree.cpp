@@ -154,12 +154,12 @@ void deleteBST(binaryTreeNode *parent, binaryTreeNode *node)
         // deleting the inorder successor
         if (previousBinaryTreeNode->left == currentBinaryTreeNode)
         {
-            previousBinaryTreeNode->left = nullptr;
+            previousBinaryTreeNode->left = currentBinaryTreeNode->right;
             free(currentBinaryTreeNode);
         }
         else
         {
-            previousBinaryTreeNode->right = nullptr;
+            previousBinaryTreeNode->right = currentBinaryTreeNode->right;
             free(currentBinaryTreeNode);
         }
     }
