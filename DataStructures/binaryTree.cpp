@@ -137,10 +137,13 @@ void deleteBST(binaryTreeNode *parent, binaryTreeNode *node)
         // Here currentBinaryTreeNode will be the inorder successor of the node to be deleted
         binaryTreeNode *previousBinaryTreeNode = node->right;
         binaryTreeNode *currentBinaryTreeNode = node->right->left;
-        while (currentBinaryTreeNode->left)
+        if (currentBinaryTreeNode)
         {
-            previousBinaryTreeNode = currentBinaryTreeNode;
-            currentBinaryTreeNode = currentBinaryTreeNode->left;
+            while (currentBinaryTreeNode->left)
+            {
+                previousBinaryTreeNode = currentBinaryTreeNode;
+                currentBinaryTreeNode = currentBinaryTreeNode->left;
+            }
         }
 
         // swapping the data in the node to be deleted and the inorder successor of the node
