@@ -14,9 +14,12 @@ class fraction
   public:
     fraction(long long numerator, long long denominator)
     {
-        this->numerator = numerator;
         if (denominator)
-            this->denominator = denominator;
+        {
+            long long GCD = gcd(numerator, denominator);
+            this->numerator = numerator / GCD;
+            this->denominator = denominator / GCD;
+        }
         else
             throw std::invalid_argument("Denominator cannot be Zero");
     }
@@ -27,8 +30,9 @@ class fraction
 
         long long Numerator = numerator * (lcm / denominator) + (other.numerator) * (lcm / other.denominator);
         long long Denominator = lcm;
+        long long GCD = gcd(Numerator, Denominator);
 
-        return fraction(Numerator, Denominator);
+        return fraction(Numerator / GCD, Denominator / GCD);
     }
 
     fraction operator-(const fraction &other) const
@@ -37,24 +41,27 @@ class fraction
 
         long long Numerator = numerator * (lcm / denominator) - (other.numerator) * (lcm / other.denominator);
         long long Denominator = lcm;
+        long long GCD = gcd(Numerator, Denominator);
 
-        return fraction(Numerator, Denominator);
+        return fraction(Numerator / GCD, Denominator / GCD);
     }
 
     fraction operator*(const fraction &other) const
     {
         long long Numerator = numerator * other.numerator;
         long long Denominator = denominator * other.denominator;
+        long long GCD = gcd(Numerator, Denominator);
 
-        return fraction(Numerator / gcd(Numerator, Denominator), Denominator / gcd(Numerator, Denominator));
+        return fraction(Numerator / GCD, Denominator / GCD);
     }
 
     fraction operator/(const fraction &other) const
     {
         long long Numerator = numerator * other.denominator;
         long long Denominator = denominator * other.numerator;
+        long long GCD = gcd(Numerator, Denominator);
 
-        return fraction(Numerator / gcd(Numerator, Denominator), Denominator / gcd(Numerator, Denominator));
+        return fraction(Numerator / GCD, Denominator / GCD);
     }
 
     void print()
