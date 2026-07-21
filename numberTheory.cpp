@@ -144,3 +144,17 @@ std::vector<int> primeFactorize(int n)
 
     return primeFactors;
 }
+
+int tau(int n) // number of divisors of a number
+{
+    int result = 2; // counting 1 and n initially
+    int i;
+    for (i = 2; i * i < n; i++) // iterating from 2 to sqrt(n)
+    {
+        if (n % i == 0)  // if i is a divisor of n
+            result += 2; // counting i and n / i
+    }
+    if (i * i == n) // If the number is square
+        result++;
+    return result;
+}
