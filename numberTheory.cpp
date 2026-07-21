@@ -1,3 +1,4 @@
+#include <math.h>
 #include <vector>
 
 void swap(int &a, int &b)
@@ -156,5 +157,19 @@ int tau(int n) // number of divisors of a number
     }
     if (i * i == n) // If the number is square
         result++;
+    return result;
+}
+
+long sigma(int n, int power)
+{
+    long result = 1 + pow(n, power); // counting 1 and n^power initially
+    long i;
+    for (i = 2; i * i < n; i++) // iterating from 2 to sqrt(n)
+    {
+        if (n % i == 0)                                  // if i is a divisor of n
+            result += pow(i, power) + pow(n / i, power); // counting i^power and (n / i)^power
+    }
+    if (i * i == n) // If the number is square
+        result += pow(i, power);
     return result;
 }
