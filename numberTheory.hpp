@@ -23,4 +23,8 @@ bool isPrime(int n);
 
 std::vector<int> primeFactorise(int n);
 
+int tau(int n);
+
+int sigma(int n);
+
 #endif
